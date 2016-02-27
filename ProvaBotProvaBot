@@ -2,7 +2,8 @@ import telebot
 import random
 bot = telebot.TeleBot('149991058:AAH5hdk1-oNXlwinJhhomxpGmfdTn10WlZo')
 botan_token='11tcT_JQrMxklU2NntbWEI32FbY40vfS'
-search_path =r"/home/pi/Desktop"
+#you have to insert your path here if you want to use the ceck_website function
+search_path =r""
         # Append a directory separator if not already present
 if not (search_path.endswith("/") or search_path.endswith("\\") ):
                 search_path = search_path + "/"
