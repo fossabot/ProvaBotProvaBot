@@ -85,22 +85,22 @@ Da How I met your mother"""
 Da The big bang theory"""
     elenco_citazioni_random=[random_tbbt,random_himym]
     risposta(message,random.choice(elenco_citazioni_random))
-@bot.message_handler(commands=["aiuto"])
+@bot.message_handler(commands=["aiuto","start"])
 def invia_comandi(message):
     risposta(message,"""i comandi sono:
 /aiuto
 /citazione
 /congratula
 /insulta
-/cerca_immagine""")
+/striscia""")
 @bot.message_handler(commands=["congratula"])
 def congratula(message):
     messaggio=message.text.replace("/congratula","")
     risposta(message,"congratulazioni"+messaggio+"!")
-@bot.message_handler(commands=['cerca_immagine'])
-def command_vegetta(message):
-    v=message.text.replace("/cerca_immagine","")
-    bot.send_photo( message.chat.id, open(search_path+"cacca"+".jpg", 'rb'))
+@bot.message_handler(commands=['striscia'])
+def invia_striscia(message):
+    lista_strisce=range(1,47,1)
+    bot.send_photo( message.chat.id, open(search_path+"/strisce/"+str(random.choice(lista_strisce))+".jpg", 'rb'))
 @bot.message_handler(commands=["insulta"])
 def insulta(message):
         messaggio=message.text.replace("/insulta","")
@@ -113,6 +113,8 @@ def insulta(message):
 def echo_all(message):
     if message.text=="<3":
      risposta(message, "<3 <3")
+    if message.text.lower()=="nope":
+         risposta(message,"nope")
     if "ciao" in message.text.lower():
       #gesù gegiù questa riga salvami tu(nome dell'id dell'user)
       b = message.from_user.username
@@ -159,7 +161,10 @@ def echo_all(message):
                    bot.send_message(chat_id="@vogliolescarpe", text="c'è stato un aggiornamento su " + target)
                    exit()
              if (target == "http://www.back-door.it"):
-              if (s.find(b"yeezy") != -1):
+              #while (s.find(b"error 503")!= -1) or (s.find(b"database")!=-1):
+               #   print("sito offline" + target)
+                #  time.sleep(10)
+              if (s.find(b"ovo") != -1) or (s.find(b"JORDAN X") != -1):
                     bot.send_message(chat_id="@vogliolescarpe", text="c'è stato un aggiornamento su " + target)
                     exit()
               else:
@@ -167,8 +172,8 @@ def echo_all(message):
         while True:
          #controlla_aggiornamento("www.adidas.it/yeezy")
          #time.sleep(120)
-         controlla_aggiornamento("www.adidas.it/nmd")
+         #controlla_aggiornamento("www.adidas.it/nmd")
+         #time.sleep(60)
+         controlla_aggiornamento("www.back-door.it")
          time.sleep(60)
-         #controlla_aggiornamento("www.back-door.it")
-         #time.sleep(120)
 bot.polling(none_stop=False)
