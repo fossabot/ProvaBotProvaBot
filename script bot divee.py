@@ -1,5 +1,14 @@
 import telebot
 import random
+import requests
+import base64
+import sys
+import os
+import logging
+import time
+import urllib.request
+import mmap
+from bs4 import BeautifulSoup
 bot = telebot.TeleBot('149991058:AAH5hdk1-oNXlwinJhhomxpGmfdTn10WlZo')
 botan_token='11tcT_JQrMxklU2NntbWEI32FbY40vfS'
 search_path =r"/home/pi/Desktop"
@@ -95,7 +104,8 @@ def invia_comandi(message):
 /citazione
 /congratula
 /insulta
-/striscia""")
+/striscia
+/ricetta""")
 #@bot.message_handler(commands=["prova"])
 #def invia_striscia_xdcd(message):
  #   from lxml import html
@@ -107,14 +117,36 @@ def invia_comandi(message):
     #bot.send_photo(message.chat.id, open(cacca))
 
 
-#inizio comando personale
+#inizio comandi personali
 @bot.message_handler(commands=["aggiorna_elenco_file_strisce"])
 def aggiorna_elenco_file_strisce(message):
  from os import listdir
  from os.path import isfile, join
  onlyfiles = [f for f in listdir(search_path+"/strisce") if isfile(join(search_path+"/strisce", f))]
  risposta(message, "elenco aggiornato")
-#fine comando personale
+@bot.message_handler(commands=['aggiungi'])
+def aggiungi_risposta(message):
+    html=message.text.replace("/aggiungi","")
+    file = open(search_path+"testi.txt", "a")
+    file.write(html+"\n")
+    file.close()
+#fine comandi personali
+@bot.message_handler(commands=["ricetta"])
+def cerca_ricetta(message):
+    elenco_link=[]
+    sito="http://www.giallozafferano.it/ricerca-ricette/"
+    messaggio=message.text.replace("/ricetta","")
+    messaggio=messaggio[1:]
+    messaggio=messaggio.replace(" ","+")
+    sito+=messaggio
+    req = urllib.request.Request(sito, headers={'User-Agent': 'Mozilla/5.0'})
+    html = urllib.request.urlopen(req).read()
+    soup = BeautifulSoup(html, 'html.parser')
+    #if tutti in sito:
+     #pass
+    for link in soup.find_all('a','close','Leggi'):
+     elenco_link.append(link.get('href'))
+    risposta(message,elenco_link[0])
 @bot.message_handler(commands=["congratula"])
 def congratula(message):
     messaggio=message.text.replace("/congratula","")
@@ -130,12 +162,6 @@ def insulta(message):
            risposta(message, random.choice(lista_insulti))
         else:
            risposta(message,"aggiungi un nome o qualcuno da insultare, coglione!")
-@bot.message_handler(commands=['aggiungi'])
-def aggiungi_risposta(message):
-    html=message.text.replace("/aggiungi","")
-    file = open(search_path+"testi.txt", "a")
-    file.write(html+"\n")
-    file.close()
 @bot.message_handler(func=lambda m: True)
 def echo_all(message):
     if message.text=="<3":
@@ -157,14 +183,6 @@ def echo_all(message):
     if "san schifosino" in message.text.lower():
         risposta(message, "anche barney ne sa qualcosa")
     if message.text.lower()=="secret":
-        import requests
-        import base64
-        import sys
-        import os
-        import logging
-        import time
-        import urllib.request
-        import mmap
         logging.basicConfig(level=logging.DEBUG,
                             format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
         def controlla_aggiornamento(target):
