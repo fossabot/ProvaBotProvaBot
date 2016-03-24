@@ -11,7 +11,7 @@ import mmap
 from bs4 import BeautifulSoup
 bot = telebot.TeleBot('149991058:AAH5hdk1-oNXlwinJhhomxpGmfdTn10WlZo')
 botan_token='11tcT_JQrMxklU2NntbWEI32FbY40vfS'
-search_path =r"/home/pi/Desktop"
+search_path ="C:/Users/Administrator/Downloads"
         # Append a directory separator if not already present
 if not (search_path.endswith("/") or search_path.endswith("\\") ):
                 search_path = search_path + "/"
@@ -20,6 +20,7 @@ def risposta(sender, messaggio):
     bot.reply_to(sender, messaggio)
 from os import listdir
 from os.path import isfile, join
+lista_playmate=[f for f in listdir(search_path+"/playmates") if isfile(join(search_path+"/playmates", f))]
 onlyfiles = [f for f in listdir(search_path+"/strisce") if isfile(join(search_path+"/strisce", f))]
 @bot.message_handler(commands=["citazione"])
 def invia_citazione(message):
@@ -151,9 +152,17 @@ def cerca_ricetta(message):
 def congratula(message):
     messaggio=message.text.replace("/congratula","")
     risposta(message,"congratulazioni"+messaggio+"!")
+@bot.message_handler(commands=["playmate"])
+def invia_playmate(message):
+    nome_file=(random.choice(lista_playmate))
+    bot.send_chat_action(message.chat.id, 'upload_photo')
+    bot.send_photo(message.chat.id, open(search_path+"/playmates/"+nome_file,'rb'))
+    nome_file=nome_file.replace(".jpg","")
+    nome_file=nome_file[6:]
+    #bot.send_message(message.chat.id,nome_file)
 @bot.message_handler(commands=["striscia"])
 def invia_striscia_beta(message):
- bot.send_photo(message.chat.id, open(search_path+"/strisce/"+str(random.choice(onlyfiles)), 'rb'))
+ bot.send_photo(message.chat.id, open(search_path+"/strisce/"+random.choice(onlyfiles),'rb'))
 @bot.message_handler(commands=["insulta"])
 def insulta(message):
         messaggio=message.text.replace("/insulta","")
@@ -199,12 +208,12 @@ def echo_all(message):
             mmap.mmap(file.fileno(), 0, access=mmap.ACCESS_READ) as s:
             #stringa da cercare
              if (target != "http://www.back-door.it"):
-                if (s.find(b"ESAURITE") != -1) or (s.find(b"""<br/>ESAURITA</p>""") != -1):
+                if (s.find(b"""<b class="button sold-out">sold out</b>""") != -1):
                    print('tutto ok '+ target)
                 else:
                    #scrive un messaggio se il sito viene aggiornato
                    bot.send_message(chat_id="@vogliolescarpe", text="c'è stato un aggiornamento su " + target)
-                   exit()
+                   #exit()
              if (target == "http://www.back-door.it"):
               #while (s.find(b"error 503")!= -1) or (s.find(b"database")!=-1):
                #   print("sito offline" + target)
@@ -219,6 +228,6 @@ def echo_all(message):
          #time.sleep(120)
          #controlla_aggiornamento("www.adidas.it/nmd")
          #time.sleep(60)
-         controlla_aggiornamento("www.back-door.it")
+         controlla_aggiornamento("http://www.supremenewyork.com/shop/jackets/hd0ul5cfn/red")
          time.sleep(60)
 bot.polling(none_stop=False)
