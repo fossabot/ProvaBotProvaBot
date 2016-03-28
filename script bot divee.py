@@ -8,22 +8,32 @@ import logging
 import time
 import urllib.request
 import mmap
+import ssl
+import os.path
+import botan
+from os import listdir
+from os.path import isfile, join
 from bs4 import BeautifulSoup
 bot = telebot.TeleBot('149991058:AAH5hdk1-oNXlwinJhhomxpGmfdTn10WlZo')
 botan_token='11tcT_JQrMxklU2NntbWEI32FbY40vfS'
-search_path ="C:/Users/Administrator/Downloads"
+search_path =os.getcwd()
         # Append a directory separator if not already present
 if not (search_path.endswith("/") or search_path.endswith("\\") ):
                 search_path = search_path + "/"
+botan_token = '2PcvvgRcYce75mDj7q2M8_Gd7BGb3-YW' # Token got from @botaniobot
 def risposta(sender, messaggio):
     bot.send_chat_action(sender.chat.id, action="typing")
     bot.reply_to(sender, messaggio)
-from os import listdir
-from os.path import isfile, join
+lista_video_porno_mp4=[f for f in listdir(search_path+"/videoporno") if isfile(join(search_path+"/videoporno", f))]
+lista_foto_porno=[f for f in listdir(search_path+"/fotoporno") if isfile(join(search_path+"/fotoporno", f))]
 lista_playmate=[f for f in listdir(search_path+"/playmates") if isfile(join(search_path+"/playmates", f))]
 onlyfiles = [f for f in listdir(search_path+"/strisce") if isfile(join(search_path+"/strisce", f))]
 @bot.message_handler(commands=["citazione"])
 def invia_citazione(message):
+    uid = message.text
+    message_dict = "1"
+    event_name = message.text
+    print(botan.track(botan_token, uid, message_dict, event_name))
     elenco_citazioni_himym=["""Ted: Ragazzi, sto per raccontarvi una storia incredibile. La storia di come ho conosciuto vostra madre!
 Figlio di Ted: Abbiamo fatto qualche cosa di male?
 Ted: No!
@@ -100,13 +110,20 @@ Da The big bang theory"""
     risposta(message,random.choice(elenco_citazioni_random))
 @bot.message_handler(commands=["aiuto","start"])
 def invia_comandi(message):
+    uid = message.text
+    message_dict = "1"
+    event_name = message.text
+    print(botan.track(botan_token, uid, message_dict, event_name))
     risposta(message,"""i comandi sono:
 /aiuto
 /citazione
 /congratula
 /insulta
 /striscia
-/ricetta""")
+/ricetta
+/playmate
+/pornimg
+/pornvid""")
 #@bot.message_handler(commands=["prova"])
 #def invia_striscia_xdcd(message):
  #   from lxml import html
@@ -134,6 +151,11 @@ def aggiungi_risposta(message):
 #fine comandi personali
 @bot.message_handler(commands=["ricetta"])
 def cerca_ricetta(message):
+    uid = message.text
+    message_dict = "1"
+    event_name = message.text
+    print(botan.track(botan_token, uid, message_dict, event_name))
+    bootan()
     elenco_link=[]
     sito="http://www.giallozafferano.it/ricerca-ricette/"
     messaggio=message.text.replace("/ricetta","")
@@ -150,21 +172,54 @@ def cerca_ricetta(message):
     risposta(message,elenco_link[0])
 @bot.message_handler(commands=["congratula"])
 def congratula(message):
+    uid = message.text
+    message_dict = "1"
+    event_name = message.text
+    print(botan.track(botan_token, uid, message_dict, event_name))
     messaggio=message.text.replace("/congratula","")
     risposta(message,"congratulazioni"+messaggio+"!")
 @bot.message_handler(commands=["playmate"])
 def invia_playmate(message):
+    uid = message.text
+    message_dict = "1"
+    event_name = message.text
+    print(botan.track(botan_token, uid, message_dict, event_name))
     nome_file=(random.choice(lista_playmate))
     bot.send_chat_action(message.chat.id, 'upload_photo')
     bot.send_photo(message.chat.id, open(search_path+"/playmates/"+nome_file,'rb'))
     nome_file=nome_file.replace(".jpg","")
     nome_file=nome_file[6:]
     #bot.send_message(message.chat.id,nome_file)
+@bot.message_handler(commands=["pornvid"])
+def invia_video_porno(message):
+    uid = message.text
+    message_dict = "1"
+    event_name = message.text
+    print(botan.track(botan_token, uid, message_dict, event_name))
+    bot.send_chat_action(message.chat.id, 'upload_video')
+    bot.send_video(message.chat.id,open(search_path+"/videoporno/"+random.choice(lista_video_porno_mp4),'rb'))
+@bot.message_handler(commands=["pornimg"])
+def invia_immagine_porno(message):
+    uid = message.text
+    message_dict = "1"
+    event_name = message.text
+    print(botan.track(botan_token, uid, message_dict, event_name))
+    bot.send_chat_action(message.chat.id, 'upload_photo')
+    a=bot.send_photo(message.chat.id,open(search_path+"/fotoporno/"+random.choice(lista_foto_porno),'rb'))
 @bot.message_handler(commands=["striscia"])
-def invia_striscia_beta(message):
- bot.send_photo(message.chat.id, open(search_path+"/strisce/"+random.choice(onlyfiles),'rb'))
+def invia_striscia(message):
+    uid = message.text
+    message_dict = "1"
+    event_name = message.text
+    print(botan.track(botan_token, uid, message_dict, event_name))
+    bot.send_chat_action(message.chat.id, 'upload_photo')
+    bot.send_photo(message.chat.id, open(search_path+"/strisce/"+random.choice(onlyfiles),'rb'))
 @bot.message_handler(commands=["insulta"])
 def insulta(message):
+        uid = message.text
+        message_dict = "1"
+        event_name = message.text
+        print(botan.track(botan_token, uid, message_dict, event_name))
         messaggio=message.text.replace("/insulta","")
         lista_insulti=["sei proprio una troia, " + messaggio, "caro, "+messaggio+" sei proprio una testa di cazzo", messaggio+" sei così spaventoso che quando caghi la tua stessa merda dice di fotterti!", messaggio+" sei come la minchia: sempre tra le palle", messaggio+" sei cosi brutto che chi ti guarda vomita", messaggio+", tua madre é peggio di un canestro da basket, gli entrano tutte le palle", messaggio+", io non capisco se sei cretino di tuo oppure ci hai studiato per esserlo", messaggio+",tua mamma ce l'ha così pelosa che per depilarsela deve chiamare la guardia forestale", messaggio+",come ti senti se ti dico che sei solo uno schizzo di sborra di tuo padre?", messaggio+",dall'alito sembra che ti si sia arenato il cadavere di un'orca in gola", messaggio+",sei cosi testa di cazzo che quando un'uomo pensa a te puo diventare gay!", messaggio+",tua madre è come Buffon, ha sempre palle tra le mani", messaggio+",prova a trattenere il respiro cinque minuti così tutti si accorgeranno che l'aria che respiriamo è migliorata"]
         if messaggio != "":
@@ -200,7 +255,8 @@ def echo_all(message):
             if target.endswith("/"):
                  target = target[:-1]
             req = urllib.request.Request(target, headers={'User-Agent': 'Mozilla/5.0'})
-            html = urllib.request.urlopen(req).read()
+            gcontext = ssl.SSLContext(ssl.PROTOCOL_TLSv1)
+            html = urllib.request.urlopen(req, context=gcontext).read()
             file = open(search_path+"source.txt", "wb")
             file.write(html)
             file.close()
@@ -208,7 +264,9 @@ def echo_all(message):
             mmap.mmap(file.fileno(), 0, access=mmap.ACCESS_READ) as s:
             #stringa da cercare
              if (target != "http://www.back-door.it"):
-                if (s.find(b"""<b class="button sold-out">sold out</b>""") != -1):
+                if (s.find(b"""<span class="badge-text">
+Prossimamente!
+</span>""") != -1):
                    print('tutto ok '+ target)
                 else:
                    #scrive un messaggio se il sito viene aggiornato
@@ -228,6 +286,6 @@ def echo_all(message):
          #time.sleep(120)
          #controlla_aggiornamento("www.adidas.it/nmd")
          #time.sleep(60)
-         controlla_aggiornamento("http://www.supremenewyork.com/shop/jackets/hd0ul5cfn/red")
+         controlla_aggiornamento("http://m.adidas.it/scarpe-nmd_r1/S79166.html")
          time.sleep(60)
 bot.polling(none_stop=False)
