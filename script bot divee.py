@@ -155,7 +155,6 @@ def cerca_ricetta(message):
     message_dict = "1"
     event_name = message.text
     print(botan.track(botan_token, uid, message_dict, event_name))
-    bootan()
     elenco_link=[]
     sito="http://www.giallozafferano.it/ricerca-ricette/"
     messaggio=message.text.replace("/ricetta","")
@@ -197,7 +196,12 @@ def invia_video_porno(message):
     event_name = message.text
     print(botan.track(botan_token, uid, message_dict, event_name))
     bot.send_chat_action(message.chat.id, 'upload_video')
-    bot.send_video(message.chat.id,open(search_path+"/videoporno/"+random.choice(lista_video_porno_mp4),'rb'))
+    try:
+     bot.send_video(message.chat.id,open(search_path+"/videoporno/"+random.choice(lista_video_porno_mp4),'rb'))
+    except requests.exceptions.ChunkedEncodingError:
+        risposta(message,"Si è verificato un errore, contatta @Kaykin se vuoi/puoi, oppure riprova")
+    except telebot.apihelper.ApiException:
+        risposta(message,"Si è verificato un errore, contatta @kaykin se vuoi/puoi, oppure riprova")
 @bot.message_handler(commands=["pornimg"])
 def invia_immagine_porno(message):
     uid = message.text
