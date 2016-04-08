@@ -11,6 +11,7 @@ import mmap
 import ssl
 import os.path
 import botan
+from telebot import types
 from os import listdir
 from os.path import isfile, join
 from bs4 import BeautifulSoup
@@ -123,7 +124,8 @@ def invia_comandi(message):
 /ricetta
 /playmate
 /pornimg
-/pornvid""")
+/pornvid
+/pornsrc""")
 #@bot.message_handler(commands=["prova"])
 #def invia_striscia_xdcd(message):
  #   from lxml import html
@@ -188,7 +190,7 @@ def invia_playmate(message):
     bot.send_photo(message.chat.id, open(search_path+"/playmates/"+nome_file,'rb'))
     nome_file=nome_file.replace(".jpg","")
     nome_file=nome_file[6:]
-    #bot.send_message(message.chat.id,nome_file)
+    bot.send_message(message.chat.id,nome_file)
 @bot.message_handler(commands=["pornvid"])
 def invia_video_porno(message):
     uid = message.text
@@ -199,9 +201,39 @@ def invia_video_porno(message):
     try:
      bot.send_video(message.chat.id,open(search_path+"/videoporno/"+random.choice(lista_video_porno_mp4),'rb'))
     except requests.exceptions.ChunkedEncodingError:
+        print("errore1")
         risposta(message,"Si è verificato un errore, contatta @Kaykin se vuoi/puoi, oppure riprova")
     except telebot.apihelper.ApiException:
+        print("errore2")
         risposta(message,"Si è verificato un errore, contatta @kaykin se vuoi/puoi, oppure riprova")
+@bot.message_handler(commands=["pornsrc"])
+def cerca_porno(message,y=0):
+    uid = message.text
+    message_dict = "1"
+    event_name = message.text
+    print(botan.track(botan_token, uid, message_dict, event_name))
+    elenco_link=[]
+    sito="http://www.pornhub.com/video/search?search="
+    messaggio=message.text.replace("/pornsrc","")
+    messaggio=messaggio[1:]
+    messaggio=messaggio.replace(" ","+")
+    sito+=messaggio
+    req = urllib.request.Request(sito, headers={'User-Agent': 'Mozilla/5.0'})
+    html = urllib.request.urlopen(req).read()
+    soup = BeautifulSoup(html, 'html.parser')
+    link_usabili=[]
+    for link in soup.find_all('a'):
+     elenco_link.append(link.get('href',messaggio))
+    for x in range(0,len(elenco_link)):
+     if "viewkey" in elenco_link[x]:
+       #risposta(message,"pornhub.com"+elenco_link[x])
+       #break
+        link_usabili.append(elenco_link[x])
+    risposta(message,"pornhub.com"+link_usabili[y])
+    bot.register_next_step_handler(message, cerca_porno)
+    markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
+    markup.add('next')
+    bot.reply_to(message, 'Ancora?', reply_markup=markup)
 @bot.message_handler(commands=["pornimg"])
 def invia_immagine_porno(message):
     uid = message.text
@@ -209,7 +241,10 @@ def invia_immagine_porno(message):
     event_name = message.text
     print(botan.track(botan_token, uid, message_dict, event_name))
     bot.send_chat_action(message.chat.id, 'upload_photo')
-    a=bot.send_photo(message.chat.id,open(search_path+"/fotoporno/"+random.choice(lista_foto_porno),'rb'))
+    try:
+     a=bot.send_photo(message.chat.id,open(search_path+"/fotoporno/"+random.choice(lista_foto_porno),'rb'))
+    except telebot.apihelper.ApiException:
+        risposta(message,"Si è verificato un errore, contatta @kaykin se vuoi/puoi, oppure riprova")
 @bot.message_handler(commands=["striscia"])
 def invia_striscia(message):
     uid = message.text
@@ -251,6 +286,7 @@ def echo_all(message):
     if "san schifosino" in message.text.lower():
         risposta(message, "anche barney ne sa qualcosa")
     if message.text.lower()=="secret":
+        risposta(message,"segreto avviato")
         logging.basicConfig(level=logging.DEBUG,
                             format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
         def controlla_aggiornamento(target):
@@ -288,8 +324,8 @@ Prossimamente!
         while True:
          #controlla_aggiornamento("www.adidas.it/yeezy")
          #time.sleep(120)
-         #controlla_aggiornamento("www.adidas.it/nmd")
-         #time.sleep(60)
-         controlla_aggiornamento("http://m.adidas.it/scarpe-nmd_r1/S79166.html")
+         controlla_aggiornamento("http://m.adidas.it/scarpe-nmd_r1-primeknit/BA8598.html")
+         time.sleep(60)
+         controlla_aggiornamento("http://m.adidas.it/scarpe-nmd_r1-primeknit/BA8600.html")
          time.sleep(60)
 bot.polling(none_stop=False)
