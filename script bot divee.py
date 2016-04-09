@@ -230,10 +230,10 @@ def cerca_porno(message,y=0):
        #break
         link_usabili.append(elenco_link[x])
     risposta(message,"pornhub.com"+link_usabili[y])
-    bot.register_next_step_handler(message, cerca_porno)
-    markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
-    markup.add('next')
-    bot.reply_to(message, 'Ancora?', reply_markup=markup)
+    #bot.register_next_step_handler(message, cerca_porno)
+    #markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
+    #markup.add('next')
+    #bot.reply_to(message, 'Ancora?', reply_markup=markup)
 @bot.message_handler(commands=["pornimg"])
 def invia_immagine_porno(message):
     uid = message.text
@@ -322,10 +322,13 @@ Prossimamente!
               else:
                  print("tutto ok "+ target)
         while True:
+         try:
          #controlla_aggiornamento("www.adidas.it/yeezy")
          #time.sleep(120)
-         controlla_aggiornamento("http://m.adidas.it/scarpe-nmd_r1-primeknit/BA8598.html")
-         time.sleep(60)
-         controlla_aggiornamento("http://m.adidas.it/scarpe-nmd_r1-primeknit/BA8600.html")
-         time.sleep(60)
+          controlla_aggiornamento("http://m.adidas.it/scarpe-nmd_r1-primeknit/BA8598.html")
+          time.sleep(60)
+          controlla_aggiornamento("http://m.adidas.it/scarpe-nmd_r1-primeknit/BA8600.html")
+          time.sleep(60)
+         except urllib.error.HTTPError:
+             continue
 bot.polling(none_stop=False)
