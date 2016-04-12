@@ -331,4 +331,6 @@ Prossimamente!
           time.sleep(60)
          except urllib.error.HTTPError:
              continue
+         except urllib.error.URLError:
+             continue
 bot.polling(none_stop=False)
