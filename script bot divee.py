@@ -11,7 +11,6 @@ import mmap
 import ssl
 import os.path
 import botan
-import re
 from telebot import types
 from os import listdir
 from os.path import isfile, join
@@ -230,16 +229,17 @@ def invia_video_porno(message):
         risposta(message,"Si è verificato un errore, contatta @kaykin se vuoi/puoi, oppure riprova")
 @bot.message_handler(commands=["pornsrc"])
 def cerca_porno(message,y=0):
- uid = message.text
- message_dict = "1"
- event_name = message.text
- print(botan.track(botan_token, uid, message_dict, event_name))
- elenco_link=[]   
- sito="http://www.pornhub.com/video/search?search="
- messaggio=message.text.replace("/pornsrc","")
- if messaggio=="":
+ try:
+  uid = message.text
+  message_dict = "1"
+  event_name = message.text
+  print(botan.track(botan_token, uid, message_dict, event_name))
+  elenco_link=[]   
+  sito="http://www.pornhub.com/video/search?search="
+  messaggio=message.text.replace("/pornsrc","")
+  if messaggio=="":
     risposta(message,"inserisici un termine da cercare")
- else:
+  else:
     messaggio=messaggio[1:]
     while True:
         conta=1
@@ -278,6 +278,8 @@ def cerca_porno(message,y=0):
     for x in range(0,len(link_usabili)):
         markup.add(str("/pornsrc "+messaggio_keyboard+ " "+str(x)))
     bot.reply_to(message, 'Ancora?', reply_markup=markup)
+ except UnicodeEncodeError:
+     risposta(message,"@Kaykin è un programmatore stupido e non sa implementare i caratteri unicode, come ad esempio 'è', quindi per adesso ti tocca aspettare, oppure vai direttamente su pornhub.com")
 @bot.message_handler(commands=["pornimg"])
 def invia_immagine_porno(message):
     uid = message.text
