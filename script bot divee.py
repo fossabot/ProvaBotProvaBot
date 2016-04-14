@@ -240,6 +240,7 @@ def cerca_porno(message,y=0):
   if messaggio=="":
     risposta(message,"inserisici un termine da cercare")
   else:
+    messaggio=messaggio.lower()
     messaggio=messaggio[1:]
     while True:
         conta=1
@@ -260,13 +261,28 @@ def cerca_porno(message,y=0):
         messaggio_keyboard=messaggio_keyboard[:-1]
     messaggio=messaggio.replace(" ","+")
     sito+=messaggio
-    req = urllib.request.Request(sito, headers={'User-Agent': 'Mozilla/5.0'})
-    html = urllib.request.urlopen(req).read()
-    soup = BeautifulSoup(html, 'html.parser')
+    sito2=sito[:-1]+"&page=2"
+    sito3=sito[:-1]+"&page=3"
+    sito4=sito[:-1]+"&page=4"
+    sito5=sito[:-1]+"&page=5"
+    def get_html(website):
+     req = urllib.request.Request(website, headers={'User-Agent': 'Mozilla/5.0'})
+     html = urllib.request.urlopen(req).read()
+     soup= BeautifulSoup(html, 'html.parser')
+     return soup
+    soup1=get_html(sito)
+    soup2=get_html(sito2)
+    soup3=get_html(sito3)
+    soup4=get_html(sito4)
+    soup5=get_html(sito5)
     link_usabili_duplicati=[]
     link_usabili=[]
-    for link in soup.find_all('a'):
-     elenco_link.append(link.get('href',messaggio))
+    lista_soup=[soup1,soup2,soup3,soup4,soup5]
+    def ottieni_link_porno(soup):    
+     for link in soup.find_all('a'):
+      elenco_link.append(link.get('href',messaggio))
+    for x in lista_soup:
+        ottieni_link_porno(x)
     for x in range(0,len(elenco_link)):
      if "viewkey" in elenco_link[x]:
         link_usabili_duplicati.append(elenco_link[x])
