@@ -11,12 +11,14 @@ import mmap
 import ssl
 import os.path
 import botan
+import re
 from telebot import types
 from os import listdir
 from os.path import isfile, join
 from bs4 import BeautifulSoup
 bot = telebot.TeleBot('149991058:AAH5hdk1-oNXlwinJhhomxpGmfdTn10WlZo')
 botan_token='11tcT_JQrMxklU2NntbWEI32FbY40vfS'
+stato_utente={}
 search_path =os.getcwd()
         # Append a directory separator if not already present
 if not (search_path.endswith("/") or search_path.endswith("\\") ):
@@ -158,10 +160,30 @@ def cerca_ricetta(message):
     event_name = message.text
     print(botan.track(botan_token, uid, message_dict, event_name))
     elenco_link=[]
-    sito="http://www.giallozafferano.it/ricerca-ricette/"
+    sito="http://www.cookaround.com/cerca?q="
     messaggio=message.text.replace("/ricetta","")
     messaggio=messaggio[1:]
     messaggio=messaggio.replace(" ","+")
+    sito+=messaggio
+    req = urllib.request.Request(sito, headers={'User-Agent': 'Mozilla/5.0'})
+    html = urllib.request.urlopen(req).read()
+    soup = BeautifulSoup(html, 'html.parser')
+    #if tutti in sito:
+     #pass
+    for link in soup.find_all('a','close','Leggi'):
+     elenco_link.append(link.get('href'))
+    risposta(message,elenco_link[0])
+@bot.message_handler(commands=["ricetta2"])
+def cerca_ricetta(message):
+    uid = message.text
+    message_dict = "1"
+    event_name = message.text
+    print(botan.track(botan_token, uid, message_dict, event_name))
+    elenco_link=[]
+    sito="http://www.giallozafferano.it/ricerca-ricette/"
+    messaggio=message.text.replace("/ricetta2","")
+    messaggio=messaggio[1:]
+    messaggio=messaggio.replace(" ","%20")
     sito+=messaggio
     req = urllib.request.Request(sito, headers={'User-Agent': 'Mozilla/5.0'})
     html = urllib.request.urlopen(req).read()
@@ -208,32 +230,54 @@ def invia_video_porno(message):
         risposta(message,"Si è verificato un errore, contatta @kaykin se vuoi/puoi, oppure riprova")
 @bot.message_handler(commands=["pornsrc"])
 def cerca_porno(message,y=0):
-    uid = message.text
-    message_dict = "1"
-    event_name = message.text
-    print(botan.track(botan_token, uid, message_dict, event_name))
-    elenco_link=[]
-    sito="http://www.pornhub.com/video/search?search="
-    messaggio=message.text.replace("/pornsrc","")
+ uid = message.text
+ message_dict = "1"
+ event_name = message.text
+ print(botan.track(botan_token, uid, message_dict, event_name))
+ elenco_link=[]   
+ sito="http://www.pornhub.com/video/search?search="
+ messaggio=message.text.replace("/pornsrc","")
+ if messaggio=="":
+    risposta(message,"inserisici un termine da cercare")
+ else:
     messaggio=messaggio[1:]
+    while True:
+        conta=1
+        if conta==1:
+         if messaggio[-1:].isdigit():
+             y=int(messaggio[-1:])
+             messaggio=messaggio[:-1]
+             conta=2
+        if conta ==2:
+           if messaggio[-1:].isdigit():
+                y2=messaggio[-1:]
+                y=(y+int(y2)*10)
+                messaggio=messaggio[:-1]
+        else:
+            break
+    messaggio_keyboard=messaggio
+    if messaggio_keyboard.endswith(" "):
+        messaggio_keyboard=messaggio_keyboard[:-1]
     messaggio=messaggio.replace(" ","+")
     sito+=messaggio
     req = urllib.request.Request(sito, headers={'User-Agent': 'Mozilla/5.0'})
     html = urllib.request.urlopen(req).read()
     soup = BeautifulSoup(html, 'html.parser')
+    link_usabili_duplicati=[]
     link_usabili=[]
     for link in soup.find_all('a'):
      elenco_link.append(link.get('href',messaggio))
     for x in range(0,len(elenco_link)):
      if "viewkey" in elenco_link[x]:
-       #risposta(message,"pornhub.com"+elenco_link[x])
-       #break
-        link_usabili.append(elenco_link[x])
+        link_usabili_duplicati.append(elenco_link[x])
+    for x in range(0,len(link_usabili_duplicati)):
+        if link_usabili_duplicati[x] not in link_usabili:
+            link_usabili.append(link_usabili_duplicati[x])
     risposta(message,"pornhub.com"+link_usabili[y])
-    #bot.register_next_step_handler(message, cerca_porno)
-    #markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
-    #markup.add('next')
-    #bot.reply_to(message, 'Ancora?', reply_markup=markup)
+    markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
+    for x in range(0,len(link_usabili)):
+        markup.add(str("/pornsrc "+messaggio_keyboard+ " "+str(x)))
+    bot.reply_to(message, 'Ancora?', reply_markup=markup)
 @bot.message_handler(commands=["pornimg"])
 def invia_immagine_porno(message):
     uid = message.text
