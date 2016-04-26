@@ -202,6 +202,7 @@ def congratula(message):
     risposta(message,"congratulazioni"+messaggio+"!")
 @bot.message_handler(commands=["playmate"])
 def invia_playmate(message):
+ try:
     uid = message.text
     message_dict = "1"
     event_name = message.text
@@ -212,6 +213,8 @@ def invia_playmate(message):
     nome_file=nome_file.replace(".jpg","")
     nome_file=nome_file[6:]
     bot.send_message(message.chat.id,nome_file)
+ except:
+     risposta(message,"si è verificsto un errore")
 @bot.message_handler(commands=["pornvid"])
 def invia_video_porno(message):
     uid = message.text
@@ -296,6 +299,8 @@ def cerca_porno(message,y=0):
     bot.reply_to(message, 'Ancora?', reply_markup=markup)
  except UnicodeEncodeError:
      risposta(message,"@Kaykin è un programmatore stupido e non sa implementare i caratteri unicode, come ad esempio 'è', quindi per adesso ti tocca aspettare, oppure vai direttamente su pornhub.com")
+ except urllib.error.HTTPError:
+     risposta(message,"http error, e @KayKin non sa il perché")
 @bot.message_handler(commands=["pornimg"])
 def invia_immagine_porno(message):
     uid = message.text
@@ -305,7 +310,7 @@ def invia_immagine_porno(message):
     bot.send_chat_action(message.chat.id, 'upload_photo')
     try:
      a=bot.send_photo(message.chat.id,open(search_path+"/fotoporno/"+random.choice(lista_foto_porno),'rb'))
-    except telebot.apihelper.ApiException:
+    except:
         risposta(message,"Si è verificato un errore, contatta @kaykin se vuoi/puoi, oppure riprova")
 @bot.message_handler(commands=["striscia"])
 def invia_striscia(message):
