@@ -61,7 +61,7 @@ target/
 #Ipython Notebook
 .ipynb_checkpoints
 
-#images and videos
+#images and videos and stuff
 *.jpg
 *.png
 *.jpeg
@@ -70,3 +70,9 @@ target/
 *.mpeg
 *.avi
 *.gif
+*.flv
+*.m4a
+*.mp3
+*.zip
+*.aac
+*.3gp
