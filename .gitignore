@@ -63,6 +63,7 @@ target/
 
 #images and videos
 *.jpg
+*.png
 *.jpeg
 *.mp4
 *.mov
