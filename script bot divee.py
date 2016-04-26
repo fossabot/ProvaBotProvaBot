@@ -301,6 +301,8 @@ def cerca_porno(message,y=0):
      risposta(message,"@Kaykin è un programmatore stupido e non sa implementare i caratteri unicode, come ad esempio 'è', quindi per adesso ti tocca aspettare, oppure vai direttamente su pornhub.com")
  except urllib.error.HTTPError:
      risposta(message,"http error, e @KayKin non sa il perché")
+ except AttributeError:
+     risposta(message,"Il programmatore delle api ha creato un bug con l'update 2.0 e @kaykin sta aspettando un fix perché è pigro e non ha voglia di correggerlo da solo")
 @bot.message_handler(commands=["pornimg"])
 def invia_immagine_porno(message):
     uid = message.text
