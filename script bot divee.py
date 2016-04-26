@@ -225,10 +225,10 @@ def invia_video_porno(message):
     try:
      bot.send_video(message.chat.id,open(search_path+"/videoporno/"+random.choice(lista_video_porno_mp4),'rb'))
     except requests.exceptions.ChunkedEncodingError:
-        print("errore1")
+        print("ChunkedEncodingError")
         risposta(message,"Si è verificato un errore, contatta @Kaykin se vuoi/puoi, oppure riprova")
     except telebot.apihelper.ApiException:
-        print("errore2")
+        print("ApiException")
         risposta(message,"Si è verificato un errore, contatta @kaykin se vuoi/puoi, oppure riprova")
 @bot.message_handler(commands=["pornsrc"])
 def cerca_porno(message,y=0):
@@ -237,7 +237,7 @@ def cerca_porno(message,y=0):
   message_dict = "1"
   event_name = message.text
   print(botan.track(botan_token, uid, message_dict, event_name))
-  elenco_link=[]   
+  elenco_link=[]
   sito="http://www.pornhub.com/video/search?search="
   messaggio=message.text.replace("/pornsrc","")
   if messaggio=="":
@@ -281,7 +281,7 @@ def cerca_porno(message,y=0):
     link_usabili_duplicati=[]
     link_usabili=[]
     lista_soup=[soup1,soup2,soup3,soup4,soup5]
-    def ottieni_link_porno(soup):    
+    def ottieni_link_porno(soup):
      for link in soup.find_all('a'):
       elenco_link.append(link.get('href',messaggio))
     for x in lista_soup:
@@ -309,9 +309,9 @@ def invia_immagine_porno(message):
     print(botan.track(botan_token, uid, message_dict, event_name))
     bot.send_chat_action(message.chat.id, 'upload_photo')
     try:
-     a=bot.send_photo(message.chat.id,open(search_path+"/fotoporno/"+random.choice(lista_foto_porno),'rb'))
+     bot.send_photo(message.chat.id,open(search_path+"/fotoporno/"+random.choice(lista_foto_porno),'rb'))
     except:
-        risposta(message,"Si è verificato un errore, contatta @kaykin se vuoi/puoi, oppure riprova")
+     risposta(message,"Si è verificato un errore, contatta @kaykin se vuoi/puoi, oppure riprova")
 @bot.message_handler(commands=["striscia"])
 def invia_striscia(message):
     uid = message.text
@@ -319,7 +319,10 @@ def invia_striscia(message):
     event_name = message.text
     print(botan.track(botan_token, uid, message_dict, event_name))
     bot.send_chat_action(message.chat.id, 'upload_photo')
-    bot.send_photo(message.chat.id, open(search_path+"/strisce/"+random.choice(onlyfiles),'rb'))
+    try:
+     bot.send_photo(message.chat.id, open(search_path+"/strisce/"+random.choice(onlyfiles),'rb'))
+    except:
+      risposta(message,"Si è verificato un errore, contatta @kaykin se vuoi/puoi, oppure riprova")
 @bot.message_handler(commands=["insulta"])
 def insulta(message):
         uid = message.text
@@ -341,7 +344,7 @@ def echo_all(message):
     if "ciao" in message.text.lower():
       #gesù gegiù questa riga salvami tu(nome dell'id dell'user)
       b = message.from_user.username
-      risposta(message, "ciau cara "+ str(b) +" <3")
+      risposta(message, "ciao "+ str(b) +" <3")
     if message.text=="?":
        risposta(message, "ahahahahah")
     if "eh?" in message.text.lower():
