@@ -340,7 +340,7 @@ def echo_all(message):
 
 
 
-//controlla siti
+#parte del bot che controlla siti
     if message.text.lower()=="secret":
         risposta(message,"segreto avviato")
         logging.basicConfig(level=logging.DEBUG,
