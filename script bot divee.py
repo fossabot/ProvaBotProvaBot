@@ -360,7 +360,7 @@ def echo_all(message):
             mmap.mmap(file.fileno(), 0, access=mmap.ACCESS_READ) as s:
             #stringa da cercare
              if (target != "http://www.back-door.it"):
-                if (s.find(b"Verificane spesso la disponibilità per essere uno dei primi ad acquistarlo.") != -1):
+                if (s.find(b"per essere uno dei primi ad acquistarlo.") != -1):
                    print('tutto ok '+ target)
                 else:
                    #scrive un messaggio se il sito viene aggiornato
