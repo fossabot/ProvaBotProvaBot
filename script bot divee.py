@@ -136,8 +136,6 @@ def invia_comandi(message):
     #cacca=tree.xpath('//*[@id="comic"]/img')
     #risposta(message,cacca)
     #bot.send_photo(message.chat.id, open(cacca))
-
-
 #inizio comandi personali
 @bot.message_handler(commands=["aggiorna_elenco_file_strisce"])
 def aggiorna_elenco_file_strisce(message):
@@ -194,12 +192,16 @@ def cerca_ricetta(message):
     risposta(message,elenco_link[0])
 @bot.message_handler(commands=["congratula"])
 def congratula(message):
+ try:    
     uid = message.text
     message_dict = "1"
     event_name = message.text
     print(botan.track(botan_token, uid, message_dict, event_name))
     messaggio=message.text.replace("/congratula","")
     risposta(message,"congratulazioni"+messaggio+"!")
+ except:
+    print("Errore in congratula, è grave, oppure le api di telegram son crashate") 
+    continue    
 @bot.message_handler(commands=["playmate"])
 def invia_playmate(message):
  try:
@@ -214,7 +216,8 @@ def invia_playmate(message):
     nome_file=nome_file[6:]
     bot.send_message(message.chat.id,nome_file)
  except:
-     risposta(message,"si è verificsto un errore")
+     print("si è verificsto un errore")
+     continue
 @bot.message_handler(commands=["pornvid"])
 def invia_video_porno(message):
     uid = message.text
@@ -226,10 +229,10 @@ def invia_video_porno(message):
      bot.send_video(message.chat.id,open(search_path+"/videoporno/"+random.choice(lista_video_porno_mp4),'rb'))
     except requests.exceptions.ChunkedEncodingError:
         print("ChunkedEncodingError")
-        risposta(message,"Si è verificato un errore, contatta @Kaykin se vuoi/puoi, oppure riprova")
+        continue
     except telebot.apihelper.ApiException:
         print("ApiException")
-        risposta(message,"Si è verificato un errore, contatta @kaykin se vuoi/puoi, oppure riprova")
+        continue
 @bot.message_handler(commands=["pornsrc"])
 def cerca_porno(message,y=0):
  try:
@@ -313,7 +316,7 @@ def invia_immagine_porno(message):
     try:
      bot.send_photo(message.chat.id,open(search_path+"/fotoporno/"+random.choice(lista_foto_porno),'rb'))
     except:
-     risposta(message,"Si è verificato un errore, contatta @kaykin se vuoi/puoi, oppure riprova")
+     continue
 @bot.message_handler(commands=["striscia"])
 def invia_striscia(message):
     uid = message.text
@@ -324,7 +327,7 @@ def invia_striscia(message):
     try:
      bot.send_photo(message.chat.id, open(search_path+"/strisce/"+random.choice(onlyfiles),'rb'))
     except:
-      risposta(message,"Si è verificato un errore, contatta @kaykin se vuoi/puoi, oppure riprova")
+      continue
 @bot.message_handler(commands=["insulta"])
 def insulta(message):
         uid = message.text
@@ -402,7 +405,9 @@ Prossimamente!
           controlla_aggiornamento("http://m.adidas.it/scarpe-nmd_r1-primeknit/BA8600.html")
           time.sleep(60)
          except urllib.error.HTTPError:
+             print("HTTPError")
              continue
          except urllib.error.URLError:
+             print("URLError")
              continue
 bot.polling(none_stop=False)
