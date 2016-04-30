@@ -122,7 +122,6 @@ def invia_comandi(message):
 /congratula
 /insulta
 /striscia
-/ricetta
 /playmate
 /pornimg
 /pornvid
@@ -152,26 +151,7 @@ def aggiungi_risposta(message):
     file.write(html+"\n")
     file.close()
 #fine comandi personali
-@bot.message_handler(commands=["ricetta"])
-def cerca_ricetta(message):
-    uid = message.text
-    message_dict = "1"
-    event_name = message.text
-    print(botan.track(botan_token, uid, message_dict, event_name))
-    elenco_link=[]
-    sito="http://www.cookaround.com/cerca?q="
-    messaggio=message.text.replace("/ricetta","")
-    messaggio=messaggio[1:]
-    messaggio=messaggio.replace(" ","+")
-    sito+=messaggio
-    req = urllib.request.Request(sito, headers={'User-Agent': 'Mozilla/5.0'})
-    html = urllib.request.urlopen(req).read()
-    soup = BeautifulSoup(html, 'html.parser')
-    #if tutti in sito:
-     #pass
-    for link in soup.find_all('a','close','Leggi'):
-     elenco_link.append(link.get('href'))
-    risposta(message,elenco_link[0])
+
 @bot.message_handler(commands=["congratula"])
 def congratula(message):
     uid = message.text
