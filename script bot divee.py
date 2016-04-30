@@ -122,7 +122,6 @@ def invia_comandi(message):
 /congratula
 /insulta
 /striscia
-/ricetta
 /playmate
 /pornimg
 /pornvid
@@ -152,46 +151,7 @@ def aggiungi_risposta(message):
     file.write(html+"\n")
     file.close()
 #fine comandi personali
-@bot.message_handler(commands=["ricetta"])
-def cerca_ricetta(message):
-    uid = message.text
-    message_dict = "1"
-    event_name = message.text
-    print(botan.track(botan_token, uid, message_dict, event_name))
-    elenco_link=[]
-    sito="http://www.cookaround.com/cerca?q="
-    messaggio=message.text.replace("/ricetta","")
-    messaggio=messaggio[1:]
-    messaggio=messaggio.replace(" ","+")
-    sito+=messaggio
-    req = urllib.request.Request(sito, headers={'User-Agent': 'Mozilla/5.0'})
-    html = urllib.request.urlopen(req).read()
-    soup = BeautifulSoup(html, 'html.parser')
-    #if tutti in sito:
-     #pass
-    for link in soup.find_all('a','close','Leggi'):
-     elenco_link.append(link.get('href'))
-    risposta(message,elenco_link[0])
-@bot.message_handler(commands=["ricetta2"])
-def cerca_ricetta(message):
-    uid = message.text
-    message_dict = "1"
-    event_name = message.text
-    print(botan.track(botan_token, uid, message_dict, event_name))
-    elenco_link=[]
-    sito="http://www.giallozafferano.it/ricerca-ricette/"
-    messaggio=message.text.replace("/ricetta2","")
-    messaggio=messaggio[1:]
-    messaggio=messaggio.replace(" ","%20")
-    sito+=messaggio
-    req = urllib.request.Request(sito, headers={'User-Agent': 'Mozilla/5.0'})
-    html = urllib.request.urlopen(req).read()
-    soup = BeautifulSoup(html, 'html.parser')
-    #if tutti in sito:
-     #pass
-    for link in soup.find_all('a','close','Leggi'):
-     elenco_link.append(link.get('href'))
-    risposta(message,elenco_link[0])
+
 @bot.message_handler(commands=["congratula"])
 def congratula(message):
     uid = message.text
@@ -357,6 +317,10 @@ def echo_all(message):
         risposta(message, "ehiiii")
     if "san schifosino" in message.text.lower():
         risposta(message, "anche barney ne sa qualcosa")
+
+
+
+#parte del bot che controlla siti
     if message.text.lower()=="secret":
         risposta(message,"segreto avviato")
         logging.basicConfig(level=logging.DEBUG,
@@ -376,9 +340,7 @@ def echo_all(message):
             mmap.mmap(file.fileno(), 0, access=mmap.ACCESS_READ) as s:
             #stringa da cercare
              if (target != "http://www.back-door.it"):
-                if (s.find(b"""<span class="badge-text">
-Prossimamente!
-</span>""") != -1):
+                if (s.find(b"per essere uno dei primi ad acquistarlo.") != -1):
                    print('tutto ok '+ target)
                 else:
                    #scrive un messaggio se il sito viene aggiornato
@@ -397,12 +359,15 @@ Prossimamente!
          try:
          #controlla_aggiornamento("www.adidas.it/yeezy")
          #time.sleep(120)
-          controlla_aggiornamento("http://m.adidas.it/scarpe-nmd_r1-primeknit/BA8598.html")
-          time.sleep(60)
-          controlla_aggiornamento("http://m.adidas.it/scarpe-nmd_r1-primeknit/BA8600.html")
+          controlla_aggiornamento("http://store.nike.com/it/it_it/pd/nikelab-supreme-air-max-98-scarpa/pid-11070888/pgid-11294114")
           time.sleep(60)
          except urllib.error.HTTPError:
+             print("httperror")
              continue
          except urllib.error.URLError:
+             print("URLError")
+             continue
+         except:
+             print("other error")
              continue
 bot.polling(none_stop=False)
