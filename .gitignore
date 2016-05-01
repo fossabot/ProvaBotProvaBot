@@ -78,3 +78,4 @@ target/
 *.3gp
 *.wmv
 *.pdf
+!nope.jpg
