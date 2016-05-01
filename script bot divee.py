@@ -29,7 +29,8 @@ def risposta(sender, messaggio):
 lista_video_porno_mp4=[f for f in listdir(search_path+"/videoporno") if isfile(join(search_path+"/videoporno", f))]
 lista_foto_porno=[f for f in listdir(search_path+"/fotoporno") if isfile(join(search_path+"/fotoporno", f))]
 lista_playmate=[f for f in listdir(search_path+"/playmates") if isfile(join(search_path+"/playmates", f))]
-onlyfiles = [f for f in listdir(search_path+"/strisce") if isfile(join(search_path+"/strisce", f))]
+lista_cibo=[f for f in listdir(search_path+"/cibo") if isfile(join(search_path+"/cibo", f))]
+lista_strisce = [f for f in listdir(search_path+"/strisce") if isfile(join(search_path+"/strisce", f))]
 @bot.message_handler(commands=["citazione"])
 def invia_citazione(message):
     uid = message.text
@@ -125,7 +126,8 @@ def invia_comandi(message):
 /playmate
 /pornimg
 /pornvid
-/pornsrc""")
+/pornsrc
+/cibo""")
 #@bot.message_handler(commands=["prova"])
 #def invia_striscia_xdcd(message):
  #   from lxml import html
@@ -274,6 +276,17 @@ def invia_immagine_porno(message):
      bot.send_photo(message.chat.id,open(search_path+"/fotoporno/"+random.choice(lista_foto_porno),'rb'))
     except:
      risposta(message,"Si è verificato un errore, contatta @kaykin se vuoi/puoi, oppure riprova")
+@bot.message_handler(commands=["cibo"])
+def invia_cibo(message):
+    uid = message.text
+    message_dict = "1"
+    event_name = message.text
+    print(botan.track(botan_token, uid, message_dict, event_name))
+    bot.send_chat_action(message.chat.id, 'upload_photo')
+    try:
+     bot.send_photo(message.chat.id, open(search_path+"/cibo/"+random.choice(lista_cibo),'rb'))
+    except:
+      risposta(message,"Si è verificato un errore, contatta @kaykin se vuoi/puoi, oppure riprova")
 @bot.message_handler(commands=["striscia"])
 def invia_striscia(message):
     uid = message.text
@@ -282,9 +295,10 @@ def invia_striscia(message):
     print(botan.track(botan_token, uid, message_dict, event_name))
     bot.send_chat_action(message.chat.id, 'upload_photo')
     try:
-     bot.send_photo(message.chat.id, open(search_path+"/strisce/"+random.choice(onlyfiles),'rb'))
+     bot.send_photo(message.chat.id, open(search_path+"/strisce/"+random.choice(lista_strisce),'rb'))
     except:
       risposta(message,"Si è verificato un errore, contatta @kaykin se vuoi/puoi, oppure riprova")
+
 @bot.message_handler(commands=["insulta"])
 def insulta(message):
         uid = message.text
