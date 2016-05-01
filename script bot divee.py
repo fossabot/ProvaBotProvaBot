@@ -11,6 +11,7 @@ import mmap
 import ssl
 import os.path
 import botan
+import shutil
 from telebot import types
 from os import listdir
 from os.path import isfile, join
@@ -26,6 +27,12 @@ botan_token = '2PcvvgRcYce75mDj7q2M8_Gd7BGb3-YW' # Token got from @botaniobot
 def risposta(sender, messaggio):
     bot.send_chat_action(sender.chat.id, action="typing")
     bot.reply_to(sender, messaggio)
+lista_cartelle=["/videoporno","/fotoporno","/playmates","/strisce","/cibo"]
+for x in lista_cartelle:
+    if os.path.exists(search_path+x)==False:
+     print("Manca la cartella "+x.replace("/","")+", la creo inserendoci un file .jpg vuoto")
+     os.makedirs(search_path+x)
+     shutil.copy2(search_path+"/nope.jpg",search_path+x)
 lista_video_porno_mp4=[f for f in listdir(search_path+"/videoporno") if isfile(join(search_path+"/videoporno", f))]
 lista_foto_porno=[f for f in listdir(search_path+"/fotoporno") if isfile(join(search_path+"/fotoporno", f))]
 lista_playmate=[f for f in listdir(search_path+"/playmates") if isfile(join(search_path+"/playmates", f))]
@@ -176,7 +183,7 @@ def invia_playmate(message):
     nome_file=nome_file[6:]
     bot.send_message(message.chat.id,nome_file)
  except:
-     risposta(message,"si è verificsto un errore")
+     risposta(message,"si è verificato un errore")
 @bot.message_handler(commands=["pornvid"])
 def invia_video_porno(message):
     uid = message.text
