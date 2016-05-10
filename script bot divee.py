@@ -184,8 +184,10 @@ def encode(message):
 @bot.message_handler(commands=["decrypt"])
 def decode(message):
     string=message.text.replace("/encrypt","")
+    return string
+def banana(message):
     markup = types.ForceReply(selective=False)
-    tb.send_message(chat_id, "Invia la chiave crittografica:", reply_markup=markup)
+    bot.send_message(message.chat.id, "Invia la chiave crittografica:", reply_markup=markup)
     key=message.text
     plain_text=Fernet(key).decrypt(string.encode(encoding='UTF-8'))
     risposta(message,"Il messaggio decriptato è il seguente:")
