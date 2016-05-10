@@ -179,7 +179,7 @@ def encode(message):
     key = Fernet.generate_key()
     cipher_suite = Fernet(key)
     cipher_text = cipher_suite.encrypt(string.encode(encoding='UTF-8'))
-    risposta(message,"Questo è il tuo messaggio criptato: "+cypher_text+" Questa è la tua chiave crittografica")
+    risposta(message,"Questo è il tuo messaggio criptato: "+cipher_text.decode(encoding='UTF-8')+" Questa è la tua chiave crittografica")
     risposta(message,key)
 @bot.message_handler(commands=["decrypt"])
 def decode(message):
@@ -189,7 +189,7 @@ def decode(message):
     key=message.text
     plain_text=Fernet(key).decrypt(string.encode(encoding='UTF-8'))
     risposta(message,"Il messaggio decriptato è il seguente:")
-    risposta(message,plain_text)
+    risposta(message,plain_text.decode(encoding='UTF-8'))
 @bot.message_handler(commands=["playmate"])
 def invia_playmate(message):
  try:
