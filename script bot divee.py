@@ -12,6 +12,7 @@ import ssl
 import os.path
 import botan
 import shutil
+from cryptography.fernet import Fernet
 from telebot import types
 from os import listdir
 from os.path import isfile, join
@@ -175,26 +176,20 @@ def congratula(message):
 @bot.message_handler(commands=["encrypt"])
 def encode(message):
     string=message.text.replace("/encrypt","")
-    key=random.getrandbits(128)
-    encoded_chars = []
-    for i in range(1,len(string)):
-        key_c = key[i % len(key)]
-        encoded_c = chr(ord(string[i]) + ord(key_c) % 256)
-        encoded_chars.append(encoded_c)
-    encoded_string = "".join(encoded_chars)
-    risposta(message,base64.urlsafe_b64encode(encoded_string))
+    key = Fernet.generate_key()
+    cipher_suite = Fernet(key)
+    cipher_text = cipher_suite.encrypt(string)
+    risposta(message,"Questo è il tuo messaggio criptato: "+cypher_text+" Questa è la tua chiave crittografica")
+    risposta(message,key)
 @bot.message_handler(commands=["decrypt"])
 def decode(message):
     string=message.text.replace("/encrypt","")
     markup = types.ForceReply(selective=False)
     tb.send_message(chat_id, "Invia la chiave crittografica:", reply_markup=markup)
-    encoded_chars = []
-    for i in range(1,len(string)):
-        key_c = key[i % len(key)]
-        encoded_c = chr(ord(string[i]) - ord(key_c) % 256)
-        encoded_chars.append(encoded_c)
-    encoded_string = "".join(encoded_chars)
-    risposta(message,base64.urlsafe_b64encode(encoded_string))
+    key=message.text
+    plain_text=Fernet(key).decrypt(string)
+    risposta(message,"Il messaggio decriptato è il seguente:")
+    risposta(message,plain_text)
 @bot.message_handler(commands=["playmate"])
 def invia_playmate(message):
  try:
