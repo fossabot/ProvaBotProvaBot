@@ -28,6 +28,7 @@ def risposta(sender, messaggio):
     bot.send_chat_action(sender.chat.id, action="typing")
     bot.reply_to(sender, messaggio)
 lista_cartelle=["/videoporno","/fotoporno","/playmates","/strisce","/cibo"]
+#check if folder exists
 for x in lista_cartelle:
     if os.path.exists(search_path+x)==False:
      print("Manca la cartella "+x.replace("/","")+", la creo inserendoci un file .jpg vuoto")
@@ -134,7 +135,9 @@ def invia_comandi(message):
 /pornimg
 /pornvid
 /pornsrc
-/cibo""")
+/cibo
+/encrypt
+/decrypt""")
 #@bot.message_handler(commands=["prova"])
 #def invia_striscia_xdcd(message):
  #   from lxml import html
@@ -169,6 +172,29 @@ def congratula(message):
     print(botan.track(botan_token, uid, message_dict, event_name))
     messaggio=message.text.replace("/congratula","")
     risposta(message,"congratulazioni"+messaggio+"!")
+@bot.message_handler(commands=["encrypt"])
+def encode(message):
+    string=message.text.replace("/encrypt","")
+    key=random.getrandbits(128)
+    encoded_chars = []
+    for i in xrange(string):
+        key_c = key[i % len(key)]
+        encoded_c = chr(ord(string[i]) + ord(key_c) % 256)
+        encoded_chars.append(encoded_c)
+    encoded_string = "".join(encoded_chars)
+    risposta(message,base64.urlsafe_b64encode(encoded_string))
+@bot.message_handler(commands=["decrypt"])
+def decode(message):
+    string=message.text.replace("/encrypt","")
+    markup = types.ForceReply(selective=False)
+    tb.send_message(chat_id, "Invia la chiave crittografica:", reply_markup=markup)
+    encoded_chars = []
+    for i in xrange(string):
+        key_c = key[i % len(key)]
+        encoded_c = chr(ord(string[i]) - ord(key_c) % 256)
+        encoded_chars.append(encoded_c)
+    encoded_string = "".join(encoded_chars)
+    risposta(message,base64.urlsafe_b64encode(encoded_string))
 @bot.message_handler(commands=["playmate"])
 def invia_playmate(message):
  try:
