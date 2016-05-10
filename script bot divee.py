@@ -178,7 +178,7 @@ def encode(message):
     string=message.text.replace("/encrypt","")
     key = Fernet.generate_key()
     cipher_suite = Fernet(key)
-    cipher_text = cipher_suite.encrypt(string)
+    cipher_text = cipher_suite.encrypt(string.encode(encoding='UTF-8'))
     risposta(message,"Questo è il tuo messaggio criptato: "+cypher_text+" Questa è la tua chiave crittografica")
     risposta(message,key)
 @bot.message_handler(commands=["decrypt"])
@@ -187,7 +187,7 @@ def decode(message):
     markup = types.ForceReply(selective=False)
     tb.send_message(chat_id, "Invia la chiave crittografica:", reply_markup=markup)
     key=message.text
-    plain_text=Fernet(key).decrypt(string)
+    plain_text=Fernet(key).decrypt(string.encode(encoding='UTF-8'))
     risposta(message,"Il messaggio decriptato è il seguente:")
     risposta(message,plain_text)
 @bot.message_handler(commands=["playmate"])
