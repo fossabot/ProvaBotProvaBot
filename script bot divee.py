@@ -177,7 +177,7 @@ def encode(message):
     string=message.text.replace("/encrypt","")
     key=random.getrandbits(128)
     encoded_chars = []
-    for i in xrange(string):
+    for i in range(1,len(string)):
         key_c = key[i % len(key)]
         encoded_c = chr(ord(string[i]) + ord(key_c) % 256)
         encoded_chars.append(encoded_c)
@@ -189,7 +189,7 @@ def decode(message):
     markup = types.ForceReply(selective=False)
     tb.send_message(chat_id, "Invia la chiave crittografica:", reply_markup=markup)
     encoded_chars = []
-    for i in xrange(string):
+    for i in range(1,len(string)):
         key_c = key[i % len(key)]
         encoded_c = chr(ord(string[i]) - ord(key_c) % 256)
         encoded_chars.append(encoded_c)
