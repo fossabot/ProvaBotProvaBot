@@ -186,7 +186,9 @@ def encode(message):
     risposta(message,cipher_text.decode(encoding='UTF-8'))
     risposta(message,"Questa è la tua chiave crittografica")
     risposta(message,key)
-#funzioni che non potevo mettere altrove
+@bot.message_handler(commands=["decrypt"])
+def main():
+    decode(dexode(message))
 def decode(message):
     string=message.text.replace("/encrypt","")
     markup = types.ForceReply(selective=False)
@@ -200,11 +202,6 @@ def dexode(message,string):
     risposta(message,plain_text.decode(encoding='UTF-8'))
  except:
      risposta(message,"still beta")
-#fine funzioni che non potevo mettere altrove     
-@bot.message_handler(commands=["decrypt"])
-def main():
-    decode(message)
-    dexode(message)
 @bot.message_handler(commands=["playmate"])
 def invia_playmate(message):
  try:
