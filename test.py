@@ -27,6 +27,7 @@ class User:
 def encode(message):
     string=message.text.replace("/encrypt","")
     key = Fernet.generate_key()
+    print(key)
     cipher_suite = Fernet(key)
     cipher_text = cipher_suite.encrypt(string.encode(encoding='UTF-8'))
     risposta(message,"Questo è il tuo messaggio criptato: ")
@@ -71,7 +72,9 @@ def process_sex_step(message):
             user.sex = sex
         else:
             raise Exception()
-        plain_text=Fernet(user.name).decrypt(user.age.encode(encoding='UTF-8'))
+        print(user.age.encode(encoding='UTF-8'))
+        plain_text=Fernet(user.age.encode(encoding='UTF-8')).decrypt(user.name.encode(encoding='UTF-8'))
         risposta(message,"Il messaggio decriptato è il seguente:")
         risposta(message,plain_text.decode(encoding='UTF-8'))
         bot.send_message(chat_id, 'Nice to meet you ' + user.name + '\n Age:' + str(user.age) + '\n Sex:' + user.sex)
+bot.polling()
