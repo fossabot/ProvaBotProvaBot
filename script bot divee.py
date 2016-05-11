@@ -12,6 +12,7 @@ import ssl
 import os.path
 import botan
 import shutil
+from cryptography.fernet import Fernet
 from telebot import types
 from os import listdir
 from os.path import isfile, join
@@ -24,10 +25,14 @@ search_path =os.getcwd()
 if not (search_path.endswith("/") or search_path.endswith("\\") ):
                 search_path = search_path + "/"
 botan_token = '2PcvvgRcYce75mDj7q2M8_Gd7BGb3-YW' # Token got from @botaniobot
+#test
+string=""
+#test
 def risposta(sender, messaggio):
     bot.send_chat_action(sender.chat.id, action="typing")
     bot.reply_to(sender, messaggio)
 lista_cartelle=["/videoporno","/fotoporno","/playmates","/strisce","/cibo"]
+#check if folder exists
 for x in lista_cartelle:
     if os.path.exists(search_path+x)==False:
      print("Manca la cartella "+x.replace("/","")+", la creo inserendoci un file .jpg vuoto")
@@ -134,7 +139,9 @@ def invia_comandi(message):
 /pornimg
 /pornvid
 /pornsrc
-/cibo""")
+/cibo
+/encrypt
+/decrypt""")
 #@bot.message_handler(commands=["prova"])
 #def invia_striscia_xdcd(message):
  #   from lxml import html
@@ -169,6 +176,45 @@ def congratula(message):
     print(botan.track(botan_token, uid, message_dict, event_name))
     messaggio=message.text.replace("/congratula","")
     risposta(message,"congratulazioni"+messaggio+"!")
+@bot.message_handler(commands=["encrypt"])
+def encode(message):
+    string=message.text.replace("/encrypt","")
+    key = Fernet.generate_key()
+    cipher_suite = Fernet(key)
+    cipher_text = cipher_suite.encrypt(string.encode(encoding='UTF-8'))
+    bot.send_message(message.chat.id,"Questo è il tuo messaggio criptato: ")
+    bot.send_message(message.chat.id,cipher_text.decode(encoding='UTF-8'))
+    bot.send_message(message.chat.id,"Questa è la tua chiave crittografica")
+    bot.send_message(message.chat.id,key)
+user_dict={}
+class User:
+    def __init__(self):
+        self.encmessage = None
+        self.sex = None
+        self.key=None
+@bot.message_handler(commands=['decrypt'])
+def ottieni_messaggio(message):
+    msg = bot.reply_to(message, "Invia il tuo messaggio")
+    bot.register_next_step_handler(msg, ottieni_key)
+def ottieni_key(message):
+        chat_id = message.chat.id
+        encmessage = message.text
+        user = User()
+        user.encmessage=encmessage
+        user_dict[chat_id] = user
+        msg = bot.reply_to(message, 'key')
+        bot.register_next_step_handler(msg, decripta_messaggio)
+def decripta_messaggio(message):
+    try:
+        chat_id = message.chat.id
+        key = message.text
+        user = user_dict[chat_id]
+        user.key = key
+        plain_text=Fernet(user.key.encode(encoding='UTF-8')).decrypt(user.encmessage.encode(encoding='UTF-8'))
+        bot.send_message(message.chat.id,"Il messaggio decriptato è il seguente:")
+        bot.send_message(message.chat.id,plain_text.decode(encoding='UTF-8'))
+    except:
+        risposta(message,'Si è verificato un errore')
 @bot.message_handler(commands=["playmate"])
 def invia_playmate(message):
  try:
