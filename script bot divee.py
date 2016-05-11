@@ -25,9 +25,6 @@ search_path =os.getcwd()
 if not (search_path.endswith("/") or search_path.endswith("\\") ):
                 search_path = search_path + "/"
 botan_token = '2PcvvgRcYce75mDj7q2M8_Gd7BGb3-YW' # Token got from @botaniobot
-#test
-string=""
-#test
 def risposta(sender, messaggio):
     bot.send_chat_action(sender.chat.id, action="typing")
     bot.reply_to(sender, messaggio)
@@ -202,7 +199,7 @@ def ottieni_key(message):
         user = User()
         user.encmessage=encmessage
         user_dict[chat_id] = user
-        msg = bot.reply_to(message, 'key')
+        msg = bot.send_message(message.chat.id, 'Invia la key ricevuta insieme al messaggio criptato')
         bot.register_next_step_handler(msg, decripta_messaggio)
 def decripta_messaggio(message):
     try:
