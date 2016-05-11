@@ -187,15 +187,15 @@ def encode(message):
     risposta(message,"Questa è la tua chiave crittografica")
     risposta(message,key)
 @bot.message_handler(commands=["decrypt"])
-def main():
-    decode(dexode(message))
+def main(message):
+    dexode(message,string,decode(message))
 def decode(message):
     string=message.text.replace("/encrypt","")
     markup = types.ForceReply(selective=False)
     a=bot.send_message(message.chat.id, "Invia la chiave crittografica:", reply_markup=markup)
     bot.register_next_step_handler(a,dexode)
     return string
-def dexode(message,string):
+def dexode(message,string,decode(message)):
  try:
     plain_text=Fernet(message.text).decrypt(string.encode(encoding='UTF-8'))
     risposta(message,"Il messaggio decriptato è il seguente:")
