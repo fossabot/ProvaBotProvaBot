@@ -186,6 +186,7 @@ def encode(message):
     risposta(message,cipher_text.decode(encoding='UTF-8'))
     risposta(message,"Questa è la tua chiave crittografica")
     risposta(message,key)
+user_dict={}    
 class User:
     def __init__(self):
         self.name = None
