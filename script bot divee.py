@@ -182,14 +182,13 @@ def encode(message):
     key = Fernet.generate_key()
     cipher_suite = Fernet(key)
     cipher_text = cipher_suite.encrypt(string.encode(encoding='UTF-8'))
-    risposta(message,"Questo è il tuo messaggio criptato: ")
-    risposta(message,cipher_text.decode(encoding='UTF-8'))
-    risposta(message,"Questa è la tua chiave crittografica")
-    risposta(message,key)
-user_dict={}    
+    bot.send_message(message.chat.id,"Questo è il tuo messaggio criptato: ")
+    bot.send_message(message.chat.id,cipher_text.decode(encoding='UTF-8'))
+    bot.send_message(message.chat.id,"Questa è la tua chiave crittografica")
+    bot.send_message(message.chat.id,key)
+user_dict={}
 class User:
     def __init__(self):
-        self.name = None
         self.encmessage = None
         self.sex = None
         self.key=None
@@ -212,10 +211,10 @@ def decripta_messaggio(message):
         user = user_dict[chat_id]
         user.key = key
         plain_text=Fernet(user.key.encode(encoding='UTF-8')).decrypt(user.encmessage.encode(encoding='UTF-8'))
-        risposta(message,"Il messaggio decriptato è il seguente:")
-        risposta(message,plain_text.decode(encoding='UTF-8'))
+        bot.send_message(message.chat.id,"Il messaggio decriptato è il seguente:")
+        bot.send_message(message.chat.id,plain_text.decode(encoding='UTF-8'))
     except:
-        risposta(message,'Si e verificato un errore')
+        risposta(message,'Si è verificato un errore')
 @bot.message_handler(commands=["playmate"])
 def invia_playmate(message):
  try:
