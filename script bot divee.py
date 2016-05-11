@@ -186,12 +186,13 @@ def encode(message):
     risposta(message,cipher_text.decode(encoding='UTF-8'))
     risposta(message,"Questa è la tua chiave crittografica")
     risposta(message,key)
-@bot.message_handler(commands=["decrypt"])
+#funzioni che non potevo mettere altrove
 def decode(message):
     string=message.text.replace("/encrypt","")
     markup = types.ForceReply(selective=False)
     a=bot.send_message(message.chat.id, "Invia la chiave crittografica:", reply_markup=markup)
     bot.register_next_step_handler(a,dexode)
+    return string
 def dexode(message,string):
  try:
     plain_text=Fernet(message.text).decrypt(string.encode(encoding='UTF-8'))
@@ -199,6 +200,11 @@ def dexode(message,string):
     risposta(message,plain_text.decode(encoding='UTF-8'))
  except:
      risposta(message,"still beta")
+#fine funzioni che non potevo mettere altrove     
+@bot.message_handler(commands=["decrypt"])
+def main():
+    decode(message)
+    dexode(message)
 @bot.message_handler(commands=["playmate"])
 def invia_playmate(message):
  try:
