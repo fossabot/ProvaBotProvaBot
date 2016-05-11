@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import time
-
 import telebot
 from telebot import types
 from cryptography.fernet import Fernet
@@ -18,9 +17,7 @@ user_dict = {}
 
 class User:
     def __init__(self, name):
-        self.name = name
-        self.age = None
-        self.sex = None
+        self.encrypted_message = None
         self.key=None
 
 @bot.message_handler(commands=["encrypt"])
@@ -36,45 +33,25 @@ def encode(message):
     risposta(message,key)
 
 # Handle '/start' and '/help'
-@bot.message_handler(commands=['help', 'start','decrypt'])
-def send_welcome(message):
-    msg = bot.reply_to(message, """\
-Hi there, I am Example bot.
-What's your message
-""")
-    bot.register_next_step_handler(msg, process_name_step)
-
-
-def process_name_step(message):
+@bot.message_handler(commands=['decrypt'])
+def ottieni_messaggio(message):
+    chat_id = message.chat.id
+    msg = bot.reply_to(message, "Invia il messaggio da decifrare")
+    if message.text.replace("/decrypt")!="":
+        encrypted_message=message.text.replace("/decrypt")
+    else:
+        bot.register_next_step_handler(msg, process_name_step)
+def ottieni_key(message):
         chat_id = message.chat.id
-        name = message.text
-        user = User(name)
+        encrypted_message = message.text
         user_dict[chat_id] = user
         msg = bot.reply_to(message, 'key')
-        bot.register_next_step_handler(msg, process_age_step)
-
-
-def process_age_step(message):
+        bot.register_next_step_handler(msg, decifra)
+def decifra(message):
         chat_id = message.chat.id
-        age = message.text
+        key = message.text
         user = user_dict[chat_id]
-        user.age = age
-        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
-        markup.add('Male', 'Female')
-        msg = bot.reply_to(message, 'What is your gender', reply_markup=markup)
-        bot.register_next_step_handler(msg, process_sex_step)
-
-def process_sex_step(message):
-        chat_id = message.chat.id
-        sex = message.text
-        user = user_dict[chat_id]
-        if (sex == u'Male') or (sex == u'Female'):
-            user.sex = sex
-        else:
-            raise Exception()
-        print(user.age.encode(encoding='UTF-8'))
-        plain_text=Fernet(user.age.encode(encoding='UTF-8')).decrypt(user.name.encode(encoding='UTF-8'))
+        plain_text=Fernet(user.key.encode(encoding='UTF-8')).decrypt(user.encrypted_message.encode(encoding='UTF-8'))
         risposta(message,"Il messaggio decriptato è il seguente:")
         risposta(message,plain_text.decode(encoding='UTF-8'))
-        bot.send_message(chat_id, 'Nice to meet you ' + user.name + '\n Age:' + str(user.age) + '\n Sex:' + user.sex)
 bot.polling()
