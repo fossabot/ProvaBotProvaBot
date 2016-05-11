@@ -3,6 +3,11 @@ import time
 
 import telebot
 from telebot import types
+from cryptography.fernet import Fernet
+def risposta(sender, messaggio):
+    bot.send_chat_action(sender.chat.id, action="typing")
+    bot.reply_to(sender, messaggio)
+
 
 API_TOKEN = '149991058:AAH5hdk1-oNXlwinJhhomxpGmfdTn10WlZo'
 
@@ -46,8 +51,7 @@ def process_name_step(message):
         user_dict[chat_id] = user
         msg = bot.reply_to(message, 'what is ur key')
         bot.register_next_step_handler(msg, process_age_step)
-    except Exception as e:
-        bot.reply_to(message, 'oooops')
+
 
 
 def process_age_step(message):
@@ -55,8 +59,6 @@ def process_age_step(message):
      plain_text=Fernet(message.text).decrypt(name.encode(encoding='UTF-8'))
      risposta(message,"Il messaggio decriptato è il seguente:")
      risposta(message,plain_text.decode(encoding='UTF-8'))
-    except Exception as e:
-        bot.reply_to(message, 'oooops')
 
 
 
