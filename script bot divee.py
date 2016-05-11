@@ -186,22 +186,35 @@ def encode(message):
     risposta(message,cipher_text.decode(encoding='UTF-8'))
     risposta(message,"Questa è la tua chiave crittografica")
     risposta(message,key)
-@bot.message_handler(commands=["decrypt"])
-def main(message):
-    dexode(message,string,decode(message))
-def decode(message):
-    string=message.text.replace("/encrypt","")
-    markup = types.ForceReply(selective=False)
-    a=bot.send_message(message.chat.id, "Invia la chiave crittografica:", reply_markup=markup)
-    bot.register_next_step_handler(a,dexode)
-    return string
-def dexode(message,string,decode(message)):
- try:
-    plain_text=Fernet(message.text).decrypt(string.encode(encoding='UTF-8'))
-    risposta(message,"Il messaggio decriptato è il seguente:")
-    risposta(message,plain_text.decode(encoding='UTF-8'))
- except:
-     risposta(message,"still beta")
+class User:
+    def __init__(self):
+        self.name = None
+        self.encmessage = None
+        self.sex = None
+        self.key=None
+@bot.message_handler(commands=['decrypt'])
+def ottieni_messaggio(message):
+    msg = bot.reply_to(message, "Invia il tuo messaggio")
+    bot.register_next_step_handler(msg, ottieni_key)
+def ottieni_key(message):
+        chat_id = message.chat.id
+        encmessage = message.text
+        user = User()
+        user.encmessage=encmessage
+        user_dict[chat_id] = user
+        msg = bot.reply_to(message, 'key')
+        bot.register_next_step_handler(msg, decripta_messaggio)
+def decripta_messaggio(message):
+    try:
+        chat_id = message.chat.id
+        key = message.text
+        user = user_dict[chat_id]
+        user.key = key
+        plain_text=Fernet(user.key.encode(encoding='UTF-8')).decrypt(user.encmessage.encode(encoding='UTF-8'))
+        risposta(message,"Il messaggio decriptato è il seguente:")
+        risposta(message,plain_text.decode(encoding='UTF-8'))
+    except:
+        risposta(message,'Si e verificato un errore')
 @bot.message_handler(commands=["playmate"])
 def invia_playmate(message):
  try:
