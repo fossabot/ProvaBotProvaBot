@@ -25,6 +25,9 @@ search_path =os.getcwd()
 if not (search_path.endswith("/") or search_path.endswith("\\") ):
                 search_path = search_path + "/"
 botan_token = '2PcvvgRcYce75mDj7q2M8_Gd7BGb3-YW' # Token got from @botaniobot
+#test
+string=""
+#test
 def risposta(sender, messaggio):
     bot.send_chat_action(sender.chat.id, action="typing")
     bot.reply_to(sender, messaggio)
@@ -187,10 +190,15 @@ def encode(message):
 def decode(message):
     string=message.text.replace("/encrypt","")
     markup = types.ForceReply(selective=False)
-    key= bot.send_message(message.chat.id, "Invia la chiave crittografica:", reply_markup=markup)
-    plain_text=Fernet(key).decrypt(string.encode(encoding='UTF-8'))
+    a=bot.send_message(message.chat.id, "Invia la chiave crittografica:", reply_markup=markup)
+    bot.register_next_step_handler(a,dexode)
+def dexode(message,string):
+ try:
+    plain_text=Fernet(message.text).decrypt(string.encode(encoding='UTF-8'))
     risposta(message,"Il messaggio decriptato è il seguente:")
     risposta(message,plain_text.decode(encoding='UTF-8'))
+ except:
+     risposta(message,"still beta")
 @bot.message_handler(commands=["playmate"])
 def invia_playmate(message):
  try:
