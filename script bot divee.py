@@ -182,7 +182,9 @@ def encode(message):
     key = Fernet.generate_key()
     cipher_suite = Fernet(key)
     cipher_text = cipher_suite.encrypt(string.encode(encoding='UTF-8'))
-    risposta(message,"Questo è il tuo messaggio criptato: "+cipher_text.decode(encoding='UTF-8')+" Questa è la tua chiave crittografica")
+    risposta(message,"Questo è il tuo messaggio criptato: ")
+    risposta(message,cipher_text.decode(encoding='UTF-8'))
+    risposta(message,"Questa è la tua chiave crittografica")
     risposta(message,key)
 @bot.message_handler(commands=["decrypt"])
 def main(message):
