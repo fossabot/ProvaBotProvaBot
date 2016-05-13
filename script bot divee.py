@@ -19,15 +19,12 @@ from os.path import isfile, join
 from bs4 import BeautifulSoup
 bot = telebot.TeleBot('149991058:AAH5hdk1-oNXlwinJhhomxpGmfdTn10WlZo')
 botan_token='11tcT_JQrMxklU2NntbWEI32FbY40vfS'
-stato_utente={}
+user_dict={}
 search_path =os.getcwd()
         # Append a directory separator if not already present
 if not (search_path.endswith("/") or search_path.endswith("\\") ):
                 search_path = search_path + "/"
 botan_token = '2PcvvgRcYce75mDj7q2M8_Gd7BGb3-YW' # Token got from @botaniobot
-#test
-string=""
-#test
 def risposta(sender, messaggio):
     bot.send_chat_action(sender.chat.id, action="typing")
     bot.reply_to(sender, messaggio)
@@ -43,6 +40,11 @@ lista_foto_porno=[f for f in listdir(search_path+"/fotoporno") if isfile(join(se
 lista_playmate=[f for f in listdir(search_path+"/playmates") if isfile(join(search_path+"/playmates", f))]
 lista_cibo=[f for f in listdir(search_path+"/cibo") if isfile(join(search_path+"/cibo", f))]
 lista_strisce = [f for f in listdir(search_path+"/strisce") if isfile(join(search_path+"/strisce", f))]
+class User:
+    def __init__(self):
+        self.encmessage = None
+        self.key=None
+        self.message=None
 @bot.message_handler(commands=["citazione"])
 def invia_citazione(message):
     uid = message.text
@@ -177,8 +179,11 @@ def congratula(message):
     messaggio=message.text.replace("/congratula","")
     risposta(message,"congratulazioni"+messaggio+"!")
 @bot.message_handler(commands=["encrypt"])
+def informa(message):
+    msg=bot.send_message(message.chat.id,"Inserisci un messaggio da criptare")
+    bot.register_next_step_handler(msg,encode)
 def encode(message):
-    string=message.text.replace("/encrypt","")
+    string=message.text
     key = Fernet.generate_key()
     cipher_suite = Fernet(key)
     cipher_text = cipher_suite.encrypt(string.encode(encoding='UTF-8'))
@@ -186,29 +191,21 @@ def encode(message):
     bot.send_message(message.chat.id,cipher_text.decode(encoding='UTF-8'))
     bot.send_message(message.chat.id,"Questa è la tua chiave crittografica")
     bot.send_message(message.chat.id,key)
-user_dict={}
-class User:
-    def __init__(self):
-        self.encmessage = None
-        self.sex = None
-        self.key=None
 @bot.message_handler(commands=['decrypt'])
 def ottieni_messaggio(message):
-    msg = bot.reply_to(message, "Invia il tuo messaggio")
+    msg = bot.send_message(message.chat.id, "Invia il tuo messaggio")
     bot.register_next_step_handler(msg, ottieni_key)
 def ottieni_key(message):
-        chat_id = message.chat.id
         encmessage = message.text
         user = User()
         user.encmessage=encmessage
-        user_dict[chat_id] = user
-        msg = bot.reply_to(message, 'key')
+        user_dict[message.chat.id] = user
+        msg = bot.send_message(message.chat.id, 'Invia la key ricevuta insieme al messaggio criptato')
         bot.register_next_step_handler(msg, decripta_messaggio)
 def decripta_messaggio(message):
     try:
-        chat_id = message.chat.id
         key = message.text
-        user = user_dict[chat_id]
+        user = user_dict[message.chat.id]
         user.key = key
         plain_text=Fernet(user.key.encode(encoding='UTF-8')).decrypt(user.encmessage.encode(encoding='UTF-8'))
         bot.send_message(message.chat.id,"Il messaggio decriptato è il seguente:")
