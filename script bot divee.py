@@ -27,7 +27,7 @@ if not (search_path.endswith("/") or search_path.endswith("\\") ):
 botan_token = '2PcvvgRcYce75mDj7q2M8_Gd7BGb3-YW' # Token got from @botaniobot
 def risposta(sender, messaggio):
     bot.send_chat_action(sender.chat.id, action="typing")
-    bot.reply_to(sender, messaggio)
+    bot.send_message(sender.chat.id, messaggio)
 lista_cartelle=["/videoporno","/fotoporno","/playmates","/strisce","/cibo"]
 #check if folder exists
 for x in lista_cartelle:
