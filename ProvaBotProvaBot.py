@@ -34,11 +34,13 @@ for x in lista_cartelle:
      print("Manca la cartella "+x.replace("/","")+", la creo inserendoci un file .jpg vuoto")
      os.makedirs(search_path+x)
      shutil.copy2(search_path+"/nope.jpg",search_path+x)
+print("inizializzation, this may take a while...")
 lista_video_porno_mp4=[f for f in listdir(search_path+"/videoporno") if isfile(join(search_path+"/videoporno", f))]
 lista_foto_porno=[f for f in listdir(search_path+"/fotoporno") if isfile(join(search_path+"/fotoporno", f))]
 lista_playmate=[f for f in listdir(search_path+"/playmates") if isfile(join(search_path+"/playmates", f))]
 lista_cibo=[f for f in listdir(search_path+"/cibo") if isfile(join(search_path+"/cibo", f))]
 lista_strisce = [f for f in listdir(search_path+"/strisce") if isfile(join(search_path+"/strisce", f))]
+lista_xkcd= [f for f in listdir(search_path+"/xkcd") if isfile(join(search_path+"/xkcd", f))]
 class User:
     def __init__(self):
         self.encmessage = None
@@ -141,6 +143,7 @@ def invia_comandi(message):
 /pornvid
 /pornsrc
 /cibo
+/xkcd
 /encrypt
 /decrypt""")
 #@bot.message_handler(commands=["prova"])
@@ -161,12 +164,6 @@ def aggiorna_elenco_file_strisce(message):
  from os.path import isfile, join
  onlyfiles = [f for f in listdir(search_path+"/strisce") if isfile(join(search_path+"/strisce", f))]
  risposta(message, "elenco aggiornato")
-@bot.message_handler(commands=['aggiungi'])
-def aggiungi_risposta(message):
-    html=message.text.replace("/aggiungi","")
-    file = open(search_path+"testi.txt", "a")
-    file.write(html+"\n")
-    file.close()
 #fine comandi personali
 
 @bot.message_handler(commands=["congratula"])
@@ -345,6 +342,17 @@ def invia_striscia(message):
     bot.send_chat_action(message.chat.id, 'upload_photo')
     try:
      bot.send_photo(message.chat.id, open(search_path+"/strisce/"+random.choice(lista_strisce),'rb'))
+    except:
+      risposta(message,"Si è verificato un errore, contatta @kaykin se vuoi/puoi, oppure riprova")
+@bot.message_handler(commands=["xkcd"])
+def invia_xkcd(message):
+    uid = message.text
+    message_dict = "1"
+    event_name = message.text
+    print(botan.track(botan_token, uid, message_dict, event_name))
+    bot.send_chat_action(message.chat.id, 'upload_photo')
+    try:
+     bot.send_photo(message.chat.id, open(search_path+"/xkcd/"+random.choice(lista_xkcd),'rb'))
     except:
       risposta(message,"Si è verificato un errore, contatta @kaykin se vuoi/puoi, oppure riprova")
 @bot.message_handler(commands=["insulta"])
