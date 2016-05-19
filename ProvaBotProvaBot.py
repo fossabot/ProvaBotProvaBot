@@ -2,13 +2,12 @@ import telebot
 import random
 import requests
 import base64
-import sys
 import os
 import logging
 import time
 import urllib.request
 import mmap
-import ssl
+# am I using import ssl ?
 import os.path
 import botan
 import shutil
