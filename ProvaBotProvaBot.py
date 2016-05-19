@@ -348,7 +348,6 @@ def invia_striscia(message):
      bot.send_photo(message.chat.id, open(search_path+"/strisce/"+random.choice(lista_strisce),'rb'))
     except:
       risposta(message,"Si è verificato un errore, contatta @kaykin se vuoi/puoi, oppure riprova")
-
 @bot.message_handler(commands=["insulta"])
 def insulta(message):
         uid = message.text
@@ -361,77 +360,5 @@ def insulta(message):
            risposta(message, random.choice(lista_insulti))
         else:
            risposta(message,"aggiungi un nome o qualcuno da insultare, coglione!")
-@bot.message_handler(func=lambda m: True)
-def echo_all(message):
-    if message.text=="<3":
-     risposta(message, "<3 <3")
-    if message.text.lower()=="nope":
-         risposta(message,"nope")
-    if "ciao" in message.text.lower():
-      #gesù gegiù questa riga salvami tu(nome dell'id dell'user)
-      b = message.from_user.username
-      risposta(message, "ciao "+ str(b) +" <3")
-    if message.text=="?":
-       risposta(message, "ahahahahah")
-    if "eh?" in message.text.lower():
-        risposta(message, "lo so che non hai capito niente")
-    if "ti voglio bene" in message.text.lower():
-        risposta(message, "anche il bot te ne vuole :3")
-    if "ehi" in message.text.lower():
-        risposta(message, "ehiiii")
-    if "san schifosino" in message.text.lower():
-        risposta(message, "anche barney ne sa qualcosa")
 
-
-
-#parte del bot che controlla siti
-    if message.text.lower()=="secret":
-        risposta(message,"segreto avviato")
-        logging.basicConfig(level=logging.DEBUG,
-                            format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-        def controlla_aggiornamento(target):
-            if not target.startswith("http"):
-                    target = "http://" + target
-            if target.endswith("/"):
-                 target = target[:-1]
-            req = urllib.request.Request(target, headers={'User-Agent': 'Mozilla/5.0'})
-            gcontext = ssl.SSLContext(ssl.PROTOCOL_TLSv1)
-            html = urllib.request.urlopen(req, context=gcontext).read()
-            file = open(search_path+"source.txt", "wb")
-            file.write(html)
-            file.close()
-            with open(search_path+'source.txt', 'rb', 0) as file, \
-            mmap.mmap(file.fileno(), 0, access=mmap.ACCESS_READ) as s:
-            #stringa da cercare
-             if (target != "http://www.back-door.it"):
-                if (s.find(b"per essere uno dei primi ad acquistarlo.") != -1):
-                   print('tutto ok '+ target)
-                else:
-                   #scrive un messaggio se il sito viene aggiornato
-                   bot.send_message(chat_id="@vogliolescarpe", text="c'è stato un aggiornamento su " + target)
-                   #exit()
-             if (target == "http://www.back-door.it"):
-              #while (s.find(b"error 503")!= -1) or (s.find(b"database")!=-1):
-               #   print("sito offline" + target)
-                #  time.sleep(10)
-              if (s.find(b"ovo") != -1) or (s.find(b"JORDAN X") != -1):
-                    bot.send_message(chat_id="@vogliolescarpe", text="c'è stato un aggiornamento su " + target)
-                    exit()
-              else:
-                 print("tutto ok "+ target)
-        while True:
-         try:
-         #controlla_aggiornamento("www.adidas.it/yeezy")
-         #time.sleep(120)
-          controlla_aggiornamento("http://store.nike.com/it/it_it/pd/nikelab-supreme-air-max-98-scarpa/pid-11070888/pgid-11294114")
-          time.sleep(60)
-         except urllib.error.HTTPError:
-             print("httperror")
-             continue
-         except urllib.error.URLError:
-             print("URLError")
-             continue
-         except:
-             print("other error")
-             continue
 bot.polling(none_stop=False)
