@@ -7,7 +7,6 @@ import logging
 import time
 import urllib.request
 import mmap
-# am I using import ssl ?
 import os.path
 import botan
 import shutil
@@ -27,7 +26,7 @@ botan_token = '2PcvvgRcYce75mDj7q2M8_Gd7BGb3-YW' # Token got from @botaniobot
 def risposta(sender, messaggio):
     bot.send_chat_action(sender.chat.id, action="typing")
     bot.send_message(sender.chat.id, messaggio)
-lista_cartelle=["/videoporno","/fotoporno","/playmates","/strisce","/cibo"]
+lista_cartelle=["/videoporno","/fotoporno","/playmates","/strisce","/cibo","/xkcd"]
 #check if folder exists
 for x in lista_cartelle:
     if os.path.exists(search_path+x)==False:
@@ -41,6 +40,7 @@ lista_playmate=[f for f in listdir(search_path+"/playmates") if isfile(join(sear
 lista_cibo=[f for f in listdir(search_path+"/cibo") if isfile(join(search_path+"/cibo", f))]
 lista_strisce = [f for f in listdir(search_path+"/strisce") if isfile(join(search_path+"/strisce", f))]
 lista_xkcd= [f for f in listdir(search_path+"/xkcd") if isfile(join(search_path+"/xkcd", f))]
+print("Done! The bot is ready and operative :)")
 class User:
     def __init__(self):
         self.encmessage = None
