@@ -28,12 +28,12 @@ def risposta(sender, messaggio):
     bot.send_message(sender.chat.id, messaggio)
 lista_cartelle=["/videoporno","/fotoporno","/playmates","/strisce","/cibo","/xkcd"]
 #check if folder exists
+print("inizializzation, this may take a while...")
 for x in lista_cartelle:
     if os.path.exists(search_path+x)==False:
      print("Manca la cartella "+x.replace("/","")+", la creo inserendoci un file .jpg vuoto")
      os.makedirs(search_path+x)
      shutil.copy2(search_path+"/nope.jpg",search_path+x)
-print("inizializzation, this may take a while...")
 lista_video_porno_mp4=[f for f in listdir(search_path+"/videoporno") if isfile(join(search_path+"/videoporno", f))]
 lista_foto_porno=[f for f in listdir(search_path+"/fotoporno") if isfile(join(search_path+"/fotoporno", f))]
 lista_playmate=[f for f in listdir(search_path+"/playmates") if isfile(join(search_path+"/playmates", f))]
@@ -154,7 +154,6 @@ def aggiorna_elenco_file_strisce(message):
  onlyfiles = [f for f in listdir(search_path+"/strisce") if isfile(join(search_path+"/strisce", f))]
  risposta(message, "elenco aggiornato")
 #fine comandi personali
-
 @bot.message_handler(commands=["congratula"])
 def congratula(message):
     uid = message.text
@@ -355,6 +354,5 @@ def insulta(message):
         if messaggio != "":
            risposta(message, random.choice(lista_insulti))
         else:
-           risposta(message,"aggiungi un nome o qualcuno da insultare, coglione!")
-
+           risposta(message,"aggiungi un nome o qualcuno da insultare dopo il comando, coglione!")
 bot.polling(none_stop=False)
