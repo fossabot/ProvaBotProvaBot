@@ -146,17 +146,6 @@ def invia_comandi(message):
 /xkcd
 /encrypt
 /decrypt""")
-#@bot.message_handler(commands=["prova"])
-#def invia_striscia_xdcd(message):
- #   from lxml import html
-  #  import requests
-   # page=requests.get("http://xdcd.com/1645/")
-    #tree=html.fromstring(page.content)
-    #cacca=tree.xpath('//*[@id="comic"]/img')
-    #risposta(message,cacca)
-    #bot.send_photo(message.chat.id, open(cacca))
-
-
 #inizio comandi personali
 @bot.message_handler(commands=["aggiorna_elenco_file_strisce"])
 def aggiorna_elenco_file_strisce(message):
