@@ -144,6 +144,7 @@ def invia_comandi(message):
 /pornsrc
 /cibo
 /xkcd
+/coinflip
 /encrypt
 /decrypt""")
 #inizio comandi personali
@@ -196,6 +197,33 @@ def decripta_messaggio(message):
         bot.send_message(message.chat.id,plain_text.decode(encoding='UTF-8'))
     except:
         risposta(message,'Si è verificato un errore')
+@bot.message_handler(commands=["coinflip"])
+def min_soldi(message):
+    msg=bot.send_message(message.chat.id,"Inserisci con quanti soldi partire")
+    bot.register_next_step_handler(msg,max_soldi)
+def max_soldi(message):
+    user = User()
+    user_dict[message.chat.id] = user
+    user.key=message.text
+    if 1 or 2 or 3 or 4 or 5 or 6 or 7 or 8 or 9 not in user.key:
+        user.key=1
+    msg=bot.send_message(message.chat.id,"Inserisci quando fermarti")
+    bot.register_next_step_handler(msg,coinflip)
+def coinflip(message):
+    user_dict[message.chat.id] = user
+    user.message=message.text
+    coinflip=[True,False]
+    max_soldi=message.text.replace("/coinflip","")
+    while user.key<= user.message:
+        if (random.choice(coinflip) == True):
+          user.key=user.key*2
+          flip=flip+1
+        else:
+         break
+    if user.key>= user.message:
+     risposta(message,"Hai flippato "+flip+" volte ed hai guadagnato "+user.key+" euro")
+    else:
+     risposta(message,"Hai flippato "+flip+" volte ed hai perso tutto")                       
 @bot.message_handler(commands=["playmate"])
 def invia_playmate(message):
  try:
