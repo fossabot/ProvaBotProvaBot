@@ -32,6 +32,7 @@ print("inizializzation, this may take a while...")
 for x in lista_cartelle:
     if os.path.exists(search_path+x)==False:
      print("Manca la cartella "+x.replace("/","")+", la creo inserendoci un file .jpg vuoto")
+     urllib.request.urlretrieve("http://www.neacuho.org/resource/resmgr/EBoard_Photos/2015-2016/No_Image.jpg", "nope.jpg")
      os.makedirs(search_path+x)
      shutil.copy2(search_path+"/nope.jpg",search_path+x)
 lista_video_porno_mp4=[f for f in listdir(search_path+"/videoporno") if isfile(join(search_path+"/videoporno", f))]
@@ -202,16 +203,16 @@ def min_soldi(message):
     msg=bot.send_message(message.chat.id,"Inserisci con quanti soldi partire")
     bot.register_next_step_handler(msg,max_soldi)
 def max_soldi(message):
-   try: 
+   try:
     user = User()
     user_dict[message.chat.id] = user
     user.key=int(message.text)
     msg=bot.send_message(message.chat.id,"Inserisci quando fermarti")
     bot.register_next_step_handler(msg,coinflip)
    except ValueError:
-    risposta(message,"Devi inserire un numero, non lettere! Riprova da capo")   
+    risposta(message,"Devi inserire un numero, non lettere! Riprova da capo")
 def coinflip(message):
- try: 
+ try:
     flip=0
     user=user_dict[message.chat.id]
     user.message=int(message.text)
@@ -229,7 +230,7 @@ def coinflip(message):
     else:
      risposta(message,"Hai flippato ed hai perso tutto")
  except ValueError:
-      risposta(message,"Devi inserire un numero, non lettere! Riprova da capo")  
+      risposta(message,"Devi inserire un numero, non lettere! Riprova da capo")
 @bot.message_handler(commands=["playmate"])
 def invia_playmate(message):
  try:
