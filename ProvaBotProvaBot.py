@@ -32,8 +32,9 @@ print("inizializzation, this may take a while...")
 for x in lista_cartelle:
     if os.path.exists(search_path+x)==False:
      print("Manca la cartella "+x.replace("/","")+", la creo inserendoci un file .jpg vuoto")
-     urllib.request.urlretrieve("http://www.neacuho.org/resource/resmgr/EBoard_Photos/2015-2016/No_Image.jpg", "nope.jpg")
      os.makedirs(search_path+x)
+     if os.path.isfile(search_path+"/nope.jpg") ==False:
+      urllib.request.urlretrieve("http://www.neacuho.org/resource/resmgr/EBoard_Photos/2015-2016/No_Image.jpg", "nope.jpg")
      shutil.copy2(search_path+"/nope.jpg",search_path+x)
 lista_video_porno_mp4=[f for f in listdir(search_path+"/videoporno") if isfile(join(search_path+"/videoporno", f))]
 lista_foto_porno=[f for f in listdir(search_path+"/fotoporno") if isfile(join(search_path+"/fotoporno", f))]
@@ -41,6 +42,8 @@ lista_playmate=[f for f in listdir(search_path+"/playmates") if isfile(join(sear
 lista_cibo=[f for f in listdir(search_path+"/cibo") if isfile(join(search_path+"/cibo", f))]
 lista_strisce = [f for f in listdir(search_path+"/strisce") if isfile(join(search_path+"/strisce", f))]
 lista_xkcd= [f for f in listdir(search_path+"/xkcd") if isfile(join(search_path+"/xkcd", f))]
+if os.path.isfile(search_path+"/nope.jpg") ==True:
+    os.remove(search_path+"/nope.jpg")
 print("Done! The bot is ready and operative :)")
 class User:
     def __init__(self):
