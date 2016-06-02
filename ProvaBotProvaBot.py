@@ -10,6 +10,7 @@ import mmap
 import os.path
 import botan
 import shutil
+from apiclient.discovery import build
 from cryptography.fernet import Fernet
 from telebot import types
 from telebot import util
@@ -151,7 +152,8 @@ def invia_comandi(message):
 /xkcd
 /coinflip
 /encrypt
-/decrypt""")
+/decrypt
+/suzuya""")
 #inizio comandi personali
 @bot.message_handler(commands=["aggiorna_elenco_file_strisce"])
 def aggiorna_elenco_file_strisce(message):
@@ -400,4 +402,28 @@ def insulta(message):
            risposta(message, random.choice(lista_insulti))
         else:
            risposta(message,"aggiungi un nome o qualcuno da insultare dopo il comando, coglione!")
+@bot.message_handler(commands=["suzuya"])
+def invia_suzuya(message):
+ uid = message.text
+ message_dict = "1"
+ event_name = message.text
+ print(botan.track(botan_token, uid, message_dict, event_name))
+ service = build("customsearch", "v1",developerKey="AIzaSyBkEE0BZGy9KwCVyXmWz96ZV4dXKSCGMf0")
+ elenco_link=[]
+ res = service.cse().list(
+    q='suzuya',
+    cx='010554537275291391936:xhuycz5v9jq',
+    searchType='image',
+    imgType='clipart',
+    fileType='png',
+    safe= 'off'
+ ).execute()
+ for item in res['items']:
+        print('{}:\n\t{}'.format(item['title'], item['link']))
+        elenco_link.append(item['link'])
+ immagine_link=random.choice(elenco_link)
+ print(immagine_link[-3:])
+ urllib.request.urlretrieve(immagine_link,"immagine."+immagine_link[-3:])
+ bot.send_photo(message.chat.id,open(search_path+"immagine."+immagine_link[-3:],'rb'))
+ os.remove(search_path+"/immagine."+immagine_link[-3:])
 bot.polling(none_stop=False)
