@@ -12,6 +12,7 @@ import botan
 import shutil
 from cryptography.fernet import Fernet
 from telebot import types
+from telebot import util
 from os import listdir
 from os.path import isfile, join
 from bs4 import BeautifulSoup
@@ -177,7 +178,13 @@ def encode(message):
     cipher_suite = Fernet(key)
     cipher_text = cipher_suite.encrypt(string.encode(encoding='UTF-8'))
     bot.send_message(message.chat.id,"Questo è il tuo messaggio criptato: ")
-    bot.send_message(message.chat.id,cipher_text.decode(encoding='UTF-8'))
+    try:
+     bot.send_message(message.chat.id,cipher_text.decode(encoding='UTF-8'))
+    except Exception as e:
+     if "400" in str(e):
+      splitted_text=util.split_string(cipher_text.decode(encoding='UTF-8'),3000)
+      for text in splitted_text:
+          bot.send_message(message.chat.id,text)
     bot.send_message(message.chat.id,"Questa è la tua chiave crittografica")
     bot.send_message(message.chat.id,key)
 @bot.message_handler(commands=['decrypt'])
