@@ -211,38 +211,38 @@ def decripta_messaggio(message):
     except:
         risposta(message,'Si è verificato un errore')
 @bot.message_handler(commands=["coinflip"])
-def min_soldi(message):
-    msg=bot.send_message(message.chat.id,"Inserisci con quanti soldi partire")
-    bot.register_next_step_handler(msg,max_soldi)
-def max_soldi(message):
+def soldi_da_scommettere(message):
+    uid = message.text
+    message_dict = "1"
+    event_name = message.text
+    print(botan.track(botan_token, uid, message_dict, event_name))
+    msg=bot.send_message(message.chat.id,"Quanti soldi vuoi scommettere?")
+    bot.register_next_step_handler(msg,CT_o_T)
+def CT_o_T(message):
    try:
     user = User()
     user_dict[message.chat.id] = user
     user.key=int(message.text)
-    msg=bot.send_message(message.chat.id,"Inserisci quando fermarti")
+    markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
+    markup.add("CT")
+    markup.add("T")
+    msg=bot.send_message(message.chat.id,"CT o T?",reply_markup=markup)
     bot.register_next_step_handler(msg,coinflip)
    except ValueError:
     risposta(message,"Devi inserire un numero, non lettere! Riprova da capo")
 def coinflip(message):
  try:
-    flip=0
     user=user_dict[message.chat.id]
-    user.message=int(message.text)
-    coinflip=[True,False]
-    max_soldi=message.text.replace("/coinflip","")
-    while user.key<= user.message:
-        if (random.choice(coinflip) == True):
-          user.key=user.key*2
-          print(user.key)
-          flip=flip+1
-        else:
-         break
-    if user.key>= user.message:
-     risposta(message,"Hai flippato "+str(flip)+" volte ed hai guadagnato "+str(user.key)+" euro")
+    user.message=str(message.text)
+    coinflip=["T","CT"]
+    if random.choice(coinflip)==user.message:
+        user.key=user.key*2
+        risposta(message,"Hai vinto ed hai guadagnato "+str(user.key)+" euro")
     else:
-     risposta(message,"Hai flippato ed hai perso tutto")
+        user.key=0
+        risposta(message,"Hai perso tutto")
  except ValueError:
-      risposta(message,"Devi inserire un numero, non lettere! Riprova da capo")
+      risposta(message,"Hai inserito qualcosa che non dovevi, riprova!")
 @bot.message_handler(commands=["playmate"])
 def invia_playmate(message):
  try:
