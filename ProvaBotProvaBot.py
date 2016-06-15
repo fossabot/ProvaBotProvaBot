@@ -222,7 +222,7 @@ def CT_o_T(message):
    try:
     user = User()
     user_dict[message.chat.id] = user
-    user.key=int(message.text)
+    user.key=float(message.text)
     markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
     markup.add("CT")
     markup.add("T")
@@ -235,7 +235,9 @@ def coinflip(message):
     user=user_dict[message.chat.id]
     user.message=str(message.text)
     coinflip=["T","CT"]
-    if random.choice(coinflip)==user.message:
+    if user.key==0:
+        risposta(message,"Volevi aver vinto qualcosa eh? Invece no")
+    elif random.choice(coinflip)==user.message:
         user.key=user.key*2
         risposta(message,"Hai vinto ed hai guadagnato "+str(user.key)+" euro")
     else:
@@ -408,22 +410,25 @@ def invia_suzuya(message):
  message_dict = "1"
  event_name = message.text
  print(botan.track(botan_token, uid, message_dict, event_name))
- service = build("customsearch", "v1",developerKey="AIzaSyBkEE0BZGy9KwCVyXmWz96ZV4dXKSCGMf0")
- elenco_link=[]
- res = service.cse().list(
+ try:
+  service = build("customsearch", "v1",developerKey="AIzaSyBkEE0BZGy9KwCVyXmWz96ZV4dXKSCGMf0")
+  elenco_link=[]
+  res = service.cse().list(
     q='suzuya',
     cx='010554537275291391936:xhuycz5v9jq',
     searchType='image',
     imgType='clipart',
     fileType='png',
     safe= 'off'
- ).execute()
- for item in res['items']:
+  ).execute()
+  for item in res['items']:
         print('{}:\n\t{}'.format(item['title'], item['link']))
         elenco_link.append(item['link'])
- immagine_link=random.choice(elenco_link)
- print(immagine_link[-3:])
- urllib.request.urlretrieve(immagine_link,"immagine."+immagine_link[-3:])
- bot.send_photo(message.chat.id,open(search_path+"immagine."+immagine_link[-3:],'rb'))
- os.remove(search_path+"/immagine."+immagine_link[-3:])
+  immagine_link=random.choice(elenco_link)
+  print(immagine_link[-3:])
+  urllib.request.urlretrieve(immagine_link,"immagine."+immagine_link[-3:])
+  bot.send_photo(message.chat.id,open(search_path+"immagine."+immagine_link[-3:],'rb'))
+  os.remove(search_path+"/immagine."+immagine_link[-3:])
+ except Exception as e:
+     print(e+" in suzuya")
 bot.polling(none_stop=False)
