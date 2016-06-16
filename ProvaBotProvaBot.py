@@ -139,9 +139,7 @@ def invia_comandi(message):
     event_name = message.text
     print(botan.track(botan_token, uid, message_dict, event_name))
     risposta(message,"""i comandi sono:
-/aiuto
 /citazione
-/congratula
 /insulta
 /striscia
 /playmate
@@ -154,22 +152,6 @@ def invia_comandi(message):
 /encrypt
 /decrypt
 /suzuya""")
-#inizio comandi personali
-@bot.message_handler(commands=["aggiorna_elenco_file_strisce"])
-def aggiorna_elenco_file_strisce(message):
- from os import listdir
- from os.path import isfile, join
- onlyfiles = [f for f in listdir(search_path+"/strisce") if isfile(join(search_path+"/strisce", f))]
- risposta(message, "elenco aggiornato")
-#fine comandi personali
-@bot.message_handler(commands=["congratula"])
-def congratula(message):
-    uid = message.text
-    message_dict = "1"
-    event_name = message.text
-    print(botan.track(botan_token, uid, message_dict, event_name))
-    messaggio=message.text.replace("/congratula","")
-    risposta(message,"congratulazioni"+messaggio+"!")
 @bot.message_handler(commands=["encrypt"])
 def informa(message):
     msg=bot.send_message(message.chat.id,"Inserisci un messaggio da criptare")
@@ -187,6 +169,8 @@ def encode(message):
       splitted_text=util.split_string(cipher_text.decode(encoding='UTF-8'),3000)
       for text in splitted_text:
           bot.send_message(message.chat.id,text)
+     else:
+         print(str(e)+" in funzione encode")
     bot.send_message(message.chat.id,"Questa è la tua chiave crittografica")
     bot.send_message(message.chat.id,key)
 @bot.message_handler(commands=['decrypt'])
@@ -258,8 +242,9 @@ def invia_playmate(message):
     nome_file=nome_file.replace(".jpg","")
     nome_file=nome_file[6:]
     bot.send_message(message.chat.id,nome_file)
- except:
+except Exception as e:
      risposta(message,"si è verificato un errore")
+     print(str(e)+" in playmate")
 @bot.message_handler(commands=["pornvid"])
 def invia_video_porno(message):
     uid = message.text
@@ -270,17 +255,17 @@ def invia_video_porno(message):
     try:
      bot.send_video(message.chat.id,open(search_path+"/videoporno/"+random.choice(lista_video_porno_mp4),'rb'))
     except requests.exceptions.ChunkedEncodingError:
-        print("ChunkedEncodingError")
+        print("ChunkedEncodingError in pornvid")
         risposta(message,"Si è verificato un errore, contatta @Kaykin se vuoi/puoi, oppure riprova")
     except telebot.apihelper.ApiException:
-        print("ApiException")
+        print("ApiException in pornvid")
         risposta(message,"Si è verificato un errore, contatta @kaykin se vuoi/puoi, oppure riprova")
 @bot.message_handler(commands=["pornsrc"])
 def cerca_porno(message,y=0):
  try:
-  uid = message.text
+  uid = "pornsrc"
   message_dict = "1"
-  event_name = message.text
+  event_name = "pornsrc"
   print(botan.track(botan_token, uid, message_dict, event_name))
   elenco_link=[]
   sito="http://www.pornhub.com/video/search?search="
@@ -368,8 +353,9 @@ def invia_cibo(message):
     bot.send_chat_action(message.chat.id, 'upload_photo')
     try:
      bot.send_photo(message.chat.id, open(search_path+"/cibo/"+random.choice(lista_cibo),'rb'))
-    except:
+    except Exception as e:
       risposta(message,"Si è verificato un errore, contatta @kaykin se vuoi/puoi, oppure riprova")
+      print(str(e)+" in cibo")
 @bot.message_handler(commands=["striscia"])
 def invia_striscia(message):
     uid = message.text
@@ -379,8 +365,9 @@ def invia_striscia(message):
     bot.send_chat_action(message.chat.id, 'upload_photo')
     try:
      bot.send_photo(message.chat.id, open(search_path+"/strisce/"+random.choice(lista_strisce),'rb'))
-    except:
+ except Exception as e:
       risposta(message,"Si è verificato un errore, contatta @kaykin se vuoi/puoi, oppure riprova")
+      print(str(e)+" in striscia")
 @bot.message_handler(commands=["xkcd"])
 def invia_xkcd(message):
     uid = message.text
@@ -390,10 +377,12 @@ def invia_xkcd(message):
     bot.send_chat_action(message.chat.id, 'upload_photo')
     try:
      bot.send_photo(message.chat.id, open(search_path+"/xkcd/"+random.choice(lista_xkcd),'rb'))
-    except:
+    except Exception as e:
       risposta(message,"Si è verificato un errore, contatta @kaykin se vuoi/puoi, oppure riprova")
+      print(str(e)+" in xkcd")
 @bot.message_handler(commands=["insulta"])
 def insulta(message):
+    try:
         uid = message.text
         message_dict = "1"
         event_name = message.text
@@ -403,7 +392,9 @@ def insulta(message):
         if messaggio != "":
            risposta(message, random.choice(lista_insulti))
         else:
-           risposta(message,"aggiungi un nome o qualcuno da insultare dopo il comando, coglione!")
+           risposta(message,"aggiungi un nome o qualcuno da insultare dopo il comando(ad esempio /insulta mario), coglione!")
+     except Exception as e:
+        print(str(e)+" in insulta")
 @bot.message_handler(commands=["suzuya"])
 def invia_suzuya(message):
  uid = message.text
@@ -430,5 +421,5 @@ def invia_suzuya(message):
   bot.send_photo(message.chat.id,open(search_path+"immagine."+immagine_link[-3:],'rb'))
   os.remove(search_path+"/immagine."+immagine_link[-3:])
  except Exception as e:
-     print(e+" in suzuya")
+     print(str(e)+" in suzuya")
 bot.polling(none_stop=False)
