@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import telebot
 import random
 import requests
@@ -242,7 +243,7 @@ def invia_playmate(message):
     nome_file=nome_file.replace(".jpg","")
     nome_file=nome_file[6:]
     bot.send_message(message.chat.id,nome_file)
-except Exception as e:
+ except Exception as e:
      risposta(message,"si è verificato un errore")
      print(str(e)+" in playmate")
 @bot.message_handler(commands=["pornvid"])
@@ -365,7 +366,7 @@ def invia_striscia(message):
     bot.send_chat_action(message.chat.id, 'upload_photo')
     try:
      bot.send_photo(message.chat.id, open(search_path+"/strisce/"+random.choice(lista_strisce),'rb'))
- except Exception as e:
+    except Exception as e:
       risposta(message,"Si è verificato un errore, contatta @kaykin se vuoi/puoi, oppure riprova")
       print(str(e)+" in striscia")
 @bot.message_handler(commands=["xkcd"])
@@ -382,7 +383,7 @@ def invia_xkcd(message):
       print(str(e)+" in xkcd")
 @bot.message_handler(commands=["insulta"])
 def insulta(message):
-    try:
+ try:
         uid = message.text
         message_dict = "1"
         event_name = message.text
@@ -393,7 +394,7 @@ def insulta(message):
            risposta(message, random.choice(lista_insulti))
         else:
            risposta(message,"aggiungi un nome o qualcuno da insultare dopo il comando(ad esempio /insulta mario), coglione!")
-     except Exception as e:
+ except Exception as e:
         print(str(e)+" in insulta")
 @bot.message_handler(commands=["suzuya"])
 def invia_suzuya(message):
