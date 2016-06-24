@@ -18,7 +18,7 @@ from telebot import util
 from os import listdir
 from os.path import isfile, join
 from bs4 import BeautifulSoup
-bot = telebot.TeleBot('149991058:AAH5hdk1-oNXlwinJhhomxpGmfdTn10WlZo')
+bot = telebot.TeleBot('149991058:AAHxH9yc42rNu6kAcU397QBM4rfvdspIICI')
 botan_token='11tcT_JQrMxklU2NntbWEI32FbY40vfS'
 user_dict={}
 search_path =os.getcwd()
@@ -29,6 +29,14 @@ botan_token = '2PcvvgRcYce75mDj7q2M8_Gd7BGb3-YW' # Token got from @botaniobot
 def risposta(sender, messaggio):
     bot.send_chat_action(sender.chat.id, action="typing")
     bot.send_message(sender.chat.id, messaggio)
+def jpg_da_url(url):
+    f= open('out.jpg','wb')
+    f.write(urllib.request.urlopen(url).read())
+    f.close
+def mp4_da_url(url):
+    f.open('out.mp4','wb')
+    f.write(urllib.request.urlopen(url).read())
+    f.close
 lista_cartelle=["/videoporno","/fotoporno","/playmates","/strisce","/cibo","/xkcd"]
 #check if folder exists
 print("inizializzation, this may take a while...")
@@ -423,4 +431,8 @@ def invia_suzuya(message):
   os.remove(search_path+"/immagine."+immagine_link[-3:])
  except Exception as e:
      print(str(e)+" in suzuya")
-bot.polling(none_stop=False)
+while True:
+ try:
+  bot.polling(none_stop=False)
+ except:
+  continue
