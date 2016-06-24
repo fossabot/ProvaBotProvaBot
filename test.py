@@ -1,7 +1,9 @@
+# -*- coding: utf-8 -*-
 import os
-
+import shutil
 a = open("output.txt", "w")
-for path, subdirs, files in os.walk(r'C:\Users\user\Desktop\Test_Py'):
+for path, subdirs, files in os.walk(os.getcwd()):
    for filename in files:
      f = os.path.join(path, filename)
-     print(f)
+     if f.endswith(".jpg"):
+      shutil.copy2(f, 

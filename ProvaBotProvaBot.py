@@ -29,16 +29,8 @@ botan_token = '2PcvvgRcYce75mDj7q2M8_Gd7BGb3-YW' # Token got from @botaniobot
 def risposta(sender, messaggio):
     bot.send_chat_action(sender.chat.id, action="typing")
     bot.send_message(sender.chat.id, messaggio)
-def jpg_da_url(url):
-    f= open('out.jpg','wb')
-    f.write(urllib.request.urlopen(url).read())
-    f.close
-def mp4_da_url(url):
-    f.open('out.mp4','wb')
-    f.write(urllib.request.urlopen(url).read())
-    f.close
 lista_cartelle=["/videoporno","/fotoporno","/playmates","/strisce","/cibo","/xkcd"]
-#check if folder exists
+#check if folders exist
 print("inizializzation, this may take a while...")
 for x in lista_cartelle:
     if os.path.exists(search_path+x)==False:
@@ -431,8 +423,4 @@ def invia_suzuya(message):
   os.remove(search_path+"/immagine."+immagine_link[-3:])
  except Exception as e:
      print(str(e)+" in suzuya")
-while True:
- try:
-  bot.polling(none_stop=False)
- except:
-  continue
+bot.polling(none_stop=False)
