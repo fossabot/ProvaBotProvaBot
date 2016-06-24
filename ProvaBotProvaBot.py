@@ -202,28 +202,30 @@ def soldi_da_scommettere(message):
     event_name = message.text
     print(botan.track(botan_token, uid, message_dict, event_name))
     msg=bot.send_message(message.chat.id,"Quanti soldi vuoi scommettere?")
-    bot.register_next_step_handler(msg,CT_o_T)
-def CT_o_T(message):
+    bot.register_next_step_handler(msg,Testa_o_Croce)
+def Testa_o_Croce(message):
    try:
     user = User()
     user_dict[message.chat.id] = user
     user.key=float(message.text)
     markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
-    markup.add("CT")
-    markup.add("T")
-    msg=bot.send_message(message.chat.id,"CT o T?",reply_markup=markup)
+    markup.add("Testa")
+    markup.add("Croce")
+    msg=bot.send_message(message.chat.id,"Testa o Croce??",reply_markup=markup)
     bot.register_next_step_handler(msg,coinflip)
    except ValueError:
-    risposta(message,"Devi inserire un numero, non lettere! Riprova da capo")
+    risposta(message,"Devi inserire un numero, non lettere! Riprova da capo con /coinflip")
 def coinflip(message):
  try:
     user=user_dict[message.chat.id]
     user.message=str(message.text)
-    coinflip=["T","CT"]
+    coinflip=["Testa","Croce"]
     if user.key==0:
         risposta(message,"Volevi aver vinto qualcosa eh? Invece no")
     elif random.choice(coinflip)==user.message:
         user.key=user.key*2
+        if str(user.key).endswith(".0"):
+            user.key=int(user.key)
         risposta(message,"Hai vinto ed hai guadagnato "+str(user.key)+" euro")
     else:
         user.key=0
