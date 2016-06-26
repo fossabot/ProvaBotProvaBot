@@ -192,9 +192,18 @@ def decripta_messaggio(message):
         user.key = key
         plain_text=Fernet(user.key.encode(encoding='UTF-8')).decrypt(user.encmessage.encode(encoding='UTF-8'))
         bot.send_message(message.chat.id,"Il messaggio decriptato è il seguente:")
-        bot.send_message(message.chat.id,plain_text.decode(encoding='UTF-8'))
+        try:
+            bot.send_message(message.chat.id,plain_text.decode(encoding='UTF-8'))
+        except Exception as e:
+         if "400" in str(e):
+            splitted_text=util.split_string(plain_text.decode(encoding='UTF-8'))
+            for text in splitted_text:
+                bot.send_message(message.chat.id,text)
+         else:
+               print(str(e)+" in funzione decripta_messaggio")
     except:
         risposta(message,'Si è verificato un errore')
+        print(str(e)+" in funzione decripta_messaggio")
 @bot.message_handler(commands=["coinflip"])
 def soldi_da_scommettere(message):
     uid = message.text
@@ -226,12 +235,23 @@ def coinflip(message):
         user.key=user.key*2
         if str(user.key).endswith(".0"):
             user.key=int(user.key)
-        risposta(message,"Hai vinto ed hai guadagnato "+str(user.key)+" euro")
+        try:
+         risposta(message,"Hai vinto ed hai guadagnato "+str(user.key)+" euro")
+        except Exception as e:
+         if "400" in str(e):
+             splitted_text=str(user.key)
+             for text in splitted_text:
+                 bot.send_message(message.chat.id,text)
+         else:
+                print(str(e)+" in funzione coinflip durante l'invio del messaggio all'utente ")
     else:
         user.key=0
         risposta(message,"Hai perso tutto")
- except ValueError:
+ except Exception as e:
+     if e == ValueError:
       risposta(message,"Hai inserito qualcosa che non dovevi, riprova!")
+     else:
+      print(str(e)+" in coinflip")
 @bot.message_handler(commands=["playmate"])
 def invia_playmate(message):
  try:
