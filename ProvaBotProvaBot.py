@@ -9,8 +9,8 @@ import time
 import urllib.request
 import mmap
 import os.path
-from modules import botan
 import shutil
+from modules import botan
 from apiclient.discovery import build
 from cryptography.fernet import Fernet
 from telebot import types
@@ -31,7 +31,7 @@ def risposta(sender, messaggio):
     bot.send_message(sender.chat.id, messaggio)
 lista_cartelle=["/videoporno","/fotoporno","/playmates","/strisce","/cibo","/xkcd"]
 #check if folders exist
-print("inizializzation, this may take a while...")
+print("inizializzation, this may take a while...\n")
 for x in lista_cartelle:
     if os.path.exists(search_path+x)==False:
      print("Manca la cartella "+x.replace("/","")+", la creo inserendoci un file .jpg vuoto")
@@ -58,7 +58,8 @@ def invia_citazione(message):
     uid = message.text
     message_dict = "1"
     event_name = message.text
-    print(botan.track(botan_token, uid, message_dict, event_name))
+    botan.track(botan_token, uid, message_dict, event_name)
+    print("citazione")
     elenco_citazioni_himym=["""Ted: Ragazzi, sto per raccontarvi una storia incredibile. La storia di come ho conosciuto vostra madre!
 Figlio di Ted: Abbiamo fatto qualche cosa di male?
 Ted: No!
@@ -138,7 +139,8 @@ def invia_comandi(message):
     uid = message.text
     message_dict = "1"
     event_name = message.text
-    print(botan.track(botan_token, uid, message_dict, event_name))
+    botan.track(botan_token, uid, message_dict, event_name)
+    print("aiuto")
     risposta(message,"""i comandi sono:
 /citazione
 /insulta
@@ -201,7 +203,7 @@ def decripta_messaggio(message):
                 bot.send_message(message.chat.id,text)
          else:
                print(str(e)+" in funzione decripta_messaggio")
-    except:
+    except Exception as e:
         risposta(message,'Si è verificato un errore')
         print(str(e)+" in funzione decripta_messaggio")
 @bot.message_handler(commands=["coinflip"])
@@ -209,7 +211,8 @@ def soldi_da_scommettere(message):
     uid = message.text
     message_dict = "1"
     event_name = message.text
-    print(botan.track(botan_token, uid, message_dict, event_name))
+    botan.track(botan_token, uid, message_dict, event_name)
+    print("coinflip")
     msg=bot.send_message(message.chat.id,"Quanti soldi vuoi scommettere?")
     bot.register_next_step_handler(msg,Testa_o_Croce)
 def Testa_o_Croce(message):
@@ -220,7 +223,7 @@ def Testa_o_Croce(message):
     markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
     markup.add("Testa")
     markup.add("Croce")
-    msg=bot.send_message(message.chat.id,"Testa o Croce??",reply_markup=markup)
+    msg=bot.send_message(message.chat.id,"Testa o Croce?",reply_markup=markup)
     bot.register_next_step_handler(msg,coinflip)
    except ValueError:
     risposta(message,"Devi inserire un numero, non lettere! Riprova da capo con /coinflip")
@@ -258,7 +261,8 @@ def invia_playmate(message):
     uid = message.text
     message_dict = "1"
     event_name = message.text
-    print(botan.track(botan_token, uid, message_dict, event_name))
+    botan.track(botan_token, uid, message_dict, event_name)
+    print("playmate")
     nome_file=(random.choice(lista_playmate))
     bot.send_chat_action(message.chat.id, 'upload_photo')
     bot.send_photo(message.chat.id, open(search_path+"/playmates/"+nome_file,'rb'))
@@ -273,7 +277,8 @@ def invia_video_porno(message):
     uid = message.text
     message_dict = "1"
     event_name = message.text
-    print(botan.track(botan_token, uid, message_dict, event_name))
+    botan.track(botan_token, uid, message_dict, event_name)
+    print("pornvid")
     bot.send_chat_action(message.chat.id, 'upload_video')
     try:
      bot.send_video(message.chat.id,open(search_path+"/videoporno/"+random.choice(lista_video_porno_mp4),'rb'))
@@ -289,7 +294,8 @@ def cerca_porno(message,y=0):
   uid = "pornsrc"
   message_dict = "1"
   event_name = "pornsrc"
-  print(botan.track(botan_token, uid, message_dict, event_name))
+  botan.track(botan_token, uid, message_dict, event_name)
+  print("pornsrc")
   elenco_link=[]
   sito="http://www.pornhub.com/video/search?search="
   messaggio=message.text.replace("/pornsrc","")
@@ -361,7 +367,8 @@ def invia_immagine_porno(message):
     uid = message.text
     message_dict = "1"
     event_name = message.text
-    print(botan.track(botan_token, uid, message_dict, event_name))
+    botan.track(botan_token, uid, message_dict, event_name)
+    print("pornimg")
     bot.send_chat_action(message.chat.id, 'upload_photo')
     try:
      bot.send_photo(message.chat.id,open(search_path+"/fotoporno/"+random.choice(lista_foto_porno),'rb'))
@@ -372,7 +379,8 @@ def invia_cibo(message):
     uid = message.text
     message_dict = "1"
     event_name = message.text
-    print(botan.track(botan_token, uid, message_dict, event_name))
+    botan.track(botan_token, uid, message_dict, event_name)
+    print("cibo")
     bot.send_chat_action(message.chat.id, 'upload_photo')
     try:
      bot.send_photo(message.chat.id, open(search_path+"/cibo/"+random.choice(lista_cibo),'rb'))
@@ -384,7 +392,8 @@ def invia_striscia(message):
     uid = message.text
     message_dict = "1"
     event_name = message.text
-    print(botan.track(botan_token, uid, message_dict, event_name))
+    botan.track(botan_token, uid, message_dict, event_name)
+    print("striscia")
     bot.send_chat_action(message.chat.id, 'upload_photo')
     try:
      bot.send_photo(message.chat.id, open(search_path+"/strisce/"+random.choice(lista_strisce),'rb'))
@@ -396,7 +405,8 @@ def invia_xkcd(message):
     uid = message.text
     message_dict = "1"
     event_name = message.text
-    print(botan.track(botan_token, uid, message_dict, event_name))
+    botan.track(botan_token, uid, message_dict, event_name)
+    print("xkcd")
     bot.send_chat_action(message.chat.id, 'upload_photo')
     try:
      bot.send_photo(message.chat.id, open(search_path+"/xkcd/"+random.choice(lista_xkcd),'rb'))
@@ -409,7 +419,8 @@ def insulta(message):
         uid = message.text
         message_dict = "1"
         event_name = message.text
-        print(botan.track(botan_token, uid, message_dict, event_name))
+        botan.track(botan_token, uid, message_dict, event_name)
+        print("insulta")
         messaggio=message.text.replace("/insulta","")
         lista_insulti=["sei proprio una troia, " + messaggio, "caro, "+messaggio+" sei proprio una testa di cazzo", messaggio+" sei così spaventoso che quando caghi la tua stessa merda dice di fotterti!", messaggio+" sei come la minchia: sempre tra le palle", messaggio+" sei cosi brutto che chi ti guarda vomita", messaggio+", tua madre é peggio di un canestro da basket, gli entrano tutte le palle", messaggio+", io non capisco se sei cretino di tuo oppure ci hai studiato per esserlo", messaggio+",tua mamma ce l'ha così pelosa che per depilarsela deve chiamare la guardia forestale", messaggio+",come ti senti se ti dico che sei solo uno schizzo di sborra di tuo padre?", messaggio+",dall'alito sembra che ti si sia arenato il cadavere di un'orca in gola", messaggio+",sei cosi testa di cazzo che quando un'uomo pensa a te puo diventare gay!", messaggio+",tua madre è come Buffon, ha sempre palle tra le mani", messaggio+",prova a trattenere il respiro cinque minuti così tutti si accorgeranno che l'aria che respiriamo è migliorata"]
         if messaggio != "":
@@ -423,7 +434,8 @@ def invia_suzuya(message):
  uid = message.text
  message_dict = "1"
  event_name = message.text
- print(botan.track(botan_token, uid, message_dict, event_name))
+ botan.track(botan_token, uid, message_dict, event_name)
+ print("suzuya")
  try:
   service = build("customsearch", "v1",developerKey="AIzaSyBkEE0BZGy9KwCVyXmWz96ZV4dXKSCGMf0")
   elenco_link=[]
@@ -439,7 +451,6 @@ def invia_suzuya(message):
         print('{}:\n\t{}'.format(item['title'], item['link']))
         elenco_link.append(item['link'])
   immagine_link=random.choice(elenco_link)
-  print(immagine_link[-3:])
   urllib.request.urlretrieve(immagine_link,"immagine."+immagine_link[-3:])
   bot.send_photo(message.chat.id,open(search_path+"immagine."+immagine_link[-3:],'rb'))
   os.remove(search_path+"/immagine."+immagine_link[-3:])
