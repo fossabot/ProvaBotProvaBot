@@ -154,7 +154,7 @@ def invia_comandi(message):
 /coinflip
 /encrypt
 /decrypt
-/suzuya""",parse_mode="Markdown")
+/suzuya""")
 @bot.message_handler(commands=["encrypt"])
 def informa(message):
     msg=bot.send_message(message.chat.id,"Inserisci un messaggio da criptare")
@@ -456,8 +456,4 @@ def invia_suzuya(message):
   os.remove(search_path+"/immagine."+immagine_link[-3:])
  except Exception as e:
      print(str(e)+" in suzuya")
-while True:
- try:
-  bot.polling(none_stop=False)
- except:
-  continue
+bot.polling(none_stop=False)
