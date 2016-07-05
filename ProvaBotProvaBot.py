@@ -154,7 +154,7 @@ def invia_comandi(message):
 /coinflip
 /encrypt
 /decrypt
-/suzuya""")
+/suzuya""",parse_mode="Markdown")
 @bot.message_handler(commands=["encrypt"])
 def informa(message):
     msg=bot.send_message(message.chat.id,"Inserisci un messaggio da criptare")
@@ -204,7 +204,7 @@ def decripta_messaggio(message):
          else:
                print(str(e)+" in funzione decripta_messaggio")
     except Exception as e:
-        risposta(message,'Si è verificato un errore')
+        risposta(message,'Si è verificato un errore, sicuro di aver copiato bene il messaggio?')
         print(str(e)+" in funzione decripta_messaggio")
 @bot.message_handler(commands=["coinflip"])
 def soldi_da_scommettere(message):
@@ -456,4 +456,8 @@ def invia_suzuya(message):
   os.remove(search_path+"/immagine."+immagine_link[-3:])
  except Exception as e:
      print(str(e)+" in suzuya")
-bot.polling(none_stop=False)
+while True:
+ try:
+  bot.polling(none_stop=False)
+ except:
+  continue
