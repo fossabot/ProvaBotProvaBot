@@ -10,6 +10,8 @@ import urllib.request
 import mmap
 import os.path
 import shutil
+import sys
+import json
 from modules import botan
 from apiclient.discovery import build
 from cryptography.fernet import Fernet
@@ -18,6 +20,10 @@ from telebot import util
 from os import listdir
 from os.path import isfile, join
 from bs4 import BeautifulSoup
+try:
+     TOKEN=sys.argv[1]
+except IndexError:
+    TOKEN=None
 bot = telebot.TeleBot('149991058:AAHxH9yc42rNu6kAcU397QBM4rfvdspIICI')
 botan_token='11tcT_JQrMxklU2NntbWEI32FbY40vfS'
 user_dict={}
@@ -26,7 +32,11 @@ search_path =os.getcwd()
 if not (search_path.endswith("/") or search_path.endswith("\\") ):
                 search_path = search_path + "/"
 botan_token = '2PcvvgRcYce75mDj7q2M8_Gd7BGb3-YW' # Token got from @botaniobot
-def risposta(sender, messaggio):
+if TOKEN==("dev" or "Dev"):
+ def risposta(sender,messaggio):
+     bot.send_message(sender.chat.id,"Il bot è attualmente non disponibile causa testing in corso, riprova più tardi")
+else:
+ def risposta(sender, messaggio):
     bot.send_chat_action(sender.chat.id, action="typing")
     bot.send_message(sender.chat.id, messaggio)
 lista_cartelle=["/videoporno","/fotoporno","/playmates","/strisce","/cibo","/xkcd"]
@@ -152,9 +162,38 @@ def invia_comandi(message):
 /cibo
 /xkcd
 /coinflip
-/encrypt
+/encrypt(
 /decrypt
 /suzuya""")
+@bot.callback_query_handler(func=lambda call: True)
+def coinflip_callback(call):
+ try:
+    user=user_dict[call.message.chat.id]
+    user.message=str(call.data)
+    coinflip=["Testa","Croce"]
+    if user.key==0:
+        risposta(text="Volevi aver vinto qualcosa eh? Invece no",message_id=call.message.message.id,chat_id=call.message.chat.id)
+    elif random.choice(coinflip)==user.message:
+        user.key=user.key*2
+        if str(user.key).endswith(".0"):
+            user.key=int(user.key)
+        try:
+         bot.edit_message_text(text=call.from_user.first_name+" ha vinto "+str(user.key)+" euro", message_id=call.message.message_id,chat_id=call.message.chat.id)
+        except Exception as e:
+         if "400" in str(e):
+             splitted_text=str(user.key)
+             for text in splitted_text:
+                 bot.send_message(call.message.chat.id,text)
+         else:
+                print(str(e)+" in funzione coinflip durante l'invio del messaggio all'utente ")
+    else:
+        user.key=0
+        bot.edit_message_text(text=call.from_user.first_name+" ha perso tutto", message_id=call.message.message_id,chat_id=call.message.chat.id)
+ except Exception as e:
+     if e == ValueError:
+      bot.edit_message_text(text=call.from_user.first_name+" ha inserito qualcosa che non doveva", message_id=call.message.message_id,chat_id=call.message.chat.id)
+     else:
+      print(str(e)+" in coinflip")
 @bot.message_handler(commands=["encrypt"])
 def informa(message):
     msg=bot.send_message(message.chat.id,"Inserisci un messaggio da criptare")
@@ -220,41 +259,14 @@ def Testa_o_Croce(message):
     user = User()
     user_dict[message.chat.id] = user
     user.key=float(message.text)
-    markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
-    markup.add("Testa")
-    markup.add("Croce")
-    msg=bot.send_message(message.chat.id,"Testa o Croce?",reply_markup=markup)
-    bot.register_next_step_handler(msg,coinflip)
+    markup=types.InlineKeyboardMarkup()
+    testa=types.InlineKeyboardButton("Testa",callback_data="testa")
+    croce=types.InlineKeyboardButton("Croce",callback_data="croce")
+    markup.row(testa)
+    markup.row(croce)
+    bot.send_message(chat_id=message.chat.id,text="Testa o Croce?",reply_markup=markup,parse_mode="Markdown")
    except ValueError:
     risposta(message,"Devi inserire un numero, non lettere! Riprova da capo con /coinflip")
-def coinflip(message):
- try:
-    user=user_dict[message.chat.id]
-    user.message=str(message.text)
-    coinflip=["Testa","Croce"]
-    if user.key==0:
-        risposta(message,"Volevi aver vinto qualcosa eh? Invece no")
-    elif random.choice(coinflip)==user.message:
-        user.key=user.key*2
-        if str(user.key).endswith(".0"):
-            user.key=int(user.key)
-        try:
-         risposta(message,"Hai vinto ed hai guadagnato "+str(user.key)+" euro")
-        except Exception as e:
-         if "400" in str(e):
-             splitted_text=str(user.key)
-             for text in splitted_text:
-                 bot.send_message(message.chat.id,text)
-         else:
-                print(str(e)+" in funzione coinflip durante l'invio del messaggio all'utente ")
-    else:
-        user.key=0
-        risposta(message,"Hai perso tutto")
- except Exception as e:
-     if e == ValueError:
-      risposta(message,"Hai inserito qualcosa che non dovevi, riprova!")
-     else:
-      print(str(e)+" in coinflip")
 @bot.message_handler(commands=["playmate"])
 def invia_playmate(message):
  try:
