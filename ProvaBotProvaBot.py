@@ -172,7 +172,7 @@ def coinflip_callback(call):
     user.message=str(call.data)
     coinflip=["Testa","Croce"]
     if user.key==0:
-        risposta(text="Volevi aver vinto qualcosa eh? Invece no",message_id=call.message.message.id,chat_id=call.message.chat.id)
+        bot.edit_message_text(text="Volevi aver vinto qualcosa eh? Invece no",message_id=call.message.message.id,chat_id=call.message.chat.id)
     elif random.choice(coinflip)==user.message:
         user.key=user.key*2
         if str(user.key).endswith(".0"):
@@ -312,7 +312,7 @@ def cerca_porno(message,y=0):
   sito="http://www.pornhub.com/video/search?search="
   messaggio=message.text.replace("/pornsrc","")
   if messaggio=="":
-    risposta(message,"inserisici un termine da cercare")
+    risposta(message,"inserisici un termine da cercare insieme a /pornsrc")
   else:
     messaggio=messaggio.lower()
     messaggio=messaggio[1:]
