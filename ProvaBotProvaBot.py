@@ -260,8 +260,8 @@ def Testa_o_Croce(message):
     user_dict[message.chat.id] = user
     user.key=float(message.text)
     markup=types.InlineKeyboardMarkup()
-    testa=types.InlineKeyboardButton("Testa",callback_data="testa")
-    croce=types.InlineKeyboardButton("Croce",callback_data="croce")
+    testa=types.InlineKeyboardButton("Testa",callback_data="Testa")
+    croce=types.InlineKeyboardButton("Croce",callback_data="Croce")
     markup.row(testa)
     markup.row(croce)
     bot.send_message(chat_id=message.chat.id,text="Testa o Croce?",reply_markup=markup,parse_mode="Markdown")
