@@ -468,4 +468,9 @@ def invia_suzuya(message):
   os.remove(search_path+"/immagine."+immagine_link[-3:])
  except Exception as e:
      print(str(e)+" in suzuya")
-bot.polling(none_stop=False)
+while True:
+ try:     
+  bot.polling(none_stop=False)
+ except e as Exception:
+    print("ATTENZIONE ATTENZIONE ATTENZIONE \n \n \n "+str(e))
+    continue
