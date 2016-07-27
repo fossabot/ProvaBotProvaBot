@@ -471,6 +471,6 @@ def invia_suzuya(message):
 while True:
  try:     
   bot.polling(none_stop=False)
- except e as Exception:
+ except Exception as e:
     print("ATTENZIONE ATTENZIONE ATTENZIONE \n \n \n "+str(e))
     continue
