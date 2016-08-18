@@ -220,7 +220,10 @@ def ottieni_messaggio(message):
     msg = bot.send_message(message.chat.id, "Invia il tuo messaggio")
     bot.register_next_step_handler(msg, ottieni_key)
 def ottieni_key(message):
-        encmessage = message.text
+        if message.text[:9]=="ProvaBot:":
+            encmessage= message.text.replace("ProvaBot:","")
+        else:
+            encmessage=message.text
         user = User()
         user.encmessage=encmessage
         user_dict[message.chat.id] = user
@@ -228,7 +231,10 @@ def ottieni_key(message):
         bot.register_next_step_handler(msg, decripta_messaggio)
 def decripta_messaggio(message):
     try:
-        key = message.text
+        if message.text[:9]=="ProvaBot:":
+            key= message.text.replace("ProvaBot:","")
+        else:
+            key=message.text
         user = user_dict[message.chat.id]
         user.key = key
         plain_text=Fernet(user.key.encode(encoding='UTF-8')).decrypt(user.encmessage.encode(encoding='UTF-8'))
@@ -311,7 +317,7 @@ def cerca_porno(message,y=0):
   elenco_link=[]
   sito="http://www.xvideos.com/?k="
   messaggio=message.text.replace("/pornsrc","")
-  if messaggio==("" or "@provabotprovabot"):
+  if messaggio=="" or "@provabotprovabot":
     risposta(message,"inserisici un termine da cercare insieme a /pornsrc")
   else:
     messaggio=messaggio.lower()
@@ -436,6 +442,7 @@ def insulta(message):
         botan.track(botan_token, uid, message_dict, event_name)
         print("insulta")
         messaggio=message.text.replace("/insulta","")
+        messaggio=messaggio.replace("/insulta@provabotprovabot","")
         lista_insulti=["sei proprio una troia, " + messaggio, "caro, "+messaggio+" sei proprio una testa di cazzo", messaggio+" sei così spaventoso che quando caghi la tua stessa merda dice di fotterti!", messaggio+" sei come la minchia: sempre tra le palle", messaggio+" sei cosi brutto che chi ti guarda vomita", messaggio+", tua madre é peggio di un canestro da basket, gli entrano tutte le palle", messaggio+", io non capisco se sei cretino di tuo oppure ci hai studiato per esserlo", messaggio+",tua mamma ce l'ha così pelosa che per depilarsela deve chiamare la guardia forestale", messaggio+",come ti senti se ti dico che sei solo uno schizzo di sborra di tuo padre?", messaggio+",dall'alito sembra che ti si sia arenato il cadavere di un'orca in gola", messaggio+",sei cosi testa di cazzo che quando un'uomo pensa a te puo diventare gay!", messaggio+",tua madre è come Buffon, ha sempre palle tra le mani", messaggio+",prova a trattenere il respiro cinque minuti così tutti si accorgeranno che l'aria che respiriamo è migliorata"]
         if messaggio != "":
            risposta(message, random.choice(lista_insulti))
