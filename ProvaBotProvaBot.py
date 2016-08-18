@@ -368,7 +368,7 @@ def cerca_porno(message,y=0):
     risposta(message,"xvideos.com"+link_usabili[y])
     markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
     for x in range(0,len(link_usabili)):
-        markup.add(str("/xvideos "+messaggio_keyboard+ " "+str(x)))
+        markup.add(str("/pornsrc "+messaggio_keyboard+ " "+str(x)))
     bot.reply_to(message, 'Ancora?', reply_markup=markup)
  except UnicodeEncodeError:
      risposta(message,"@Kaykin è un programmatore stupido e non sa implementare i caratteri unicode, come ad esempio 'è', quindi per adesso ti tocca aspettare, oppure vai direttamente su xvideos.com")
