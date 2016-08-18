@@ -220,7 +220,7 @@ def ottieni_messaggio(message):
     msg = bot.send_message(message.chat.id, "Invia il tuo messaggio")
     bot.register_next_step_handler(msg, ottieni_key)
 def ottieni_key(message):
-        if message.text[9:]=="ProvaBot:":
+        if message.text[:9]=="ProvaBot:":
             encmessage= message.text.replace("ProvaBot:","")
         else:
             encmessage=message.text
@@ -231,7 +231,7 @@ def ottieni_key(message):
         bot.register_next_step_handler(msg, decripta_messaggio)
 def decripta_messaggio(message):
     try:
-        if message.text[9:]=="ProvaBot:":
+        if message.text[:9]=="ProvaBot:":
             key= message.text.replace("ProvaBot:","")
         else:
             key=message.text
