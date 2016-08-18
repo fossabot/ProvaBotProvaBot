@@ -21,11 +21,19 @@ from os import listdir
 from os.path import isfile, join
 from bs4 import BeautifulSoup
 try:
-     TOKEN=sys.argv[1]
+    API=sys.argv[1]
+except Exception as e:
+    print("You must provide an api key as argument")
+try:
+    BOTAN=sys.argv[2]
+except Exception as e:
+    print("You must provide a botan key as argument")
+try:
+     TOKEN=sys.argv[3]
 except IndexError:
     TOKEN=None
-bot = telebot.TeleBot('149991058:AAHxH9yc42rNu6kAcU397QBM4rfvdspIICI')
-botan_token='11tcT_JQrMxklU2NntbWEI32FbY40vfS'
+bot = telebot.TeleBot(API)
+botan_token=BOTAN
 user_dict={}
 search_path =os.getcwd()
         # Append a directory separator if not already present
