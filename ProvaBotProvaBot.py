@@ -162,7 +162,7 @@ def invia_comandi(message):
 /cibo
 /xkcd
 /coinflip
-/encrypt(
+/encrypt
 /decrypt
 /suzuya""")
 @bot.callback_query_handler(func=lambda call: True)
@@ -311,7 +311,7 @@ def cerca_porno(message,y=0):
   elenco_link=[]
   sito="http://www.pornhub.com/video/search?search="
   messaggio=message.text.replace("/pornsrc","")
-  if messaggio=="":
+  if messaggio==("" or "@provabotprovabot"):
     risposta(message,"inserisici un termine da cercare insieme a /pornsrc")
   else:
     messaggio=messaggio.lower()
@@ -335,10 +335,10 @@ def cerca_porno(message,y=0):
         messaggio_keyboard=messaggio_keyboard[:-1]
     messaggio=messaggio.replace(" ","+")
     sito+=messaggio
-    sito2=sito[:-1]+"&page=2"
-    sito3=sito[:-1]+"&page=3"
-    sito4=sito[:-1]+"&page=4"
-    sito5=sito[:-1]+"&page=5"
+    sito2=sito+"&page=2"
+    sito3=sito+"&page=3"
+    sito4=sito+"&page=4"
+    sito5=sito+"&page=5"
     def get_html(website):
      req = urllib.request.Request(website, headers={'User-Agent': 'Mozilla/5.0'})
      html = urllib.request.urlopen(req).read()
@@ -355,8 +355,10 @@ def cerca_porno(message,y=0):
     def ottieni_link_porno(soup):
      for link in soup.find_all('a'):
       elenco_link.append(link.get('href',messaggio))
+      #ottiene elenco con link porno e duplicati
     for x in lista_soup:
         ottieni_link_porno(x)
+        #ottiene l'elenco dei dei link senza duplicati
     for x in range(0,len(elenco_link)):
      if "viewkey" in elenco_link[x]:
         link_usabili_duplicati.append(elenco_link[x])
@@ -371,7 +373,83 @@ def cerca_porno(message,y=0):
  except UnicodeEncodeError:
      risposta(message,"@Kaykin è un programmatore stupido e non sa implementare i caratteri unicode, come ad esempio 'è', quindi per adesso ti tocca aspettare, oppure vai direttamente su pornhub.com")
  except urllib.error.HTTPError:
-     risposta(message,"http error, e @KayKin non sa il perché")
+     risposta(message,"http error, e @KayKin non sa il perché, anche se ipotizza sia un errore nel codice, riprova cercando almeno 2 termini, ad esempio /pornsrc sasha grey invece di /pornsrc sasha")
+ except AttributeError:
+     risposta(message,"Il programmatore delle api ha creato un bug con l'update 2.0 e @kaykin sta aspettando un fix perché è pigro e non ha voglia di correggerlo da solo")
+@bot.message_handler(commands=["xvideos"])
+def cerca_porno(message,y=0):
+ try:
+  uid = "xvideos"
+  message_dict = "1"
+  event_name = "xvideos"
+  botan.track(botan_token, uid, message_dict, event_name)
+  print("xvideos")
+  elenco_link=[]
+  sito="http://www.xvideos.com/?k="
+  messaggio=message.text.replace("/xvideos","")
+  if messaggio==("" or "@provabotprovabot"):
+    risposta(message,"inserisici un termine da cercare insieme a /xvideos")
+  else:
+    messaggio=messaggio.lower()
+    messaggio=messaggio[1:]
+    while True:
+        conta=1
+        if conta==1:
+         if messaggio[-1:].isdigit():
+             y=int(messaggio[-1:])
+             messaggio=messaggio[:-1]
+             conta=2
+        if conta ==2:
+           if messaggio[-1:].isdigit():
+                y2=messaggio[-1:]
+                y=(y+int(y2)*10)
+                messaggio=messaggio[:-1]
+        else:
+            break
+    messaggio_keyboard=messaggio
+    if messaggio_keyboard.endswith(" "):
+        messaggio_keyboard=messaggio_keyboard[:-1]
+    messaggio=messaggio.replace(" ","+")
+    sito+=messaggio
+    sito2=sito+"&p=2"
+    sito3=sito+"&p=3"
+    sito4=sito+"&p=4"
+    sito5=sito+"&p=5"
+    def get_html(website):
+     req = urllib.request.Request(website, headers={'User-Agent': 'Mozilla/5.0'})
+     html = urllib.request.urlopen(req).read()
+     soup= BeautifulSoup(html, 'html.parser')
+     return soup
+    soup1=get_html(sito)
+    soup2=get_html(sito2)
+    soup3=get_html(sito3)
+    soup4=get_html(sito4)
+    soup5=get_html(sito5)
+    link_usabili_duplicati=[]
+    link_usabili=[]
+    lista_soup=[soup1,soup2,soup3,soup4,soup5]
+    def ottieni_link_porno(soup):
+     for link in soup.find_all('a'):
+      elenco_link.append(link.get('href',messaggio))
+      #ottiene elenco con link porno e duplicati
+    for x in lista_soup:
+        ottieni_link_porno(x)
+        #ottiene l'elenco dei dei link senza duplicati
+    for x in range(0,len(elenco_link)):
+     if "/video" in elenco_link[x]:
+        link_usabili_duplicati.append(elenco_link[x])
+    for x in range(0,len(link_usabili_duplicati)):
+        if link_usabili_duplicati[x] not in link_usabili:
+            link_usabili.append(link_usabili_duplicati[x])
+    risposta(message,"xvideos.com"+link_usabili[y])
+    markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
+    for x in range(0,len(link_usabili)):
+        markup.add(str("/xvideos "+messaggio_keyboard+ " "+str(x)))
+    bot.reply_to(message, 'Ancora?', reply_markup=markup)
+ except UnicodeEncodeError:
+     risposta(message,"@Kaykin è un programmatore stupido e non sa implementare i caratteri unicode, come ad esempio 'è', quindi per adesso ti tocca aspettare, oppure vai direttamente su pornhub.com")
+ except urllib.error.HTTPError:
+     risposta(message,"http error, e @KayKin non sa il perché, anche se ipotizza sia un errore nel codice, riprova cercando almeno 2 termini, ad esempio /pornsrc sasha grey invece di /pornsrc sasha")
  except AttributeError:
      risposta(message,"Il programmatore delle api ha creato un bug con l'update 2.0 e @kaykin sta aspettando un fix perché è pigro e non ha voglia di correggerlo da solo")
 @bot.message_handler(commands=["pornimg"])
@@ -468,8 +546,9 @@ def invia_suzuya(message):
   os.remove(search_path+"/immagine."+immagine_link[-3:])
  except Exception as e:
      print(str(e)+" in suzuya")
+#the following loop is made to prevent bot crashes, as they are very frequent
 while True:
- try:     
+ try:
   bot.polling(none_stop=False)
  except Exception as e:
     print("ATTENZIONE ATTENZIONE ATTENZIONE \n \n \n "+str(e))
