@@ -28,23 +28,11 @@ try:
     BOTAN=sys.argv[2]
 except Exception as e:
     print("You must provide a botan key as argument")
-try:
-     TOKEN=sys.argv[3]
-except IndexError:
-    TOKEN=None
 bot = telebot.TeleBot(API)
 botan_token=BOTAN
 user_dict={}
 search_path =os.getcwd()
-        # Append a directory separator if not already present
-if not (search_path.endswith("/") or search_path.endswith("\\") ):
-                search_path = search_path + "/"
-botan_token = '2PcvvgRcYce75mDj7q2M8_Gd7BGb3-YW' # Token got from @botaniobot
-if TOKEN==("dev" or "Dev"):
- def risposta(sender,messaggio):
-     bot.send_message(sender.chat.id,"Il bot è attualmente non disponibile causa testing in corso, riprova più tardi")
-else:
- def risposta(sender, messaggio):
+def risposta(sender, messaggio):
     bot.send_chat_action(sender.chat.id, action="typing")
     bot.send_message(sender.chat.id, messaggio)
 lista_cartelle=["/videoporno","/fotoporno","/playmates","/strisce","/cibo","/xkcd"]
