@@ -159,8 +159,7 @@ def invia_comandi(message):
 /xkcd
 /coinflip
 /encrypt
-/decrypt
-/suzuya""")
+/decrypt""")
 @bot.callback_query_handler(func=lambda call: True)
 def coinflip_callback(call):
  try:
@@ -439,33 +438,6 @@ def insulta(message):
            risposta(message,"aggiungi un nome o qualcuno da insultare dopo il comando(ad esempio /insulta mario), coglione!")
  except Exception as e:
         print(str(e)+" in insulta")
-@bot.message_handler(commands=["suzuya"])
-def invia_suzuya(message):
- uid = message.text
- message_dict = "1"
- event_name = message.text
- botan.track(botan_token, uid, message_dict, event_name)
- print("suzuya")
- try:
-  service = build("customsearch", "v1",developerKey="AIzaSyBkEE0BZGy9KwCVyXmWz96ZV4dXKSCGMf0")
-  elenco_link=[]
-  res = service.cse().list(
-    q='suzuya',
-    cx='010554537275291391936:xhuycz5v9jq',
-    searchType='image',
-    imgType='clipart',
-    fileType='png',
-    safe= 'off'
-  ).execute()
-  for item in res['items']:
-        print('{}:\n\t{}'.format(item['title'], item['link']))
-        elenco_link.append(item['link'])
-  immagine_link=random.choice(elenco_link)
-  urllib.request.urlretrieve(immagine_link,"immagine."+immagine_link[-3:])
-  bot.send_photo(message.chat.id,open(search_path+"immagine."+immagine_link[-3:],'rb'))
-  os.remove(search_path+"/immagine."+immagine_link[-3:])
- except Exception as e:
-     print(str(e)+" in suzuya")
 #the following loop is made to prevent bot crashes, as they are very frequent
 while True:
  try:
