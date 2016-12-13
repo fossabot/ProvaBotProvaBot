@@ -360,7 +360,10 @@ def cerca_porno(message,y=0):
     for x in range(0,len(link_usabili_duplicati)):
         if link_usabili_duplicati[x] not in link_usabili:
             link_usabili.append(link_usabili_duplicati[x])
-    risposta(message,"xvideos.com"+link_usabili[y])
+    if y<=len(link_usabili):
+     risposta(message,"xvideos.com"+link_usabili[y])
+    else:
+        risposta(message,"L'indice specificato è maggiore di quanti sono i link trovati") 
     markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
     for x in range(0,len(link_usabili)):
         markup.add(str("/pornsrc "+messaggio_keyboard+ " "+str(x)))
