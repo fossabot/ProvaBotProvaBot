@@ -69,6 +69,7 @@ def invia_comandi(message):
 /citazione
 /encrypt
 /decrypt""")
+@bot.message_handler(commands=["citazione"])
 def invia_citazione(message):
     elenco_citazioni_himym=[]
     elenco_citazioni_tbbt=["""Da quel che so, il sesso non ha avuto aggiornamenti con grafica ad alta definizione e armamenti potenziati!", "Signore e signori, mentre il signor Kimi in virtù della sua giovinezza e della sua ingenuità è caduto preda dell'inesplicabile bisogno di contatto umano, posso rassicurarvi sul fatto che la mia ricerca continuerà senza interruzione e che le relazioni umane continueranno a sconcertarmi e a farmi schifo. Grazie!","Sheldon: A volte dimentico che gli altri hanno dei limiti. E’ così triste""", """Sheldon: Cosa avevi di più importante della serata Wii-Bowling?
