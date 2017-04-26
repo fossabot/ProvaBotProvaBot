@@ -23,6 +23,7 @@ try:
     API=sys.argv[1]
 except Exception as e:
     print("You must provide a telegram api key as argument")
+bot = telebot.TeleBot(API)
 user_dict={}
 search_path =os.getcwd()
 def risposta(sender, messaggio):
