@@ -248,7 +248,7 @@ def Testa_o_Croce(message):
    except ValueError:
     risposta(message,"Devi inserire un numero, non lettere! Riprova da capo con /coinflip")
 @bot.message_handler(commands=["playmate"])
-if (safe==True):
+if safe==True:
  def invia_playmate(message):
   try:
     print("playmate")
