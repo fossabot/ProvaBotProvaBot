@@ -238,8 +238,7 @@ def Testa_o_Croce(message):
    except ValueError:
     risposta(message,"Devi inserire un numero, non lettere! Riprova da capo con /coinflip")
 @bot.message_handler(commands=["playmate"])
-if safe==True:
- def invia_playmate(message):
+def invia_playmate(message):
   try:
     print("playmate")
     nome_file=(random.choice(lista_playmate))
@@ -253,7 +252,6 @@ if safe==True:
      print(str(e)+" in playmate")
 @bot.message_handler(commands=["pornsrc"])
 def cerca_porno(message,y=0):
-if (safe==True):
   try:
    print("pornsrc")
    elenco_link=[]
