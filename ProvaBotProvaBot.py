@@ -263,7 +263,7 @@ def cerca_porno(message,y=0):
      messaggio=messaggio.lower()
      messaggio=messaggio[1:]
      while True:
-        conta=1
+         conta=1
          if conta==1:
           if messaggio[-1:].isdigit():
              y=int(messaggio[-1:])
