@@ -23,18 +23,13 @@ try:
     API=sys.argv[1]
 except Exception as e:
     print("You must provide a telegram api key as the first argument")
-if "safe" in sys.argv:
-    safe=True
-    print("Safe mode enabled!\n")
-else:
-    safe=False
 bot = telebot.TeleBot(API)
 user_dict={}
 search_path =os.getcwd()
 def risposta(sender, messaggio):
     bot.send_chat_action(sender.chat.id, action="typing")
     bot.send_message(sender.chat.id, messaggio)
-lista_cartelle=["/videoporno","/fotoporno","/playmates","/strisce","/cibo","/xkcd"]
+lista_cartelle=["/playmates","/strisce","/cibo","/xkcd"]
 #check if folders exist
 print("inizializzation, this may take a while...\n")
 for x in lista_cartelle:
@@ -44,10 +39,7 @@ for x in lista_cartelle:
      if os.path.isfile(search_path+"/nope.jpg") ==False:
       urllib.request.urlretrieve("http://www.neacuho.org/resource/resmgr/EBoard_Photos/2015-2016/No_Image.jpg", "nope.jpg")
      shutil.copy2(search_path+"/nope.jpg",search_path+x)
-if (safe==False):
- lista_video_porno_mp4=[f for f in listdir(search_path+"/videoporno") if isfile(join(search_path+"/videoporno", f))]
- lista_foto_porno=[f for f in listdir(search_path+"/fotoporno") if isfile(join(search_path+"/fotoporno", f))]
- lista_playmate=[f for f in listdir(search_path+"/playmates") if isfile(join(search_path+"/playmates", f))]
+lista_playmate=[f for f in listdir(search_path+"/playmates") if isfile(join(search_path+"/playmates", f))]
 lista_cibo=[f for f in listdir(search_path+"/cibo") if isfile(join(search_path+"/cibo", f))]
 lista_strisce = [f for f in listdir(search_path+"/strisce") if isfile(join(search_path+"/strisce", f))]
 lista_xkcd= [f for f in listdir(search_path+"/xkcd") if isfile(join(search_path+"/xkcd", f))]
@@ -66,8 +58,6 @@ def invia_comandi(message):
 /insulta
 /striscia
 /playmate
-/pornimg
-/pornvid
 /pornsrc
 /cibo
 /xkcd
@@ -261,21 +251,7 @@ if safe==True:
   except Exception as e:
      risposta(message,"si è verificato un errore")
      print(str(e)+" in playmate")
-@bot.message_handler(commands=["pornvid"])
-if (safe==True):
- def invia_video_porno(message):
-    print("pornvid")
-    bot.send_chat_action(message.chat.id, 'upload_video')
-    try:
-     bot.send_video(message.chat.id,open(search_path+"/videoporno/"+random.choice(lista_video_porno_mp4),'rb'))
-    except requests.exceptions.ChunkedEncodingError:
-        print("ChunkedEncodingError in pornvid")
-        risposta(message,"Si è verificato un errore, contatta @Kaykin se vuoi/puoi, oppure riprova")
-    except telebot.apihelper.ApiException:
-        print("ApiException in pornvid")
-        risposta(message,"Si è verificato un errore, contatta @kaykin se vuoi/puoi, oppure riprova")
 @bot.message_handler(commands=["pornsrc"])
-
 def cerca_porno(message,y=0):
 if (safe==True):
   try:
@@ -351,15 +327,6 @@ if (safe==True):
      risposta(message,"http error, e @KayKin non sa il perché")
   except AttributeError:
      risposta(message,"Il programmatore delle api ha creato un bug con l'update 2.0 e @kaykin sta aspettando un fix perché è pigro e non ha voglia di correggerlo da solo")
-@bot.message_handler(commands=["pornimg"])
-if (safe==True):
- def invia_immagine_porno(message):
-    print("pornimg")
-    bot.send_chat_action(message.chat.id, 'upload_photo')
-    try:
-     bot.send_photo(message.chat.id,open(search_path+"/fotoporno/"+random.choice(lista_foto_porno),'rb'))
-    except:
-     risposta(message,"Si è verificato un errore, contatta @kaykin se vuoi/puoi, oppure riprova")
 @bot.message_handler(commands=["cibo"])
 def invia_cibo(message):
     print("cibo")
