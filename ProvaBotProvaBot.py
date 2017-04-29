@@ -19,13 +19,13 @@ from telebot import util
 from os import listdir
 from os.path import isfile, join
 from bs4 import BeautifulSoup
-#try:
-#    API=sys.argv[1]
-#except Exception as e:
-#    print("You must provide a telegram api key as argument")
+try:
+    API=sys.argv[1]
+except Exception as e:
+    print("You must provide a telegram api key as the first argument")
 if "safe" in sys.argv:
     safe=True
-    print("Safe mode enabled\n")
+    print("Safe mode enabled!\n")
 else:
     safe=False
 bot = telebot.TeleBot(API)
@@ -44,9 +44,10 @@ for x in lista_cartelle:
      if os.path.isfile(search_path+"/nope.jpg") ==False:
       urllib.request.urlretrieve("http://www.neacuho.org/resource/resmgr/EBoard_Photos/2015-2016/No_Image.jpg", "nope.jpg")
      shutil.copy2(search_path+"/nope.jpg",search_path+x)
-lista_video_porno_mp4=[f for f in listdir(search_path+"/videoporno") if isfile(join(search_path+"/videoporno", f))]
-lista_foto_porno=[f for f in listdir(search_path+"/fotoporno") if isfile(join(search_path+"/fotoporno", f))]
-lista_playmate=[f for f in listdir(search_path+"/playmates") if isfile(join(search_path+"/playmates", f))]
+if (safe==False):
+ lista_video_porno_mp4=[f for f in listdir(search_path+"/videoporno") if isfile(join(search_path+"/videoporno", f))]
+ lista_foto_porno=[f for f in listdir(search_path+"/fotoporno") if isfile(join(search_path+"/fotoporno", f))]
+ lista_playmate=[f for f in listdir(search_path+"/playmates") if isfile(join(search_path+"/playmates", f))]
 lista_cibo=[f for f in listdir(search_path+"/cibo") if isfile(join(search_path+"/cibo", f))]
 lista_strisce = [f for f in listdir(search_path+"/strisce") if isfile(join(search_path+"/strisce", f))]
 lista_xkcd= [f for f in listdir(search_path+"/xkcd") if isfile(join(search_path+"/xkcd", f))]
@@ -76,12 +77,15 @@ def invia_comandi(message):
 /decrypt""")
 @bot.message_handler(commands=["citazione"])
 def invia_citazione(message):
-    elenco_citazioni_himym=["""Ma dico sei impazzita? Questo comporterebbe che io parlassi con una donna con cui sono già andatto a letto, il che francamente è un po' come cambiare l'olio a un'auto a noleggio""","""Puoi aspettare un mese per il sesso solo se la tua ragazza ha 17 anni e 11 mesi""","""Se una ragazza è una ex-fidanzata di un fratello, lei è off-limits per sempre fino alla fine dei tempi. Ricorda sempre: con la ex di un fratello non fare il porcello""", """Robin: Non posso credere che la mia sorellina voglia perdere la verginità con un pivello con quella crestina orribile in testa! Non è possibile! Dovete aiutarmi a dissuaderla.
+    elenco_citazioni_himym=["""Ma dico sei impazzita? Questo comporterebbe che io parlassi con una donna con cui sono già andatto a letto, il che francamente è un po' come cambiare l'olio a un'auto a noleggio""","""Puoi aspettare un mese per il sesso solo se la tua ragazza ha 17 anni e 11 mesi""","""Se una ragazza è una ex-fidanzata di un fratello, lei è off-limits per sempre fino alla fine dei tempi. Ricorda sempre: con la ex di un fratello non fare il porcello""", """Robin: Non posso credere
+ che la mia sorellina voglia perdere la verginità con un pivello con quella crestina orribile in testa! Non è possibile! Dovete aiutarmi a dissuaderla.
 Marshall: Argomenti per convincere una ragazza a non fare sesso...
 Ted: Io non ne ho nel database!
 Barney: Dissuadere dal fare sesso è contro la mia religione!""", "Una bugia è solo una grande storia che qualcuno ha rovinato﻿ con la verità!", """Lily Aldrin: «Ehi, genio del diritto! Sei pronto a prenderti una pausa di un quarto d'ora!».
-Marshall Eriksen: «Scusa tesoro, devo lavorare e ho bisogno che il sangue vada qui»""", "o solo tre cose per cui combatterei: il gancio ostinato di un reggiseno, le accuse di molestia sessuale, tutte scampate, ed infine l'impulso di vomitare quando vedo un uomo che indossa scarpe marroni con un completo nero","A volte la vita va così, scolleghi il cervello per una sera e al mattino ti trovi stroncato dai postumi di una sbornia, con una caviglia slogata e un ananas. Ah.. Non si scopri mai come fosse arrivato sul mio comodino ma... era molto buono!","""Marshall Eriksen: «Sono gnocche!».
-Barney Stinson: «Uh! Avete ancora tanto da imparare! Voi praticamente siete delle vittime dell'Effetto Cheerleader. Grazie della domanda! L'Effetto Cheerleader c'è quando alcune donne sembrano gnocche ma solamente se sono in gruppo. Lo stesso per le Cheerleader. Sembrano delle gnocche ma se poi andiamo a vederle individualmente sono delle gran cozze!».""", "Ah ti prego, tanto è il solito film, non ne posso più! I ragazzi sono come il metrò, se ne perdi uno, tempo 5 minuti ne passa un altro!", """Frena! Ci sono solo due motivi per rivederti con una che hai scaricato:
+Marshall Eriksen: «Scusa tesoro, devo lavorare e ho bisogno che il sangue vada qui»""", """Ho solo tre cose per cui combatterei: il gancio ostinato di un reggiseno, le accuse di molestia sessuale, tutte scampate, ed infine l'impulso di vomitare quando vedo un uomo che indossa scarpe marroni con un completo nero","A volte la vita va così, scolleghi il cervello per una sera e al mattino ti trovi stroncato dai postumi di una sbornia, con una caviglia slogata e un ananas. Ah.. Non si scopri mai come
+fosse arrivato sul mio comodino ma... era molto buono!""","""Marshall Eriksen: «Sono gnocche!».
+Barney Stinson: «Uh! Avete ancora tanto da imparare! Voi praticamente siete delle vittime dell'Effetto Cheerleader. Grazie della domanda! L'Effetto Cheerleader c'è quando alcune donne sembrano gnocche ma solamente se sono in gruppo. Lo stesso per le Cheerleader. Sembrano delle gnocche ma se poi andiamo a vederle individualmente sono delle gran cozze!».""", "Ah ti prego, tanto è il solito film, non ne posso più! I ragazzi sono come il metrò, se ne perdi uno, tempo 5 minuti ne passa un altro!",
+ """Frena! Ci sono solo due motivi per rivederti con una che hai scaricato:
 1. tette
 2. tette finte""", """Barney Stinson: «Sapete perchè amo Halloween? Le ragazze tirano fuori la Pamela Anderson che è in loro almeno per una sera! Se una si veste da strega diventa una sexy strega, se una si da gatta diventa una sexy gatta, da infermiera...».
 Lily Aldrin: «Barney si è capito!».
@@ -98,7 +102,8 @@ Ted Mosby: «Perchè è una cosa poco...».
 Robin Scherbatsky: «Virile!».
 Marshall Eriksen: «Non lo è? La colazione invece si, e il pranzo anche. Perchè il brunch non lo è?».
 Ted Mosby: «Non lo so! Un cavallo non è strano e non lo è nemmeno un corno mse se li metti insieme hai l'unicorno!»""", """Ragazzi, guardate bene questa faccia perchè la prossima volta che l'avrete davanti sarà sfigurata in modo assolutamente sexy! Questa è la mia natura, sono un uomo, adoro combattere, fare a pugni e lordarmi tutto....... me l'appendi così non si stropiccia?""" ]
-    elenco_citazioni_tbbt=["""Da quel che so, il sesso non ha avuto aggiornamenti con grafica ad alta definizione e armamenti potenziati!""", "Signore e signori, mentre il signor Kimi in virtù della sua giovinezza e della sua ingenuità è caduto preda dell'inesplicabile bisogno di contatto umano, posso rassicurarvi sul fatto che la mia ricerca continuerà senza interruzione e che le relazioni umane continueranno a sconcertarmi e a farmi schifo. Grazie!","Sheldon: A volte dimentico che gli altri hanno dei limiti. E’ così triste""", """Sheldon: Cosa avevi di più importante della serata Wii-Bowling?
+    elenco_citazioni_tbbt=["""Da quel che so, il sesso non ha avuto aggiornamenti con grafica ad alta definizione e armamenti potenziati!""", "Signore e signori, mentre il signor Kimi in virtù della sua giovinezza e della sua ingenuità è caduto preda dell'inesplicabile bisogno di contatto umano, posso rassicurarvi sul fatto che la mia ricerca continuerà senza interruzione e che le relazioni umane continueranno a sconcertarmi e a farmi schifo. Grazie!","""Sheldon: A volte dimentico che gli altri
+    hanno dei limiti. E’ così triste""", """Sheldon: Cosa avevi di più importante della serata Wii-Bowling?
 Leonard: In realtà ero..
 Sheldon: Era una domanda retorica, niente è più importante della serata Wii-Bowling""", """Sheldon: E se alla fine si ritrovasse con un bambino che non saprà se usare un integrale o un differenziale per trovare l´area sottesa da una curva?
 Leonard: Sono sicuro che lo amerebbe ugualmente.
@@ -113,7 +118,8 @@ Page: Ecco il mio distintivo.
 Sheldon: Ed ecco il mio…tesserino di membro della Justice League. Ma questo non prova che io conosca Batman""", """Leonard: No, sul serio, credo di aver finalmente capito qual e’ il mio problema con le donne.
 Sheldon: Il capibara e’ il piu’ grande esemplare della famiglia dei roditori.
 Leonard: E questo cosa c’entra con i miei problemi con le donne?
-Sheldon: Niente. Era un tentativo disperato di proporre un argomento alternativo""", "Sheldon: Gesù, invece, in realtà è nato in estate. Il giorno della sua nascita è stato spostato per coincidere con la tradizionale ricorrenza pagana in cui si celebrava il solstizio d’inverno accendendo fuochi e sgozzando capretti. Il che, a dirla tutta, sembra molto piu’ divertente di dodici ore in chiesa con mia madre, seguite da una semplice torta di frutta secca", """Howard: E tu pensi di poter sopportare Sheldon?
+Sheldon: Niente. Era un tentativo disperato di proporre un argomento alternativo""", "Sheldon: Gesù, invece, in realtà è nato in estate. Il giorno della sua nascita è stato spostato per coincidere con la tradizionale ricorrenza pagana in cui si celebrava il solstizio d’inverno accendendo fuochi e sgozzando capretti. Il che, a dirla tutta, sembra molto piu’ divertente di dodici ore in chiesa con mia madre, seguite da una semplice torta di frutta secca", """Howard: E tu pensi di poter sopportare
+ Sheldon?
 Raj: Beh, sono Hindu. La mia religione mi insegna che se soffrirò in questa vita sarò ricompensato nella prossima. Tre mesi al Polo Nord con Sheldon e rinascerò come un miliardario superdotato con le ali""", """Leonard: Ok, hai davvero bisogno della tessera di membro onorario della Justice League of America?
 Sheldon: E’ stata in tutti i miei portafogli da quando avevo cinque anni.
 Leonard: Perchè?
@@ -242,8 +248,9 @@ def Testa_o_Croce(message):
    except ValueError:
     risposta(message,"Devi inserire un numero, non lettere! Riprova da capo con /coinflip")
 @bot.message_handler(commands=["playmate"])
-def invia_playmate(message):
- try:
+if (safe==True):
+ def invia_playmate(message):
+  try:
     print("playmate")
     nome_file=(random.choice(lista_playmate))
     bot.send_chat_action(message.chat.id, 'upload_photo')
@@ -251,11 +258,12 @@ def invia_playmate(message):
     nome_file=nome_file.replace(".jpg","")
     nome_file=nome_file[6:]
     bot.send_message(message.chat.id,nome_file)
- except Exception as e:
+  except Exception as e:
      risposta(message,"si è verificato un errore")
      print(str(e)+" in playmate")
 @bot.message_handler(commands=["pornvid"])
-def invia_video_porno(message):
+if (safe==True):
+ def invia_video_porno(message):
     print("pornvid")
     bot.send_chat_action(message.chat.id, 'upload_video')
     try:
@@ -267,82 +275,85 @@ def invia_video_porno(message):
         print("ApiException in pornvid")
         risposta(message,"Si è verificato un errore, contatta @kaykin se vuoi/puoi, oppure riprova")
 @bot.message_handler(commands=["pornsrc"])
+
 def cerca_porno(message,y=0):
- try:
-  print("pornsrc")
-  elenco_link=[]
-  sito="http://www.xvideos.com/?k="
-  messaggio=message.text.replace("/pornsrc","")
-  if messaggio==("" or "@provabotprovabot"):
+if (safe==True):
+  try:
+   print("pornsrc")
+   elenco_link=[]
+   sito="http://www.xvideos.com/?k="
+   messaggio=message.text.replace("/pornsrc","")
+   if messaggio==("" or "@provabotprovabot"):
     risposta(message,"inserisici un termine da cercare insieme a /pornsrc")
-  else:
-    messaggio=messaggio.lower()
-    messaggio=messaggio[1:]
-    while True:
+   else:
+     messaggio=messaggio.lower()
+     messaggio=messaggio[1:]
+     while True:
         conta=1
-        if conta==1:
-         if messaggio[-1:].isdigit():
+         if conta==1:
+          if messaggio[-1:].isdigit():
              y=int(messaggio[-1:])
              messaggio=messaggio[:-1]
              conta=2
-        if conta ==2:
-           if messaggio[-1:].isdigit():
+         if conta ==2:
+            if messaggio[-1:].isdigit():
                 y2=messaggio[-1:]
                 y=(y+int(y2)*10)
                 messaggio=messaggio[:-1]
-        else:
+         else:
             break
-    messaggio_keyboard=messaggio
-    if messaggio_keyboard.endswith(" "):
+     messaggio_keyboard=messaggio
+     if messaggio_keyboard.endswith(" "):
         messaggio_keyboard=messaggio_keyboard[:-1]
-    messaggio=messaggio.replace(" ","+")
-    sito+=messaggio
-    sito2=sito+"&p=2"
-    sito3=sito+"&p=3"
-    sito4=sito+"&p=4"
-    sito5=sito+"&p=5"
-    def get_html(website):
-     req = urllib.request.Request(website, headers={'User-Agent': 'Mozilla/5.0'})
-     html = urllib.request.urlopen(req).read()
-     soup= BeautifulSoup(html, 'html.parser')
-     return soup
-    soup1=get_html(sito)
-    soup2=get_html(sito2)
-    soup3=get_html(sito3)
-    soup4=get_html(sito4)
-    soup5=get_html(sito5)
-    link_usabili_duplicati=[]
-    link_usabili=[]
-    lista_soup=[soup1,soup2,soup3,soup4,soup5]
-    def ottieni_link_porno(soup):
-     for link in soup.find_all('a'):
-      elenco_link.append(link.get('href',messaggio))
+     messaggio=messaggio.replace(" ","+")
+     sito+=messaggio
+     sito2=sito+"&p=2"
+     sito3=sito+"&p=3"
+     sito4=sito+"&p=4"
+     sito5=sito+"&p=5"
+     def get_html(website):
+      req = urllib.request.Request(website, headers={'User-Agent': 'Mozilla/5.0'})
+      html = urllib.request.urlopen(req).read()
+      soup= BeautifulSoup(html, 'html.parser')
+      return soup
+     soup1=get_html(sito)
+     soup2=get_html(sito2)
+     soup3=get_html(sito3)
+     soup4=get_html(sito4)
+     soup5=get_html(sito5)
+     link_usabili_duplicati=[]
+     link_usabili=[]
+     lista_soup=[soup1,soup2,soup3,soup4,soup5]
+     def ottieni_link_porno(soup):
+      for link in soup.find_all('a'):
+       elenco_link.append(link.get('href',messaggio))
       #ottiene elenco con link porno e duplicati
-    for x in lista_soup:
+     for x in lista_soup:
         ottieni_link_porno(x)
         #ottiene l'elenco dei dei link senza duplicati
-    for x in range(0,len(elenco_link)):
-     if "/video" in elenco_link[x]:
+     for x in range(0,len(elenco_link)):
+      if "/video" in elenco_link[x]:
         link_usabili_duplicati.append(elenco_link[x])
-    for x in range(0,len(link_usabili_duplicati)):
+     for x in range(0,len(link_usabili_duplicati)):
         if link_usabili_duplicati[x] not in link_usabili:
             link_usabili.append(link_usabili_duplicati[x])
-    if y<=len(link_usabili):
-     risposta(message,"xvideos.com"+link_usabili[y])
-    else:
+     if y<=len(link_usabili):
+      risposta(message,"xvideos.com"+link_usabili[y])
+     else:
         risposta(message,"L'indice specificato è maggiore di quanti sono i link trovati")
-    markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
-    for x in range(0,len(link_usabili)):
+     markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
+     for x in range(0,len(link_usabili)):
         markup.add(str("/pornsrc "+messaggio_keyboard+ " "+str(x)))
-    bot.reply_to(message, 'Ancora?', reply_markup=markup)
- except UnicodeEncodeError:
+     bot.reply_to(message, 'Ancora?', reply_markup=markup)
+  except UnicodeEncodeError:
      risposta(message,"@Kaykin è un programmatore stupido e non sa implementare i caratteri unicode, come ad esempio 'è', quindi per adesso ti tocca aspettare, oppure vai direttamente su xvideos.com")
- except urllib.error.HTTPError:
+  except urllib.error.HTTPError:
      risposta(message,"http error, e @KayKin non sa il perché")
- except AttributeError:
+  except AttributeError:
      risposta(message,"Il programmatore delle api ha creato un bug con l'update 2.0 e @kaykin sta aspettando un fix perché è pigro e non ha voglia di correggerlo da solo")
 @bot.message_handler(commands=["pornimg"])
-def invia_immagine_porno(message):
+if (safe==True):
+ def invia_immagine_porno(message):
     print("pornimg")
     bot.send_chat_action(message.chat.id, 'upload_photo')
     try:
@@ -381,14 +392,17 @@ def insulta(message):
  try:
         print("insulta")
         messaggio=message.text.replace("/insulta","")
-        lista_insulti=["sei proprio una troia, " + messaggio, "caro, "+messaggio+" sei proprio una testa di cazzo", messaggio+" sei così spaventoso che quando caghi la tua stessa merda dice di fotterti!", messaggio+" sei come la minchia: sempre tra le palle", messaggio+" sei cosi brutto che chi ti guarda vomita", messaggio+", tua madre é peggio di un canestro da basket, gli entrano tutte le palle", messaggio+", io non capisco se sei cretino di tuo oppure ci hai studiato per esserlo", messaggio+",tua mamma ce l'ha così pelosa che per depilarsela deve chiamare la guardia forestale", messaggio+",come ti senti se ti dico che sei solo uno schizzo di sborra di tuo padre?", messaggio+",dall'alito sembra che ti si sia arenato il cadavere di un'orca in gola", messaggio+",sei cosi testa di cazzo che quando un'uomo pensa a te puo diventare gay!", messaggio+",tua madre è come Buffon, ha sempre palle tra le mani", messaggio+",prova a trattenere il respiro cinque minuti così tutti si accorgeranno che l'aria che respiriamo è migliorata"]
+        lista_insulti=[messaggio+"Sei come la minchia: sempre tra le palle",messaggio+"Quando Dio diede l'intelligenza all'umanità tu dov'eri? Al cesso!?",messaggio+"Sei cosi brutto che chi ti guarda vomita",messaggio+"Sei cosi scemo che guardi pure peppa pig."+messaggio+"Tua madre é peggio di un canestro da basket, gli entrano tutte le palle",messaggio+"Sei così brutto che quando sei nato tua mamma ha inviato i biglietti di scuse a tutti."+messaggio+"""Di solito si dice Scusate le spalle.. tu
+        invece devi dire "Scusate la faccia!""",messaggio+"Tua mamma ce l'ha così pelosa che per depilarsela deve chiamare la guardia forestale",messaggio+"Come ti senti se ti dico che sei solo uno schizzo di sborra di tuo padre?",messaggio+"Di a tua madre di smettere di cambiare rossetto! Ho il pisello che sembra un arcobaleno!",messaggio+"Lo sai perchè sulla bandiera della Mongolia c'é la tua faccia? Perché sei il re dei mongoloidi",messaggio+"""Dall'alito sembra che ti sia arenato il
+        cadavere di un' orca in gola""",messaggio+"Sei cosi brutto ma cosi brutto che tua mamma appena ti ha fatto pensava che fossi uscito dal culo",messaggio+"Le tue gambe sono così pelose che per farti la ceretta devi affittare un tagliaerba",messaggio+"Tua madre è come Buffon, ha sempre palle tra le mani", messaggio+"Sai contare fino ad un trilione? Allora prima di parlare.. comincia la conta!",messaggio+"""Prova a trattenere il respiro cinque minuti così tutti si accorgeranno che l'aria
+        che respiriamo è migliorata""",messaggio+"Se Dio ha creato l'ignoranza protesta, perchè ne sei l'unico beneficiario",messaggio+"Meglio se non pensi, altrimenti il tuo cervello va in carenza d'ossigeno",messaggio+"Sai che cos'è una disgrazia? Conoscerti e incontrarti"]
         if messaggio != "":
            risposta(message, random.choice(lista_insulti))
         else:
            risposta(message,"aggiungi un nome o qualcuno da insultare dopo il comando(ad esempio /insulta mario), coglione!")
  except Exception as e:
         print(str(e)+" in insulta")
-#the following loop is made to prevent bot crashes, as they are very frequent
+#the following loop has been made to prevent bot crashes, as they are very frequent
 while True:
  try:
   bot.polling(none_stop=False)
