@@ -19,10 +19,15 @@ from telebot import util
 from os import listdir
 from os.path import isfile, join
 from bs4 import BeautifulSoup
-try:
-    API=sys.argv[1]
-except Exception as e:
-    print("You must provide a telegram api key as argument")
+#try:
+#    API=sys.argv[1]
+#except Exception as e:
+#    print("You must provide a telegram api key as argument")
+if "safe" in sys.argv:
+    safe=True
+    print("Safe mode enabled\n")
+else:
+    safe=False
 bot = telebot.TeleBot(API)
 user_dict={}
 search_path =os.getcwd()
@@ -71,11 +76,7 @@ def invia_comandi(message):
 /decrypt""")
 @bot.message_handler(commands=["citazione"])
 def invia_citazione(message):
-    elenco_citazioni_himym=["""Ted: Ragazzi, sto per raccontarvi una storia incredibile. La storia di come ho conosciuto vostra madre!
-Figlio di Ted: Abbiamo fatto qualche cosa di male?
-Ted: No!
-Figlia di Ted: E senti, ci vorrà molto?
-Ted: Sì. Venticinque anni fa, prima che diventassi papà, la mia vita era diversa...""", """Sì! Perfetto. Così sarai fidanzato, stapperai lo champagne, farai un brindisi e farai sesso sul pavimento! No, non farlo sul pavimento...""", """Ragazzi, una cosa che imparerete è che non si finisce mai di conoscere la persona con cui si sta. Tutti abbiamo dei segreti, alcuni piacevoli, altri meno piacevoli, altri invece sono strani""", "Una cosa che ho imparato quell'estate è l'inizio di un amore e la fine di un amore per i primi trenta giorni sono incredibilmente simili. Tanto per cominciare passi un sacco di tempo a letto, i tuoi amici non ti sopportano più e giri perennemente in mutande" , "Il baseball, le spogliarelliste, le armi possono anche aiutare, ma l'unica cosa che può guarire un cuore spezzato è il tempo", "Verso i trenta si ha ormai un discreto numero di relazioni alle spalle, ma con la persona con cui si sta si finge che non sia così", """Sai perché non hai dimenticato Lily? Perché te la ricordi ancora nuda. Non puoi dimenticare una donna finché ti ricordi ancora le sue tette: è un dato scientifico. Il cervello del maschio medio può immagazzinare solo un numero limitato di immagini di tette o di meloni... e il tuo disco rigido è saturo di quelle di Lily" , "Ora ti spiegherò il mio sistema per far sì che la mente controlli il corpo. Vedi, tutte le volte che mi sento male, dico al mio corpo che è soltanto un eccesso di splendore e funziona!","Le uniche gnocche che cercano su Internet un uomo, o sono pazze o sono prostitute o sono maschi","Una ragazza può essere pazza purché però sia altrettanto gnocca. Se è pazza tanto così, sarà tanto così gnocca. Se è pazza tanto così, sarà tanto così gnocca. Una ragazza non deve trovarsi al di sotto di questa riga nota anche come diagonale di Vicky-Mendoza", "Ma dico sei impazzita? Questo comporterebbe che io parlassi con una donna con cui sono già andatto a letto, il che francamente è un po' come cambiare l'olio a un'auto a noleggio","Puoi aspettare un mese per il sesso solo se la tua ragazza ha 17 anni e 11 mesi","Se una ragazza è una ex-fidanzata di un fratello, lei è off-limits per sempre fino alla fine dei tempi. Ricorda sempre: con la ex di un fratello non fare il porcello", """Robin: Non posso credere che la mia sorellina voglia perdere la verginità con un pivello con quella crestina orribile in testa! Non è possibile! Dovete aiutarmi a dissuaderla.
+    elenco_citazioni_himym=["""Ma dico sei impazzita? Questo comporterebbe che io parlassi con una donna con cui sono già andatto a letto, il che francamente è un po' come cambiare l'olio a un'auto a noleggio""","""Puoi aspettare un mese per il sesso solo se la tua ragazza ha 17 anni e 11 mesi""","""Se una ragazza è una ex-fidanzata di un fratello, lei è off-limits per sempre fino alla fine dei tempi. Ricorda sempre: con la ex di un fratello non fare il porcello""", """Robin: Non posso credere che la mia sorellina voglia perdere la verginità con un pivello con quella crestina orribile in testa! Non è possibile! Dovete aiutarmi a dissuaderla.
 Marshall: Argomenti per convincere una ragazza a non fare sesso...
 Ted: Io non ne ho nel database!
 Barney: Dissuadere dal fare sesso è contro la mia religione!""", "Una bugia è solo una grande storia che qualcuno ha rovinato﻿ con la verità!", """Lily Aldrin: «Ehi, genio del diritto! Sei pronto a prenderti una pausa di un quarto d'ora!».
