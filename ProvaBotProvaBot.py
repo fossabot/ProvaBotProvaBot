@@ -129,6 +129,7 @@ def coinflip_callback(call):
                 print(str(e)+" in funzione coinflip durante l'invio del messaggio all'utente ")
     else:
         bot.edit_message_text(text=call.from_user.first_name+" ha perso tutto", message_id=call.message.message_id,chat_id=call.message.chat.id)
+    user.key=0 #reset to avoid overbetting from old buttons
  except Exception as e:
      if e == ValueError:
       bot.edit_message_text(text=call.from_user.first_name+" ha inserito qualcosa che non doveva", message_id=call.message.message_id,chat_id=call.message.chat.id)
