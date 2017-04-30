@@ -112,7 +112,7 @@ def coinflip_callback(call):
     user=user_dict[call.message.chat.id]
     user.message=str(call.data)
     coinflip=["Testa","Croce"]
-    if user.key==0:
+    if (user.key*2==0):
         bot.edit_message_text(text="Volevi aver vinto qualcosa eh? Invece no",message_id=call.message.message.id,chat_id=call.message.chat.id)
     elif random.choice(coinflip)==user.message:
         user.key=user.key*2
@@ -128,7 +128,6 @@ def coinflip_callback(call):
          else:
                 print(str(e)+" in funzione coinflip durante l'invio del messaggio all'utente ")
     else:
-        user.key=0
         bot.edit_message_text(text=call.from_user.first_name+" ha perso tutto", message_id=call.message.message_id,chat_id=call.message.chat.id)
  except Exception as e:
      if e == ValueError:
