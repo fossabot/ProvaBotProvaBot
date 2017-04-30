@@ -51,6 +51,7 @@ class User:
         self.encmessage = None
         self.key=None
         self.message=None
+        self.name=None
 @bot.message_handler(commands=["aiuto","start"])
 def invia_comandi(message):
     print("aiuto")
@@ -109,6 +110,7 @@ Da The big bang theory"""
 @bot.callback_query_handler(func=lambda call: True)
 def coinflip_callback(call):
  try:
+  if(call.from_user.first_name==user.name):     
     user=user_dict[call.message.chat.id]
     user.message=str(call.data)
     coinflip=["Testa","Croce"]
@@ -196,6 +198,7 @@ def Testa_o_Croce(message):
     user = User()
     user_dict[message.chat.id] = user
     user.key=float(message.text)
+    user.name=message.from_user.first_name
     markup=types.InlineKeyboardMarkup()
     testa=types.InlineKeyboardButton("Testa",callback_data="Testa")
     croce=types.InlineKeyboardButton("Croce",callback_data="Croce")
