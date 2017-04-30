@@ -25,6 +25,7 @@ except Exception as e:
     print("You must provide a telegram api key as the first argument")
 bot = telebot.TeleBot(API)
 user_dict={}
+money_dict={"chatid":{"user":{}}}
 search_path =os.getcwd()
 def risposta(sender, messaggio):
     bot.send_chat_action(sender.chat.id, action="typing")
@@ -125,6 +126,7 @@ def coinflip_callback(call):
             user.money=int(user.money)
         try:
          bot.edit_message_text(text=call.from_user.first_name+" ha vinto "+str(user.money)+" euro", message_id=call.message.message_id,chat_id=call.message.chat.id)
+         money_dict[call.message.chat.id][call.from_user.first_name]=user.money
         except Exception as e:
          if "400" in str(e):
              splitted_text=str(user.money)
@@ -133,8 +135,9 @@ def coinflip_callback(call):
          else:
                 print(str(e)+" in funzione coinflip durante l'invio del messaggio all'utente ")
      else:
-        bot.edit_message_text(text=call.from_user.first_name+" ha perso tutto", message_id=call.message.message_id,chat_id=call.message.chat.id)
-    user.money=0 #reset to avoid betting from old buttons
+        bot.edit_message_text(text=call.from_user.first_name+" ha perso", message_id=call.message.message_id,chat_id=call.message.chat.id)
+        money_dict[call.message.chat.id][call.from_user.first_name]-=user.money
+     user.money=0 #reset to avoid betting from old buttons
  except Exception as e:
      if e == ValueError:
       bot.edit_message_text(text=call.from_user.first_name+" ha inserito qualcosa che non doveva", message_id=call.message.message_id,chat_id=call.message.chat.id)
@@ -144,7 +147,7 @@ def coinflip_callback(call):
 def ottieni_status_coinflip(message):
  try:
   id_t=message.chat.id
-  print(user_dict)
+  print(money_dict[message.chat.id][message.from_user.first_name])
 
 
 
