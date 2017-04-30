@@ -110,15 +110,11 @@ Da The big bang theory"""
 def coinflip_callback(call):
  try:
     user=user_dict[call.message.chat.id]
-    print(1)
     user.message=str(call.data)
-    print(2)
     coinflip=["Testa","Croce"]
     if (user.key==0):
         bot.edit_message_text(text="Volevi aver vinto qualcosa eh? Invece no",message_id=call.message.message.id,chat_id=call.message.chat.id)
-        print(3)
     elif random.choice(coinflip)==user.message:
-        print(4)
         user.key=user.key*2
         if str(user.key).endswith(".0"):
             user.key=int(user.key)
