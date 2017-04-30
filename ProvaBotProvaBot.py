@@ -67,19 +67,15 @@ def invia_comandi(message):
 /decrypt""")
 @bot.message_handler(commands=["citazione"])
 def invia_citazione(message):
+    print("citazione")
     elenco_citazioni_himym=["""Ma dico sei impazzita? Questo comporterebbe che io parlassi con una donna con cui sono già andatto a letto, il che francamente è un po' come cambiare l'olio a un'auto a noleggio""","""Puoi aspettare un mese per il sesso solo se la tua ragazza ha 17 anni e 11 mesi""","""Se una ragazza è una ex-fidanzata di un fratello, lei è off-limits per sempre fino alla fine dei tempi. Ricorda sempre: con la ex di un fratello non fare il porcello""", """Robin: Non posso credere
- che la mia sorellina voglia perdere la verginità con un pivello con quella crestina orribile in testa! Non è possibile! Dovete aiutarmi a dissuaderla.
-Marshall: Argomenti per convincere una ragazza a non fare sesso...
-Ted: Io non ne ho nel database!
+ che la mia sorellina voglia perdere la verginità con un pivello con quella crestina orribile in testa! Non è possibile! Dovete aiutarmi a dissuaderla.\nMarshall: Argomenti per convincere una ragazza a non fare sesso...\nTed: Io non ne ho nel database!
 Barney: Dissuadere dal fare sesso è contro la mia religione!""", "Una bugia è solo una grande storia che qualcuno ha rovinato﻿ con la verità!", """Lily Aldrin: «Ehi, genio del diritto! Sei pronto a prenderti una pausa di un quarto d'ora!».
 Marshall Eriksen: «Scusa tesoro, devo lavorare e ho bisogno che il sangue vada qui»""", """Ho solo tre cose per cui combatterei: il gancio ostinato di un reggiseno, le accuse di molestia sessuale, tutte scampate, ed infine l'impulso di vomitare quando vedo un uomo che indossa scarpe marroni con un completo nero","A volte la vita va così, scolleghi il cervello per una sera e al mattino ti trovi stroncato dai postumi di una sbornia, con una caviglia slogata e un ananas. Ah.. Non si scopri mai come
 fosse arrivato sul mio comodino ma... era molto buono!""","""Marshall Eriksen: «Sono gnocche!».
 Barney Stinson: «Uh! Avete ancora tanto da imparare! Voi praticamente siete delle vittime dell'Effetto Cheerleader. Grazie della domanda! L'Effetto Cheerleader c'è quando alcune donne sembrano gnocche ma solamente se sono in gruppo. Lo stesso per le Cheerleader. Sembrano delle gnocche ma se poi andiamo a vederle individualmente sono delle gran cozze!».""", "Ah ti prego, tanto è il solito film, non ne posso più! I ragazzi sono come il metrò, se ne perdi uno, tempo 5 minuti ne passa un altro!",
- """Frena! Ci sono solo due motivi per rivederti con una che hai scaricato:
-1. tette
-2. tette finte""", """Barney Stinson: «Sapete perchè amo Halloween? Le ragazze tirano fuori la Pamela Anderson che è in loro almeno per una sera! Se una si veste da strega diventa una sexy strega, se una si da gatta diventa una sexy gatta, da infermiera...».
-Lily Aldrin: «Barney si è capito!».
-Barney Stinson: «...Una sexy infermiera»""", """Robin Scherbatsky: «Scusa come può un costume da zucca essere sexy?».
+ """Frena! Ci sono solo due motivi per rivederti con una che hai scaricato:\n1. tette\n2. tette finte""", """Barney Stinson: «Sapete perchè amo Halloween? Le ragazze tirano fuori la Pamela Anderson che è in loro almeno per una sera! Se una si veste da strega diventa una sexy strega, se una si da gatta diventa una sexy gatta, da infermiera...».\nLily Aldrin: «Barney si è capito!».
+Barney Stinson: «...Una sexy infermiera»\nRobin Scherbatsky: «Scusa come può un costume da zucca essere sexy?».
 Ted Mosby: «Basta solo tagliarlo nei punti strategici»""", """Barney Stinson: «...E' il bello dell'essere sbronzi, si fanno cose che non da sobri uno non farebbe mai».
 Lily Aldrin: «Lo dicono anche quelle che sono venute a letto con te! Cinque?»""", """Trudy: «Sto uscendo da un brutto periodo e forse dovrei fare qualcosa di stupido!».
 Ted Mosby: «Io sono stupido, potresti farti me!»""", "Ragazzi spesso la vita ci offre momenti belli e romantici che la rendono degna di essere vissuta ma c'è un problema: quei momenti passano.. e nascosta dietro l'angolo c'è una strega brutta, cattiva e con i capelli crespi che si chiama realtà", """Ted Mosby: «Ehi Robyn, Marshall ti ha guardato il culo!».
@@ -87,52 +83,23 @@ Robin Scherbatsky: «Mi ha guardato il sedere? Beh, ringrazialo perchè oggi mi 
 Lily Aldrin: «Hai fatto la lampada ai polpacci?».
 Marshall Eriksen: «Ritiro la domanda»""", """obin Scherbatsky: «Quando è morta mia nonna mi sono fatta bionda!».
 Lily Aldrin: «Oh! Due tragedie in un giorno solo!»""", """Barney Stinson: «Ted, le ragazze trovano sexy gli architetti. Pensaci, tu credi qualcosa dal nulla Sei come Dio. E non c'è niente di più attraente di Dio!».
-Ted Mosby: «Hai studiato le sacre scritture?»""", """Marshall Eriksen: «Due ragazzi che sono amici non posso fare il brunch?».
-Ted Mosby: «Perchè è una cosa poco...».
-Robin Scherbatsky: «Virile!».
+Ted Mosby: «Hai studiato le sacre scritture?»""", """Marshall Eriksen: «Due ragazzi che sono amici non posso fare il brunch?».\nTed Mosby: «Perchè è una cosa poco...».\nRobin Scherbatsky: «Virile!».
 Marshall Eriksen: «Non lo è? La colazione invece si, e il pranzo anche. Perchè il brunch non lo è?».
 Ted Mosby: «Non lo so! Un cavallo non è strano e non lo è nemmeno un corno mse se li metti insieme hai l'unicorno!»""", """Ragazzi, guardate bene questa faccia perchè la prossima volta che l'avrete davanti sarà sfigurata in modo assolutamente sexy! Questa è la mia natura, sono un uomo, adoro combattere, fare a pugni e lordarmi tutto....... me l'appendi così non si stropiccia?""" ]
     elenco_citazioni_tbbt=["""Da quel che so, il sesso non ha avuto aggiornamenti con grafica ad alta definizione e armamenti potenziati!""", "Signore e signori, mentre il signor Kimi in virtù della sua giovinezza e della sua ingenuità è caduto preda dell'inesplicabile bisogno di contatto umano, posso rassicurarvi sul fatto che la mia ricerca continuerà senza interruzione e che le relazioni umane continueranno a sconcertarmi e a farmi schifo. Grazie!","""Sheldon: A volte dimentico che gli altri
-    hanno dei limiti. E’ così triste""", """Sheldon: Cosa avevi di più importante della serata Wii-Bowling?
-Leonard: In realtà ero..
-Sheldon: Era una domanda retorica, niente è più importante della serata Wii-Bowling""", """Sheldon: E se alla fine si ritrovasse con un bambino che non saprà se usare un integrale o un differenziale per trovare l´area sottesa da una curva?
-Leonard: Sono sicuro che lo amerebbe ugualmente.
+    hanno dei limiti. E’ così triste""", """Sheldon: Cosa avevi di più importante della serata Wii-Bowling?\nLeonard: In realtà ero..\nSheldon: Era una domanda retorica, niente è più importante della serata Wii-Bowling""", """Sheldon: E se alla fine si ritrovasse con un bambino che non saprà se usare un integrale o un differenziale per trovare l´area sottesa da una curva?\nLeonard: Sono sicuro che lo amerebbe ugualmente.
 Sheldon: Io non lo amerei""", """Penny: Scusami, hai provato a costruire una macchina per la TAC?
 Sheldon: Non ci ho provato, ci sono riuscito. Per un attimo ho visto l’interno del criceto di mia sorella, Palla di Neve, prima che prendesse fuoco. Questo generò una curiosa espressione a casa nostra, una palla di neve non ha speranza in una TAC""", """Sheldon: Sai qual e’, dal punto di vista statistico, la causa di morte piu’ probabile alla mia eta’?
-Leonard: Per mano del tuo coinquilino?
-Sheldon: Un incidente.
-Leonard: E’ cosi’ che lo faro’ sembrare…""", """Sheldon: Amy, mi stavo chiedendo se dovremmo effettivamente indulgere al coito almeno una volta nella nostra relazione.
-Bazinga.""", """Page: Sono l’Agente Speciale Page, FBI.
-Sheldon: Lei dice di essere l’Agente Speciale Page dell’FBI.
-Page: Ecco il mio distintivo.
+Leonard: Per mano del tuo coinquilino?\nSheldon: Un incidente.\nLeonard: E’ cosi’ che lo faro’ sembrare…""", """Sheldon: Amy, mi stavo chiedendo se dovremmo effettivamente indulgere al coito almeno una volta nella nostra relazione.
+Bazinga.""", """Page: Sono l’Agente Speciale Page, FBI.\nSheldon: Lei dice di essere l’Agente Speciale Page dell’FBI.\nPage: Ecco il mio distintivo.
 Sheldon: Ed ecco il mio…tesserino di membro della Justice League. Ma questo non prova che io conosca Batman""", """Leonard: No, sul serio, credo di aver finalmente capito qual e’ il mio problema con le donne.
-Sheldon: Il capibara e’ il piu’ grande esemplare della famiglia dei roditori.
-Leonard: E questo cosa c’entra con i miei problemi con le donne?
+Sheldon: Il capibara e’ il piu’ grande esemplare della famiglia dei roditori.\nLeonard: E questo cosa c’entra con i miei problemi con le donne?
 Sheldon: Niente. Era un tentativo disperato di proporre un argomento alternativo""", "Sheldon: Gesù, invece, in realtà è nato in estate. Il giorno della sua nascita è stato spostato per coincidere con la tradizionale ricorrenza pagana in cui si celebrava il solstizio d’inverno accendendo fuochi e sgozzando capretti. Il che, a dirla tutta, sembra molto piu’ divertente di dodici ore in chiesa con mia madre, seguite da una semplice torta di frutta secca", """Howard: E tu pensi di poter sopportare
- Sheldon?
-Raj: Beh, sono Hindu. La mia religione mi insegna che se soffrirò in questa vita sarò ricompensato nella prossima. Tre mesi al Polo Nord con Sheldon e rinascerò come un miliardario superdotato con le ali""", """Leonard: Ok, hai davvero bisogno della tessera di membro onorario della Justice League of America?
-Sheldon: E’ stata in tutti i miei portafogli da quando avevo cinque anni.
-Leonard: Perchè?
-Sheldon: Dice: “Tenere sempre con sé”. E’ proprio qui, sotto l’autografo di Batman""", """Penny: Sheldon, cosa vuoi?
-Sheldon: Una Coca Cola Light.
-Penny: Per favore, puoi ordinare un cocktail? Devo fare pratica con gli alcolici!
-Sheldon:Va bene. Prendo un Virgin Cuba Libre.
-Penny: Cioè rum e coca senza il rum.
-Sheldon: Si.
-Penny: Quindi… Coca.
+ Sheldon?\nRaj: Beh, sono Hindu. La mia religione mi insegna che se soffrirò in questa vita sarò ricompensato nella prossima. Tre mesi al Polo Nord con Sheldon e rinascerò come un miliardario superdotato con le ali""", """Leonard: Ok, hai davvero bisogno della tessera di membro onorario della Justice League of America?
+Sheldon: E’ stata in tutti i miei portafogli da quando avevo cinque anni.\nLeonard: Perchè?\nSheldon: Dice: “Tenere sempre con sé”. E’ proprio qui, sotto l’autografo di Batman""", """Penny: Sheldon, cosa vuoi?\nSheldon: Una Coca Cola Light.\nPenny: Per favore, puoi ordinare un cocktail? Devo fare pratica con gli alcolici!\nSheldon:Va bene. Prendo un Virgin Cuba Libre.\nPenny: Cioè rum e coca senza il rum.\nSheldon: Si.\nPenny: Quindi… Coca.
 Sheldon: Si. Me la faresti light?""", """Sheldon: Sai come faccio a sapere che non siamo dentro Matrix?
-Leonard: Come?
-Sheldon: Se lo fossimo, il cibo sarebbe migliore""", """Penny: Senti, perchè non ti compriamo questo robot e ce ne andiamo a casa?
-Sheldon: Voglio quello lì.
-Penny: Ok, puoi avere quello.
-Leonard: Oh, ma andiamo… Ci giocherà due volte e poi finirà nell’armadio con tutte le altre cianfrusaglie.
-Penny: Compragli quel robot, Leonard!
-Sheldon: Posso prendere anche questo fumetto?
-Penny: Certo che puoi.""", "Sheldon: Che computer possiede? E la prego non mi dica “uno bianco”", """Leonard: Quindi l’intera comunita’ scientifica deve crederti sulla parola?
-Sheldon: Non devono, ma dovrebbero.""", """Sheldon: Invece di una centrifuga al titanio, i miei genitori mi regalarono… E’ difficile da dire… Mi regalarono… una mini-moto da cross.
-Penny: No!
-Sheldon: Quale ragazzino di 12 anni vorrebbe mai una mini-moto da cross?
-Penny:Tutti?"""]
+Leonard: Come?\nSheldon: Se lo fossimo, il cibo sarebbe migliore""", """Penny: Senti, perchè non ti compriamo questo robot e ce ne andiamo a casa?\nSheldon: Voglio quello lì.\nPenny: Ok, puoi avere quello.\nLeonard: Oh, ma andiamo… Ci giocherà due volte e poi finirà nell’armadio con tutte le altre cianfrusaglie.\nPenny: Compragli quel robot, Leonard!\nSheldon: Posso prendere anche questo fumetto?\nPenny: Certo che puoi.""", "Sheldon: Che computer possiede? E la prego non mi dica “uno bianco”",
+"""Leonard:Quindi l’intera comunita’ scientifica deve crederti sulla parola?\n Sheldon: Non devono, ma dovrebbero.""", """Sheldon: Invece di una centrifuga al titanio, i miei genitori mi regalarono… E’ difficile da dire… Mi regalarono… una mini-moto da cross.\nPenny: No!\nSheldon: Quale ragazzino di 12 anni vorrebbe mai una mini-moto da cross?\nPenny:Tutti?"""]
     random_himym=random.choice(elenco_citazioni_himym)+"""
 Da How I met your mother"""
     random_tbbt=random.choice(elenco_citazioni_tbbt)+"""
@@ -324,7 +291,7 @@ def cerca_porno(message,y=0):
   except urllib.error.HTTPError:
      risposta(message,"http error, e @KayKin non sa il perché")
   except AttributeError:
-     risposta(message,"Il programmatore delle api ha creato un bug con l'update 2.0 e @kaykin sta aspettando un fix perché è pigro e non ha voglia di correggerlo da solo")
+     risposta(message,"Il programmatore delle api di questo bot ha creato un bug con l'update 2.0 e @kaykin sta aspettando un fix perché è pigro e non ha voglia di correggerlo da solo")
 @bot.message_handler(commands=["cibo"])
 def invia_cibo(message):
     print("cibo")
@@ -357,10 +324,10 @@ def insulta(message):
  try:
         print("insulta")
         messaggio=message.text.replace("/insulta","")
-        lista_insulti=[messaggio+" Sei come la minchia: sempre tra le palle",messaggio+" Quando Dio diede l'intelligenza all'umanità tu dov'eri? Al cesso!?",messaggio+" Sei cosi brutto che chi ti guarda vomita",messaggio+" Sei cosi scemo che guardi pure peppa pig."+messaggio+" Tua madre é peggio di un canestro da basket, gli entrano tutte le palle",messaggio+" Sei così brutto che quando sei nato tua mamma ha inviato i biglietti di scuse a tutti."+messaggio+""" Di solito si dice Scusate le
-        spalle.. tu invece devi dire "Scusate la faccia!""",messaggio+" Tua mamma ce l'ha così pelosa che per depilarsela deve chiamare la guardia forestale",messaggio+" Come ti senti se ti dico che sei solo uno schizzo di sborra di tuo padre?",messaggio+" Di a tua madre di smettere di cambiare rossetto! Ho il pisello che sembra un arcobaleno!",messaggio+" Lo sai perchè sulla bandiera della Mongolia c'é la tua faccia? Perché sei il re dei mongoloidi",messaggio+""" Dall'alito sembra che ti sia
-        arenato il cadavere di un' orca in gola""",messaggio+" Sei cosi brutto ma cosi brutto che tua mamma appena ti ha fatto pensava che fossi uscito dal culo",messaggio+" Le tue gambe sono così pelose che per farti la ceretta devi affittare un tagliaerba",messaggio+" Tua madre è come Buffon, ha sempre palle tra le mani", messaggio+" Sai contare fino ad un trilione? Allora prima di parlare.. comincia la conta!",messaggio+""" Prova a trattenere il respiro cinque minuti così tutti si
-        accorgeranno che l'aria che respiriamo è migliorata""",messaggio+" Se Dio ha creato l'ignoranza protesta, perchè ne sei l'unico beneficiario",messaggio+" Meglio se non pensi, altrimenti il tuo cervello va in carenza d'ossigeno",messaggio+" Sai che cos'è una disgrazia? Conoscerti e incontrarti"]
+        lista_insulti=[messaggio+" sei come la minchia: sempre tra le palle",messaggio+" quando Dio diede l'intelligenza all'umanità tu dov'eri? Al cesso!?",messaggio+" sei cosi brutto che chi ti guarda vomita",messaggio+" sei cosi scemo che guardi pure peppa pig."+messaggio+" tua madre é peggio di un canestro da basket, gli entrano tutte le palle",messaggio+" sei così brutto che quando sei nato tua mamma ha inviato i biglietti di scuse a tutti."+messaggio+""" di solito si dice Scusate le
+        spalle.. tu invece devi dire "Scusate la faccia!""",messaggio+" tua mamma ce l'ha così pelosa che per depilarsela deve chiamare la guardia forestale",messaggio+" come ti senti se ti dico che sei solo uno schizzo di sborra di tuo padre?",messaggio+" di a tua madre di smettere di cambiare rossetto! Ho il pisello che sembra un arcobaleno!",messaggio+" lo sai perchè sulla bandiera della Mongolia c'é la tua faccia? Perché sei il re dei mongoloidi",messaggio+""" dall'alito sembra che ti sia
+        arenato il cadavere di un' orca in gola""",messaggio+" sei cosi brutto ma cosi brutto che tua mamma appena ti ha fatto pensava che fossi uscito dal culo",messaggio+" le tue gambe sono così pelose che per farti la ceretta devi affittare un tagliaerba",messaggio+" tua madre è come Buffon, ha sempre palle tra le mani", messaggio+" sai contare fino ad un trilione? Allora prima di parlare.. comincia la conta!",messaggio+""" prova a trattenere il respiro cinque minuti così tutti si
+        accorgeranno che l'aria che respiriamo è migliorata""",messaggio+" se Dio ha creato l'ignoranza protesta, perchè ne sei l'unico beneficiario",messaggio+" meglio se non pensi, altrimenti il tuo cervello va in carenza d'ossigeno",messaggio+" sai che cos'è una disgrazia? Conoscerti e incontrarti"]
         if messaggio != "":
            risposta(message, random.choice(lista_insulti))
         else:
