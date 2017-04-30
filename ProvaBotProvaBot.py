@@ -51,7 +51,6 @@ class User:
         self.encmessage = None
         self.key=None
         self.message=None
-class Name(User):        
         self.name=None
         self.name.money=None
 @bot.message_handler(commands=["aiuto","start"])
