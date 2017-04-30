@@ -48,11 +48,11 @@ if os.path.isfile(search_path+"/nope.jpg") ==True:
 print("Done! The bot is ready and operative :)")
 class User:
     def __init__(self):
-        self.encmessage = None
+        self.encmessage=None
         self.key=None
         self.message=None
         self.name=None
-        self.money
+        self.money=None
 @bot.message_handler(commands=["aiuto","start"])
 def invia_comandi(message):
     print("aiuto")
