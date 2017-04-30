@@ -112,7 +112,7 @@ def coinflip_callback(call):
     user=user_dict[call.message.chat.id]
     user.message=str(call.data)
     coinflip=["Testa","Croce"]
-    if (user.key==0):
+    if (user.key*2==0):
         bot.edit_message_text(text="Volevi aver vinto qualcosa eh? Invece no",message_id=call.message.message.id,chat_id=call.message.chat.id)
     elif random.choice(coinflip)==user.message:
         user.key=user.key*2
@@ -195,10 +195,7 @@ def Testa_o_Croce(message):
    try:
     user = User()
     user_dict[message.chat.id] = user
-    if message.text=="0":
-        user.key=0
-    else:
-        user.key=float(message.text)
+    user.key=float(message.text)
     markup=types.InlineKeyboardMarkup()
     testa=types.InlineKeyboardButton("Testa",callback_data="Testa")
     croce=types.InlineKeyboardButton("Croce",callback_data="Croce")
