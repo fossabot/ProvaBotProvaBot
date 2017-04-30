@@ -52,6 +52,7 @@ class User:
         self.key=None
         self.message=None
         self.name=None
+        self.money
 @bot.message_handler(commands=["aiuto","start"])
 def invia_comandi(message):
     print("aiuto")
@@ -112,26 +113,26 @@ def coinflip_callback(call):
  try:
     user=user_dict[call.message.chat.id]
     user.message=str(call.data)
-    if(call.from_user.first_name==user.name):
+    if(call.from_user.first_name==user.name): #avoid other people in groups to be able to click your buttons
      coinflip=["Testa","Croce"]
-     if (user.key==0):
+     if (user.money==0):
         bot.edit_message_text(text="Volevi aver vinto qualcosa eh? Invece no",message_id=call.message.message_id,chat_id=call.message.chat.id)
      elif random.choice(coinflip)==user.message:
-        user.key=user.key*2
-        if str(user.key).endswith(".0"):
-            user.key=int(user.key)
+        user.money=user.money*2
+        if str(user.money).endswith(".0"):
+            user.money=int(user.money)
         try:
-         bot.edit_message_text(text=call.from_user.first_name+" ha vinto "+str(user.key)+" euro", message_id=call.message.message_id,chat_id=call.message.chat.id)
+         bot.edit_message_text(text=call.from_user.first_name+" ha vinto "+str(user.money)+" euro", message_id=call.message.message_id,chat_id=call.message.chat.id)
         except Exception as e:
          if "400" in str(e):
-             splitted_text=str(user.key)
+             splitted_text=str(user.money)
              for text in splitted_text:
                  bot.send_message(call.message.chat.id,text)
          else:
                 print(str(e)+" in funzione coinflip durante l'invio del messaggio all'utente ")
      else:
         bot.edit_message_text(text=call.from_user.first_name+" ha perso tutto", message_id=call.message.message_id,chat_id=call.message.chat.id)
-    user.key=0 #reset to avoid overbetting from old buttons
+    user.money=0 #reset to avoid betting from old buttons
  except Exception as e:
      if e == ValueError:
       bot.edit_message_text(text=call.from_user.first_name+" ha inserito qualcosa che non doveva", message_id=call.message.message_id,chat_id=call.message.chat.id)
@@ -197,7 +198,7 @@ def Testa_o_Croce(message):
    try:
     user = User()
     user_dict[message.chat.id] = user
-    user.key=float(message.text)
+    user.money=float(message.text)
     user.name=message.from_user.first_name
     markup=types.InlineKeyboardMarkup()
     testa=types.InlineKeyboardButton("Testa",callback_data="Testa")
