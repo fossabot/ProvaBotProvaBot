@@ -52,7 +52,7 @@ class User:
         self.key=None
         self.message=None
         self.name=None
-        self.money
+        self.name.money=None
 @bot.message_handler(commands=["aiuto","start"])
 def invia_comandi(message):
     print("aiuto")
@@ -115,29 +115,42 @@ def coinflip_callback(call):
     user.message=str(call.data)
     if(call.from_user.first_name==user.name): #avoid other people in groups to be able to click your buttons
      coinflip=["Testa","Croce"]
-     if (user.money==0):
+     if (user.name.money==0):
         bot.edit_message_text(text="Volevi aver vinto qualcosa eh? Invece no",message_id=call.message.message_id,chat_id=call.message.chat.id)
      elif random.choice(coinflip)==user.message:
-        user.money=user.money*2
-        if str(user.money).endswith(".0"):
-            user.money=int(user.money)
+        user.name.money=user.name.money*2
+        if str(user.name.money).endswith(".0"):
+            user.name.money=int(user.name.money)
         try:
-         bot.edit_message_text(text=call.from_user.first_name+" ha vinto "+str(user.money)+" euro", message_id=call.message.message_id,chat_id=call.message.chat.id)
+         bot.edit_message_text(text=call.from_user.first_name+" ha vinto "+str(user.name.money)+" euro", message_id=call.message.message_id,chat_id=call.message.chat.id)
         except Exception as e:
          if "400" in str(e):
-             splitted_text=str(user.money)
+             splitted_text=str(user.name.money)
              for text in splitted_text:
                  bot.send_message(call.message.chat.id,text)
          else:
                 print(str(e)+" in funzione coinflip durante l'invio del messaggio all'utente ")
      else:
         bot.edit_message_text(text=call.from_user.first_name+" ha perso tutto", message_id=call.message.message_id,chat_id=call.message.chat.id)
-    user.money=0 #reset to avoid betting from old buttons
+    user.name.money=0 #reset to avoid betting from old buttons
  except Exception as e:
      if e == ValueError:
       bot.edit_message_text(text=call.from_user.first_name+" ha inserito qualcosa che non doveva", message_id=call.message.message_id,chat_id=call.message.chat.id)
      else:
       print(str(e)+" in coinflip")
+@bot.message_handler(commands=["coinflip_status"])
+def ottieni_status_coinflip(message):
+ try:
+  id_t=message.chat.id
+  print(user_dict)
+
+
+
+
+
+
+ except Exception as e:
+    print(str(e))
 @bot.message_handler(commands=["encrypt"])
 def informa(message):
     msg=bot.send_message(message.chat.id,"Inserisci un messaggio da criptare")
@@ -198,7 +211,7 @@ def Testa_o_Croce(message):
    try:
     user = User()
     user_dict[message.chat.id] = user
-    user.money=float(message.text)
+    user.name.money=float(message.text)
     user.name=message.from_user.first_name
     markup=types.InlineKeyboardMarkup()
     testa=types.InlineKeyboardButton("Testa",callback_data="Testa")
@@ -286,7 +299,7 @@ def cerca_porno(message,y=0):
       risposta(message,"xvideos.com"+link_usabili[y])
      else:
         risposta(message,"L'indice specificato è maggiore di quanti sono i link trovati")
-     markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
+     markup = types.ReplyKeyboardMarkup(one_time_keyboard=True,selective=True)
      for x in range(0,len(link_usabili)):
         markup.add(str("/pornsrc "+messaggio_keyboard+ " "+str(x)))
      bot.reply_to(message, 'Ancora?', reply_markup=markup)
