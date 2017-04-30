@@ -110,13 +110,13 @@ Da The big bang theory"""
 @bot.callback_query_handler(func=lambda call: True)
 def coinflip_callback(call):
  try:
-  if(call.from_user.first_name==user.name):     
     user=user_dict[call.message.chat.id]
     user.message=str(call.data)
-    coinflip=["Testa","Croce"]
-    if (user.key==0):
+    if(call.from_user.first_name==user.name):
+     coinflip=["Testa","Croce"]
+     if (user.key==0):
         bot.edit_message_text(text="Volevi aver vinto qualcosa eh? Invece no",message_id=call.message.message_id,chat_id=call.message.chat.id)
-    elif random.choice(coinflip)==user.message:
+     elif random.choice(coinflip)==user.message:
         user.key=user.key*2
         if str(user.key).endswith(".0"):
             user.key=int(user.key)
@@ -129,7 +129,7 @@ def coinflip_callback(call):
                  bot.send_message(call.message.chat.id,text)
          else:
                 print(str(e)+" in funzione coinflip durante l'invio del messaggio all'utente ")
-    else:
+     else:
         bot.edit_message_text(text=call.from_user.first_name+" ha perso tutto", message_id=call.message.message_id,chat_id=call.message.chat.id)
     user.key=0 #reset to avoid overbetting from old buttons
  except Exception as e:
