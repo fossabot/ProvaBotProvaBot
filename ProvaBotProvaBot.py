@@ -29,7 +29,7 @@ search_path =os.getcwd()
 def risposta(sender, messaggio):
     bot.send_chat_action(sender.chat.id, action="typing")
     bot.send_message(sender.chat.id, messaggio)
-lista_cartelle=["/playmates","/strisce","/cibo","/xkcd"]
+lista_cartelle=["/playmates","/strisce","/cibo","/xkcd","/videoporno"]
 #check if folders exist
 print("inizializzation, this may take a while...\n")
 for x in lista_cartelle:
@@ -43,6 +43,7 @@ lista_playmate=[f for f in listdir(search_path+"/playmates") if isfile(join(sear
 lista_cibo=[f for f in listdir(search_path+"/cibo") if isfile(join(search_path+"/cibo", f))]
 lista_strisce = [f for f in listdir(search_path+"/strisce") if isfile(join(search_path+"/strisce", f))]
 lista_xkcd= [f for f in listdir(search_path+"/xkcd") if isfile(join(search_path+"/xkcd", f))]
+lista_videoporno= [f for f in listdir(search_path+"/videoporno") if isfile(join(search_path+"/videoporno", f))]
 if os.path.isfile(search_path+"/nope.jpg") ==True:
     os.remove(search_path+"/nope.jpg")
 print("Done! The bot is ready and operative :)")
@@ -221,6 +222,51 @@ def invia_playmate(message):
   except Exception as e:
      risposta(message,"si è verificato un errore")
      print(str(e)+" in playmate")
+@bot.message_handler(commands=["pornvid"])
+def invia_video_porno(message):
+     print("pornvid")
+     bot.send_chat_action(message.chat.id, 'upload_video')
+     try:
+      bot.send_video(message.chat.id,open(search_path+"/videoporno/"+random.choice(lista_videoporno),'rb'))
+     except requests.exceptions.ChunkedEncodingError:
+         print("ChunkedEncodingError in pornvid")
+         risposta(message,"Si Ã¨ verificato un errore, contatta @Kaykin se vuoi/puoi, oppure riprova")
+     except telebot.apihelper.ApiException:
+         print("ApiException in pornvid")
+         risposta(message,"Si Ã¨ verificato un errore, contatta @kaykin se vuoi/puoi, oppure riprova")
+@bot.message_handler(commands=["download_motherless"])
+def download_motherless(message):
+ try:
+    print("download_motherless")
+    tome=str(message.chat.id)+str(int(time.time()))
+    messaggio=message.text.replace("/download_motherless ","")
+    messaggio=messaggio.replace("http://motherless.com/","")
+    messaggio=messaggio.replace("https://motherless.com/","")
+    messaggio=messaggio.replace("https://wwww.motherless.com/","")
+    messaggio=messaggio.replace("http://www.motherless.com/","")
+    os.system("wget -q -O "+tome+".mp4 http://cdn4.videos.motherlessmedia.com/videos/"+messaggio+".mp4" )
+    while True:
+        if (os.path.isfile(search_path+"/"+tome+".mp4")==True):
+            break
+    bot.send_chat_action(message.chat.id, 'upload_video')
+    try:
+     bot.send_video(message.chat.id,open(search_path+"/"+tome+".mp4","rb"))
+    except requests.exceptions.ChunkedEncodingError:
+        print("ChunkedEncodingError in pornvid")
+        risposta(message,"Si Ã¨ verificato un errore, contatta @Kaykin se vuoi/puoi, oppure riprova")
+        os.remove(search_path+"/"+tome+".mp4")
+        os.system("rm *"+tome+"*")
+    except telebot.apihelper.ApiException:
+        print("ApiException in pornvid")
+        risposta(message,"Si Ã¨ verificato un errore, contatta @kaykin se vuoi/puoi, oppure riprova")
+        os.remove(search_path+"/"+tome+".mp4")
+        os.system("rm *"+tome+"*")
+    os.remove(search_path+"/"+tome+".mp4")
+ except Exception as e:
+   risposta(message,"Si è verificato un errore, contatta @kaykin se vuoi/puoi, oppure riprova")
+   os.remove(search_path+"/"+tome+".mp4")
+   os.system("rm *"+tome+"*")
+   print(str(e)+" in download motherless")
 @bot.message_handler(commands=["pornsrc"])
 def cerca_porno(message,y=0):
   try:
