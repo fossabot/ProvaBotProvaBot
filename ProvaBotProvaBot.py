@@ -12,6 +12,7 @@ import os.path
 import shutil
 import sys
 import json
+import argparse
 from apiclient.discovery import build
 from cryptography.fernet import Fernet
 from telebot import types
@@ -19,13 +20,15 @@ from telebot import util
 from os import listdir
 from os.path import isfile, join
 from bs4 import BeautifulSoup
-try:
-    API=sys.argv[1]
-except Exception as e:
-    print("You must provide a telegram api key as the first argument")
-bot = telebot.TeleBot(API)
+ap = argparse.ArgumentParser()
+ap.add_argument("-k", "--key", required=True,type=str,
+        help="Telegram bot key")
+ap.add_argument("-f", "--working-folder", required=False,type=str,default=os.getcwd(),
+        help="set the bot's working-folder")
+args = vars(ap.parse_args())
+bot = telebot.TeleBot(args["key"])
 user_dict={}
-search_path =os.getcwd()
+search_path=args["working_folder"]
 def risposta(sender, messaggio):
     bot.send_chat_action(sender.chat.id, action="typing")
     bot.send_message(sender.chat.id, messaggio)
@@ -239,12 +242,12 @@ def download_motherless(message):
  try:
     print("download_motherless")
     tome=str(message.chat.id)+str(int(time.time()))
-    messaggio=message.text.replace("/download_motherless ","")
+    messaggio=message.text.split(" ")[1]
     messaggio=messaggio.replace("http://motherless.com/","")
     messaggio=messaggio.replace("https://motherless.com/","")
     messaggio=messaggio.replace("https://wwww.motherless.com/","")
     messaggio=messaggio.replace("http://www.motherless.com/","")
-    os.system("wget -q -O "+tome+".mp4 http://cdn4.videos.motherlessmedia.com/videos/"+messaggio+".mp4" )
+    urllib.request.urlretrieve("http://cdn4.videos.motherlessmedia.com/videos/"+messaggio+".mp4", search_path+tome+".mp4")
     while True:
         if (os.path.isfile(search_path+"/"+tome+".mp4")==True):
             break
@@ -255,26 +258,53 @@ def download_motherless(message):
         print("ChunkedEncodingError in pornvid")
         risposta(message,"Si Ã¨ verificato un errore, contatta @Kaykin se vuoi/puoi, oppure riprova")
         os.remove(search_path+"/"+tome+".mp4")
-        os.system("rm *"+tome+"*")
+        os.system("rm "+search_path+tome+"*")
     except telebot.apihelper.ApiException:
         print("ApiException in pornvid")
         risposta(message,"Si Ã¨ verificato un errore, contatta @kaykin se vuoi/puoi, oppure riprova")
         os.remove(search_path+"/"+tome+".mp4")
-        os.system("rm *"+tome+"*")
+        os.system("rm "+search_path+tome+"*")
     os.remove(search_path+"/"+tome+".mp4")
  except Exception as e:
    risposta(message,"Si è verificato un errore, contatta @kaykin se vuoi/puoi, oppure riprova")
-   os.remove(search_path+"/"+tome+".mp4")
-   os.system("rm *"+tome+"*")
+   #os.remove(search_path+"/"+tome+".mp4")
+   os.system("rm "+search_path+tome+"*")
    print(str(e)+" in download motherless")
+@bot.message_handler(commands=["download"])
+def download(message):
+ try:
+    print("download")
+    messaggio=message.text.split(" ")[1]
+    estensione=messaggio.split(".")[-1]
+    tome=str(message.chat.id)+str(int(time.time()))
+    urllib.request.urlretrieve(messaggio, search_path+tome+"."+estensione)
+    while True:
+        if (os.path.isfile(search_path+"/"+tome+"."+estensione)==True):
+            break
+    bot.send_chat_action(message.chat.id, 'upload_document')
+    try:
+     bot.send_document(message.chat.id,open(search_path+"/"+tome+"."+estensione,"rb"))
+    except requests.exceptions.ChunkedEncodingError:
+        print("ChunkedEncodingError in download")
+        risposta(message,"Si Ã¨ verificato un errore, contatta @Kaykin se vuoi/puoi, oppure riprova")
+        os.system("rm "+search_path+tome+"*")
+    except telebot.apihelper.ApiException:
+        print("ApiException in download")
+        risposta(message,"Si Ã¨ verificato un errore, contatta @kaykin se vuoi/puoi, oppure riprova")
+        os.system("rm "+search_path+tome+"*")
+    os.system("rm "+search_path+tome+"*")
+ except Exception as e:
+   risposta(message,"Si è verificato un errore, contatta @kaykin se vuoi/puoi, oppure riprova")
+   os.system("rm "+search_path+tome+"*")
+   print(str(e)+" in download")
 @bot.message_handler(commands=["pornsrc"])
 def cerca_porno(message,y=0):
   try:
    print("pornsrc")
    elenco_link=[]
    sito="http://www.xvideos.com/?k="
-   messaggio=message.text.replace("/pornsrc","")
-   if messaggio==("" or "@provabotprovabot"):
+   messaggio=message.text.split(" ")[1]
+   if messaggio==(""):
     risposta(message,"inserisici un termine da cercare insieme a /pornsrc")
    else:
      messaggio=messaggio.lower()
@@ -300,8 +330,6 @@ def cerca_porno(message,y=0):
      sito+=messaggio
      sito2=sito+"&p=2"
      sito3=sito+"&p=3"
-     sito4=sito+"&p=4"
-     sito5=sito+"&p=5"
      def get_html(website):
       req = urllib.request.Request(website, headers={'User-Agent': 'Mozilla/5.0'})
       html = urllib.request.urlopen(req).read()
@@ -310,11 +338,9 @@ def cerca_porno(message,y=0):
      soup1=get_html(sito)
      soup2=get_html(sito2)
      soup3=get_html(sito3)
-     soup4=get_html(sito4)
-     soup5=get_html(sito5)
      link_usabili_duplicati=[]
      link_usabili=[]
-     lista_soup=[soup1,soup2,soup3,soup4,soup5]
+     lista_soup=[soup1,soup2,soup3]
      def ottieni_link_porno(soup):
       for link in soup.find_all('a'):
        elenco_link.append(link.get('href',messaggio))
@@ -373,7 +399,7 @@ def invia_xkcd(message):
 def insulta(message):
  try:
         print("insulta")
-        messaggio=message.text.replace("/insulta","")
+        messaggio=message.text.split(" ")[1]
         lista_insulti=[messaggio+" sei come la minchia: sempre tra le palle",messaggio+" quando Dio diede l'intelligenza all'umanità tu dov'eri? Al cesso!?",messaggio+" sei cosi brutto che chi ti guarda vomita",messaggio+" sei cosi scemo che guardi pure peppa pig."+messaggio+" tua madre é peggio di un canestro da basket, gli entrano tutte le palle",messaggio+" sei così brutto che quando sei nato tua mamma ha inviato i biglietti di scuse a tutti."+messaggio+""" di solito si dice Scusate le
         spalle.. tu invece devi dire "Scusate la faccia!""",messaggio+" tua mamma ce l'ha così pelosa che per depilarsela deve chiamare la guardia forestale",messaggio+" come ti senti se ti dico che sei solo uno schizzo di sborra di tuo padre?",messaggio+" di a tua madre di smettere di cambiare rossetto! Ho il pisello che sembra un arcobaleno!",messaggio+" lo sai perchè sulla bandiera della Mongolia c'é la tua faccia? Perché sei il re dei mongoloidi",messaggio+""" dall'alito sembra che ti sia
         arenato il cadavere di un' orca in gola""",messaggio+" sei cosi brutto ma cosi brutto che tua mamma appena ti ha fatto pensava che fossi uscito dal culo",messaggio+" le tue gambe sono così pelose che per farti la ceretta devi affittare un tagliaerba",messaggio+" tua madre è come Buffon, ha sempre palle tra le mani", messaggio+" sai contare fino ad un trilione? Allora prima di parlare.. comincia la conta!",messaggio+""" prova a trattenere il respiro cinque minuti così tutti si
@@ -384,10 +410,4 @@ def insulta(message):
            risposta(message,"aggiungi un nome o qualcuno da insultare dopo il comando(ad esempio /insulta mario), coglione!")
  except Exception as e:
         print(str(e)+" in insulta")
-#the following loop has been made to prevent bot crashes, as they are very frequent
-while True:
- try:
-  bot.polling(none_stop=False)
- except Exception as e:
-    print("ATTENZIONE ATTENZIONE ATTENZIONE \n \n \n "+str(e))
-    continue
+bot.polling(none_stop=False)
