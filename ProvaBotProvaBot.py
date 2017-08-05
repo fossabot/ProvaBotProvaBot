@@ -28,7 +28,7 @@ ap.add_argument("-f", "--working-folder", required=False,type=str,default=os.get
 args = vars(ap.parse_args())
 bot = telebot.TeleBot(args["key"])
 user_dict={}
-search_path=args["working_folder"]
+bot_path=args["working_folder"]
 def risposta(sender, messaggio):
     bot.send_chat_action(sender.chat.id, action="typing")
     bot.send_message(sender.chat.id, messaggio)
@@ -36,19 +36,19 @@ lista_cartelle=["/playmates","/strisce","/cibo","/xkcd","/videoporno"]
 #check if folders exist
 print("inizializzation, this may take a while...\n")
 for x in lista_cartelle:
-    if os.path.exists(search_path+x)==False:
+    if os.path.exists(bot_path+x)==False:
      print("Manca la cartella "+x.replace("/","")+", la creo inserendoci un file .jpg vuoto")
-     os.makedirs(search_path+x)
-     if os.path.isfile(search_path+"/nope.jpg") ==False:
+     os.makedirs(bot_path+x)
+     if os.path.isfile(bot_path+"/nope.jpg") ==False:
       urllib.request.urlretrieve("http://www.neacuho.org/resource/resmgr/EBoard_Photos/2015-2016/No_Image.jpg", "nope.jpg")
-     shutil.copy2(search_path+"/nope.jpg",search_path+x)
-lista_playmate=[f for f in listdir(search_path+"/playmates") if isfile(join(search_path+"/playmates", f))]
-lista_cibo=[f for f in listdir(search_path+"/cibo") if isfile(join(search_path+"/cibo", f))]
-lista_strisce = [f for f in listdir(search_path+"/strisce") if isfile(join(search_path+"/strisce", f))]
-lista_xkcd= [f for f in listdir(search_path+"/xkcd") if isfile(join(search_path+"/xkcd", f))]
-lista_videoporno= [f for f in listdir(search_path+"/videoporno") if isfile(join(search_path+"/videoporno", f))]
-if os.path.isfile(search_path+"/nope.jpg") ==True:
-    os.remove(search_path+"/nope.jpg")
+     shutil.copy2(bot_path+"/nope.jpg",bot_path+x)
+lista_playmate=[f for f in listdir(bot_path+"/playmates") if isfile(join(bot_path+"/playmates", f))]
+lista_cibo=[f for f in listdir(bot_path+"/cibo") if isfile(join(bot_path+"/cibo", f))]
+lista_strisce = [f for f in listdir(bot_path+"/strisce") if isfile(join(bot_path+"/strisce", f))]
+lista_xkcd= [f for f in listdir(bot_path+"/xkcd") if isfile(join(bot_path+"/xkcd", f))]
+lista_videoporno= [f for f in listdir(bot_path+"/videoporno") if isfile(join(bot_path+"/videoporno", f))]
+if os.path.isfile(bot_path+"/nope.jpg") ==True:
+    os.remove(bot_path+"/nope.jpg")
 print("Done! The bot is ready and operative :)")
 class User:
     def __init__(self):
@@ -218,7 +218,7 @@ def invia_playmate(message):
     print("playmate")
     nome_file=(random.choice(lista_playmate))
     bot.send_chat_action(message.chat.id, 'upload_photo')
-    bot.send_photo(message.chat.id, open(search_path+"/playmates/"+nome_file,'rb'))
+    bot.send_photo(message.chat.id, open(bot_path+"/playmates/"+nome_file,'rb'))
     nome_file=nome_file.replace(".jpg","")
     nome_file=nome_file[6:]
     bot.send_message(message.chat.id,nome_file)
@@ -230,7 +230,7 @@ def invia_video_porno(message):
      print("pornvid")
      bot.send_chat_action(message.chat.id, 'upload_video')
      try:
-      bot.send_video(message.chat.id,open(search_path+"/videoporno/"+random.choice(lista_videoporno),'rb'))
+      bot.send_video(message.chat.id,open(bot_path+"/videoporno/"+random.choice(lista_videoporno),'rb'))
      except requests.exceptions.ChunkedEncodingError:
          print("ChunkedEncodingError in pornvid")
          risposta(message,"Si Ã¨ verificato un errore, contatta @Kaykin se vuoi/puoi, oppure riprova")
@@ -241,61 +241,64 @@ def invia_video_porno(message):
 def download_motherless(message):
  try:
     print("download_motherless")
-    tome=str(message.chat.id)+str(int(time.time()))
-    messaggio=message.text.split(" ")[1]
-    messaggio=messaggio.replace("http://motherless.com/","")
-    messaggio=messaggio.replace("https://motherless.com/","")
-    messaggio=messaggio.replace("https://wwww.motherless.com/","")
-    messaggio=messaggio.replace("http://www.motherless.com/","")
-    urllib.request.urlretrieve("http://cdn4.videos.motherlessmedia.com/videos/"+messaggio+".mp4", search_path+tome+".mp4")
-    while True:
-        if (os.path.isfile(search_path+"/"+tome+".mp4")==True):
-            break
-    bot.send_chat_action(message.chat.id, 'upload_video')
-    try:
-     bot.send_video(message.chat.id,open(search_path+"/"+tome+".mp4","rb"))
-    except requests.exceptions.ChunkedEncodingError:
+    file_identifier=str(message.chat.id)+str(int(time.time()))
+    if ((" " not in message.text)):
+        risposta(message,"Il tuo messaggio è vuoto, devi fornire un video da scaricare")
+    else:
+     messaggio=message.text.split(" ")[1]
+     messaggio=messaggio.replace("http://motherless.com/","")
+     messaggio=messaggio.replace("https://motherless.com/","")
+     messaggio=messaggio.replace("https://wwww.motherless.com/","")
+     messaggio=messaggio.replace("http://www.motherless.com/","")
+     urllib.request.urlretrieve("http://cdn4.videos.motherlessmedia.com/videos/"+messaggio+".mp4",bot_path+file_identifier+".mp4")
+     bot.send_chat_action(message.chat.id, 'upload_video')
+     try:
+      bot.send_video(message.chat.id,open(bot_path+"/"+file_identifier+".mp4","rb"))
+      os.remove(bot_path+"/"+file_identifier+".mp4")
+     except requests.exceptions.ChunkedEncodingError:
         print("ChunkedEncodingError in pornvid")
         risposta(message,"Si Ã¨ verificato un errore, contatta @Kaykin se vuoi/puoi, oppure riprova")
-        os.remove(search_path+"/"+tome+".mp4")
-        os.system("rm "+search_path+tome+"*")
-    except telebot.apihelper.ApiException:
-        print("ApiException in pornvid")
+        os.remove(bot_path+"/"+file_identifier+".mp4")
+     except telebot.apihelper.ApiException:
+        print("ApiException in download_motherless")
         risposta(message,"Si Ã¨ verificato un errore, contatta @kaykin se vuoi/puoi, oppure riprova")
-        os.remove(search_path+"/"+tome+".mp4")
-        os.system("rm "+search_path+tome+"*")
-    os.remove(search_path+"/"+tome+".mp4")
+        os.remove(bot_path+"/"+file_identifier+".mp4")
  except Exception as e:
    risposta(message,"Si è verificato un errore, contatta @kaykin se vuoi/puoi, oppure riprova")
-   #os.remove(search_path+"/"+tome+".mp4")
-   os.system("rm "+search_path+tome+"*")
+   os.remove(bot_path+"/"+file_identifier+".mp4")
    print(str(e)+" in download motherless")
 @bot.message_handler(commands=["download"])
 def download(message):
  try:
     print("download")
-    messaggio=message.text.split(" ")[1]
-    estensione=messaggio.split(".")[-1]
-    tome=str(message.chat.id)+str(int(time.time()))
-    urllib.request.urlretrieve(messaggio, search_path+tome+"."+estensione)
-    while True:
-        if (os.path.isfile(search_path+"/"+tome+"."+estensione)==True):
-            break
-    bot.send_chat_action(message.chat.id, 'upload_document')
-    try:
-     bot.send_document(message.chat.id,open(search_path+"/"+tome+"."+estensione,"rb"))
-    except requests.exceptions.ChunkedEncodingError:
+    if " " not in message.text:
+        risposta(message,"Il tuo messaggio è vuoto, devi fornire un link da scaricare")
+    else:
+     messaggio=message.text.split(" ")[1]
+     if (urllib.parse.urlparse(messaggio)==True):
+      estensione=messaggio.split(".")[-1]
+      file_identifier=str(message.chat.id)+str(int(time.time()))
+      file_size = (urllib.request.urlopen(messaggio)).headers["Content-Length"]
+      if (int(file_size)<1500000000 and file_size!=None):
+       urllib.request.urlretrieve(messaggio,bot_path+file_identifier+"."+estensione)
+       bot.send_chat_action(message.chat.id, 'upload_document')
+       try:
+        bot.send_document(message.chat.id,open(bot_path+"/"+file_identifier+"."+estensione,"rb"))
+        os.remove(bot_path+file_identifier+"."+estensione)
+       except requests.exceptions.ChunkedEncodingError:
         print("ChunkedEncodingError in download")
         risposta(message,"Si Ã¨ verificato un errore, contatta @Kaykin se vuoi/puoi, oppure riprova")
-        os.system("rm "+search_path+tome+"*")
-    except telebot.apihelper.ApiException:
+        os.remove(bot_path+file_identifier+"."+estensione)
+       except telebot.apihelper.ApiException:
         print("ApiException in download")
         risposta(message,"Si Ã¨ verificato un errore, contatta @kaykin se vuoi/puoi, oppure riprova")
-        os.system("rm "+search_path+tome+"*")
-    os.system("rm "+search_path+tome+"*")
+        os.remove(bot_path+file_identifier+"."+estensione)
+      else:
+        risposta(message,"Il file che hai cercato di scaricare è più pesante del limite massimo concesso da Telegram o l'url inviato non permette di stabilire in anticipo le dimensioni del file")
+     else:
+         risposta(message,"Url non valido")
  except Exception as e:
    risposta(message,"Si è verificato un errore, contatta @kaykin se vuoi/puoi, oppure riprova")
-   os.system("rm "+search_path+tome+"*")
    print(str(e)+" in download")
 @bot.message_handler(commands=["pornsrc"])
 def cerca_porno(message,y=0):
@@ -373,7 +376,7 @@ def invia_cibo(message):
     print("cibo")
     bot.send_chat_action(message.chat.id, 'upload_photo')
     try:
-     bot.send_photo(message.chat.id, open(search_path+"/cibo/"+random.choice(lista_cibo),'rb'))
+     bot.send_photo(message.chat.id, open(bot_path+"/cibo/"+random.choice(lista_cibo),'rb'))
     except Exception as e:
       risposta(message,"Si è verificato un errore, contatta @kaykin se vuoi/puoi, oppure riprova")
       print(str(e)+" in cibo")
@@ -382,7 +385,7 @@ def invia_striscia(message):
     print("striscia")
     bot.send_chat_action(message.chat.id, 'upload_photo')
     try:
-     bot.send_photo(message.chat.id, open(search_path+"/strisce/"+random.choice(lista_strisce),'rb'))
+     bot.send_photo(message.chat.id, open(bot_path+"/strisce/"+random.choice(lista_strisce),'rb'))
     except Exception as e:
       risposta(message,"Si è verificato un errore, contatta @kaykin se vuoi/puoi, oppure riprova")
       print(str(e)+" in striscia")
@@ -391,7 +394,7 @@ def invia_xkcd(message):
     print("xkcd")
     bot.send_chat_action(message.chat.id, 'upload_photo')
     try:
-     bot.send_photo(message.chat.id, open(search_path+"/xkcd/"+random.choice(lista_xkcd),'rb'))
+     bot.send_photo(message.chat.id, open(bot_path+"/xkcd/"+random.choice(lista_xkcd),'rb'))
     except Exception as e:
       risposta(message,"Si è verificato un errore, contatta @kaykin se vuoi/puoi, oppure riprova")
       print(str(e)+" in xkcd")
