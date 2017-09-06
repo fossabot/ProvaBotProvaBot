@@ -259,7 +259,7 @@ def download_insta(message):
       if post==True:
           os.system('instaLooter '+'post '+username[0]+" "+bot_path+file_identifier+" "+ "-T "+file_identifier)
           bot.send_chat_action(message.chat.id, 'upload_photo')
-          bot.send_document(message.chat.id,open(bot_path+"/"+file_identifier+"."+estensione,"rb"))
+          bot.send_document(message.chat.id,open(bot_path+"/"+file_identifier+".*","rb"))
       else:
           os.system('instaLooter '+username[0]+" "+bot_path+file_identifier)
           pass
