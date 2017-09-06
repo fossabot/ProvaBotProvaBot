@@ -256,7 +256,8 @@ def download_insta(message):
       os.system("mkdir "+bot_path+file_identifier)
       username=shlex.split(messaggio)
       subprocess.call(['instaLooter',username[1], bot_path+file_identifier])
- except:
+ except Exception as e:
+     print(e)
  finally:
      os.system("rm -r "+ bot_path+file_identifier )
 @bot.message_handler(commands=["download_motherless"])
