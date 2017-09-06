@@ -249,17 +249,15 @@ def download_insta(message):
          risposta(message,"L' utilizzo del comando è /insta post urldelpost o /insta nomeutente")
      else:
       messaggio=message.text.split(" ")[1]
-      if (("www.instagram" in messaggio) or ("http://" in messaggio)):
-          http=True
       if ("post" in messaggio):
           post=True
-          messaggio=message.text.split(" ")[1]
+          messaggio=message.text.split(" ")[2]
       os.system("mkdir "+bot_path+file_identifier)
       username=shlex.split(messaggio)
       if post==True:
-          os.system('instaLooter '+'post '+username[0]+" "+bot_path+file_identifier+" "+ "-T "+file_identifier)
+          os.system('instaLooter '+'post '+str(username[0])+" "+bot_path+file_identifier+" "+ "-T "+file_identifier)
           bot.send_chat_action(message.chat.id, 'upload_photo')
-          bot.send_document(message.chat.id,open(bot_path+file_identifier+"/"+file_identifier+".jpg","rb"))
+          bot.send_photo(message.chat.id,open(bot_path+file_identifier+"/"+file_identifier+".jpg","rb"))
       else:
           os.system('instaLooter '+username[0]+" "+bot_path+file_identifier)
           pass
