@@ -258,7 +258,7 @@ def download_insta(message):
       subprocess.call(['instaLooter',username[1], bot_path+file_identifier])
  except:
  finally:
-      os.system("rm -r "+ bot_path+file_identifier )
+     os.system("rm -r "+ bot_path+file_identifier )
 @bot.message_handler(commands=["download_motherless"])
 def download_motherless(message):
  try:
