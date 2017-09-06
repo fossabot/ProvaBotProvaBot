@@ -248,7 +248,7 @@ def download_insta(message):
          risposta(message,"L' utilizzo del comando è /insta post urldelpost o /insta nomeutente")
      else:
       messaggio=message.text.split(" ")[1]
-      if ("www.instagram" and or "http://" in messaggio):
+      if (("www.instagram" in messaggio) or ("http://" in messaggio)):
           http=True
       if ("post" in messaggio):
           post=True
