@@ -259,7 +259,7 @@ def download_insta(message):
       if post==True:
           os.system('instaLooter '+'post '+username[0]+" "+bot_path+file_identifier+" "+ "-T "+file_identifier)
           bot.send_chat_action(message.chat.id, 'upload_photo')
-          bot.send_document(message.chat.id,open(bot_path+"/"+file_identifier+".*","rb"))
+          bot.send_document(message.chat.id,open(bot_path+file_identifier+"/*.*","rb"))
       else:
           os.system('instaLooter '+username[0]+" "+bot_path+file_identifier)
           pass
@@ -285,7 +285,7 @@ def download_motherless(message):
      urllib.request.urlretrieve("http://cdn4.videos.motherlessmedia.com/videos/"+messaggio+".mp4",bot_path+file_identifier+".mp4")
      bot.send_chat_action(message.chat.id, 'upload_video')
      try:
-      bot.send_video(message.chat.id,open(bot_path+"/"+file_identifier+".mp4","rb"))
+      bot.send_video(message.chat.id,open(bot_path+file_identifier+".mp4","rb"))
      except requests.exceptions.ChunkedEncodingError:
         print("ChunkedEncodingError in pornvid")
         risposta(message,"Si è verificato un errore, riprova")
@@ -294,10 +294,10 @@ def download_motherless(message):
         risposta(message,"Si è verificato un errore, riprova")
  except Exception as e:
    risposta(message,"Si è verificato un errore, riprova")
-   os.remove(bot_path+"/"+file_identifier+".mp4")
+   os.remove(bot_path+file_identifier+".mp4")
    print(str(e)+" in download motherless")
  finally:
-     os.remove(bot_path+"/"+file_identifier+".mp4")
+     os.remove(bot_path+file_identifier+".mp4")
 @bot.message_handler(commands=["download"])
 def download(message):
  try:
@@ -314,7 +314,7 @@ def download(message):
        urllib.request.urlretrieve(messaggio,bot_path+file_identifier+"."+estensione)
        bot.send_chat_action(message.chat.id, 'upload_document')
        try:
-        bot.send_document(message.chat.id,open(bot_path+"/"+file_identifier+"."+estensione,"rb"))
+        bot.send_document(message.chat.id,open(bot_path+file_identifier+"."+estensione,"rb"))
        except requests.exceptions.ChunkedEncodingError:
         print("ChunkedEncodingError in download")
         risposta(message,"Si è verificato un errore, riprova")
