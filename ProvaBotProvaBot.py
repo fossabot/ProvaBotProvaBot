@@ -255,9 +255,17 @@ def download_insta(message):
           messaggio=message.text.split(" ")[1]
       os.system("mkdir "+bot_path+file_identifier)
       username=shlex.split(messaggio)
-      subprocess.call(['instaLooter',username[1], bot_path+file_identifier])
+      if post==True:
+          os.system('instaLooter '+'post '+username[1]+" "+bot_path+file_identifier+" "+ "-T "+file_identifier)
+          bot.send_chat_action(message.chat.id, 'upload_photo')
+          bot.send_document(message.chat.id,open(bot_path+"/"+file_identifier+"."+estensione,"rb"))
+      else:
+          os.system('instaLooter '+username[1]+" "+bot_path+file_identifier)
+          pass
+
  except Exception as e:
      print(e)
+     risposta(message,"Si è verificato un errore, riprova")
  finally:
      os.system("rm -r "+ bot_path+file_identifier)
 @bot.message_handler(commands=["download_motherless"])
