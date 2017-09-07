@@ -263,41 +263,11 @@ def download_insta(message):
                 os.system('instaLooter ' +username[0] + " " + bot_path + file_identifier)
                 shutil.make_archive(file_identifier, 'zip', bot_path + file_identifier)
                 bot.send_document(message.chat.id, open(bot_path + file_identifier + "/" + file_identifier + ".zip", "rb"))
-                pass
-
     except Exception as e:
         print(e)
         risposta(message, "Si è verificato un errore, riprova")
     finally:
         os.system("rm -r " + bot_path + file_identifier)
- try:
-     print("download_insta")
-     http=False
-     post=False
-     file_identifier=str(message.chat.id)+str(int(time.time()))
-     if ((" " not in message.text)):
-         risposta(message,"L' utilizzo del comando è /insta post urldelpost o /insta nomeutente")
-     else:
-      messaggio=message.text.split(" ")[1]
-      if ("post" in messaggio):
-          post=True
-          messaggio=message.text.split(" ")[2]
-      os.system("mkdir "+bot_path+file_identifier)
-      username=shlex.split(messaggio)
-      if post==True:
-          os.system('instaLooter '+'post '+str(username[0])+" "+bot_path+file_identifier+" "+ "-T "+file_identifier)
-          bot.send_chat_action(message.chat.id, 'upload_photo')
-          bot.send_photo(message.chat.id,open(bot_path+file_identifier+"/"+file_identifier+".jpg","rb"))
-      else:
-          os.system('instaLooter '+username[0]+" "+bot_path+file_identifier)
-          pass
-
- except Exception as e:
-     print(e)
-     risposta(message,"Si è verificato un errore, riprova")
- finally:
-     os.system("rm -r "+ bot_path+file_identifier)
->>>>>>> parent of 3739674... beautified code
 @bot.message_handler(commands=["download_motherless"])
 def download_motherless(message):
  try:
