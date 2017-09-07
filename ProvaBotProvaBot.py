@@ -240,7 +240,6 @@ def invia_video_porno(message):
          risposta(message,"Si è verificato un errore, riprova")
 @bot.message_handler(commands=["insta"])
 def download_insta(message):
-<<<<<<< HEAD
     try:
         print("download_insta")
         http = False
@@ -271,9 +270,6 @@ def download_insta(message):
         risposta(message, "Si è verificato un errore, riprova")
     finally:
         os.system("rm -r " + bot_path + file_identifier)
-
-
-=======
  try:
      print("download_insta")
      http=False
