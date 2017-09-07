@@ -299,7 +299,6 @@ def download_motherless(message):
      os.remove(bot_path+file_identifier+".mp4")
 @bot.message_handler(commands=["download"])
 def download(message):
-<<<<<<< HEAD
     try:
         print("download")
         if " " not in message.text:
@@ -333,40 +332,6 @@ def download(message):
         print(str(e) + " in download")
     finally:
         os.remove(bot_path + "/" + file_identifier + ".mp4")
-
-
-=======
- try:
-    print("download")
-    if " " not in message.text:
-        risposta(message,"Il tuo messaggio è vuoto, devi fornire un link da scaricare")
-    else:
-     messaggio=message.text.split(" ")[1]
-     if (urllib.parse.urlparse(messaggio)==True):
-      estensione=messaggio.split(".")[-1]
-      file_identifier=str(message.chat.id)+str(int(time.time()))
-      file_size = (urllib.request.urlopen(messaggio)).headers["Content-Length"]
-      if (int(file_size)<1500000000 and file_size!=None):
-       urllib.request.urlretrieve(messaggio,bot_path+file_identifier+"."+estensione)
-       bot.send_chat_action(message.chat.id, 'upload_document')
-       try:
-        bot.send_document(message.chat.id,open(bot_path+file_identifier+"."+estensione,"rb"))
-       except requests.exceptions.ChunkedEncodingError:
-        print("ChunkedEncodingError in download")
-        risposta(message,"Si è verificato un errore, riprova")
-       except telebot.apihelper.ApiException:
-        print("ApiException in download")
-        risposta(message,"Si è verificato un errore, riprova")
-      else:
-        risposta(message,"Il file che hai cercato di scaricare è più pesante del limite massimo concesso da Telegram o l'url inviato non permette di stabilire in anticipo le dimensioni del file")
-     else:
-         risposta(message,"Url non valido")
- except Exception as e:
-   risposta(message,"Si è verificato un errore, riprova")
-   print(str(e)+" in download")
- finally:
-     os.remove(bot_path+"/"+file_identifier+".mp4")
->>>>>>> parent of 3739674... beautified code
 @bot.message_handler(commands=["pornsrc"])
 def cerca_porno(message,y=0):
   try:
