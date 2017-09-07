@@ -313,14 +313,13 @@ def download_insta(message):
             os.system("mkdir " + bot_path + file_identifier)
             username = shlex.split(messaggio)
             if post == True:
-                os.system('instaLooter ' + 'post ' + str(
-                    username[0]) + " " + bot_path + file_identifier + " " + "-T " + file_identifier)
+                os.system('instaLooter ' + 'post ' + str(username[0]) + " " + bot_path + file_identifier + " " + "-T " + file_identifier)
                 bot.send_chat_action(message.chat.id, 'upload_photo')
-                bot.send_photo(message.chat.id, open(
-                    bot_path + file_identifier + "/" + file_identifier + ".jpg", "rb"))
+                bot.send_photo(message.chat.id, open(bot_path + file_identifier + "/" + file_identifier + ".jpg", "rb"))
             else:
-                os.system('instaLooter ' +
-                          username[0] + " " + bot_path + file_identifier)
+                os.system('instaLooter ' +username[0] + " " + bot_path + file_identifier)
+                shutil.make_archive(file_identifier, 'zip', bot_path + file_identifier)
+                bot.send_document(message.chat.id, open(bot_path + file_identifier + "/" + file_identifier + ".zip", "rb"))
                 pass
 
     except Exception as e:
@@ -383,8 +382,7 @@ def download(message):
                         messaggio, bot_path + file_identifier + "." + estensione)
                     bot.send_chat_action(message.chat.id, 'upload_document')
                     try:
-                        bot.send_document(message.chat.id, open(
-                            bot_path + file_identifier + "." + estensione, "rb"))
+                        bot.send_document(message.chat.id, open(bot_path + file_identifier + "." + estensione, "rb"))
                     except requests.exceptions.ChunkedEncodingError:
                         print("ChunkedEncodingError in download")
                         risposta(message, "Si è verificato un errore, riprova")
