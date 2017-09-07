@@ -262,13 +262,15 @@ def download_insta(message):
                 bot.send_photo(message.chat.id, open(bot_path + file_identifier + "/" + file_identifier + ".jpg", "rb"))
             else:
                 os.system('instaLooter ' +username[0] + " " + bot_path + file_identifier)
-                shutil.make_archive(file_identifier, 'zip', bot_path + file_identifier)
-                bot.send_document(message.chat.id, open(bot_path + file_identifier + "/" + file_identifier + ".zip", "rb"))
+                shutil.make_archive(bot_path + file_identifier, 'zip', bot_path + file_identifier)
+                bot.send_chat_action(message.chat.id, 'upload_document')
+                bot.send_document(message.chat.id, open(bot_path + file_identifier + ".zip", "rb"))
     except Exception as e:
         print(e)
         risposta(message, "Si è verificato un errore, riprova")
     finally:
-        os.system("rm -r " + bot_path + file_identifier)
+        pass
+        os.system("rm -r " + bot_path + "*"+file_identifier+"*")
 @bot.message_handler(commands=["download_motherless"])
 def download_motherless(message):
  try:
