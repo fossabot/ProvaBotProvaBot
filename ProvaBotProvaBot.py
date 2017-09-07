@@ -13,6 +13,8 @@ import shutil
 import sys
 import json
 import argparse
+import shlex
+#import instaLooter as instalooter
 from apiclient.discovery import build
 from cryptography.fernet import Fernet
 from telebot import types
@@ -233,10 +235,42 @@ def invia_video_porno(message):
       bot.send_video(message.chat.id,open(bot_path+"/videoporno/"+random.choice(lista_videoporno),'rb'))
      except requests.exceptions.ChunkedEncodingError:
          print("ChunkedEncodingError in pornvid")
-         risposta(message,"Si Ã¨ verificato un errore, contatta @Kaykin se vuoi/puoi, oppure riprova")
+         risposta(message,"Si è verificato un errore, riprova")
      except telebot.apihelper.ApiException:
          print("ApiException in pornvid")
-         risposta(message,"Si Ã¨ verificato un errore, contatta @kaykin se vuoi/puoi, oppure riprova")
+         risposta(message,"Si è verificato un errore, riprova")
+@bot.message_handler(commands=["insta"])
+def download_insta(message):
+    try:
+        print("download_insta")
+        http = False
+        post = False
+        file_identifier = str(message.chat.id) + str(int(time.time()))
+        if ((" " not in message.text)):
+            risposta(
+                message, "L' utilizzo del comando è /insta post urldelpost o /insta nomeutente")
+        else:
+            messaggio = message.text.split(" ")[1]
+            if ("post" in messaggio):
+                post = True
+                messaggio = message.text.split(" ")[2]
+            os.system("mkdir " + bot_path + file_identifier)
+            username = shlex.split(messaggio)
+            if post == True:
+                os.system('instaLooter ' + 'post ' + str(username[0]) + " " + bot_path + file_identifier + " " + "-T " + file_identifier)
+                bot.send_chat_action(message.chat.id, 'upload_photo')
+                bot.send_photo(message.chat.id, open(bot_path + file_identifier + "/" + file_identifier + ".jpg", "rb"))
+            else:
+                os.system('instaLooter ' +username[0] + " " + bot_path + file_identifier)
+                shutil.make_archive(bot_path + file_identifier, 'zip', bot_path + file_identifier)
+                bot.send_chat_action(message.chat.id, 'upload_document')
+                bot.send_document(message.chat.id, open(bot_path + file_identifier + ".zip", "rb"))
+    except Exception as e:
+        print(e)
+        risposta(message, "Si è verificato un errore, riprova")
+    finally:
+        pass
+        os.system("rm -r " + bot_path + "*"+file_identifier+"*")
 @bot.message_handler(commands=["download_motherless"])
 def download_motherless(message):
  try:
@@ -253,53 +287,54 @@ def download_motherless(message):
      urllib.request.urlretrieve("http://cdn4.videos.motherlessmedia.com/videos/"+messaggio+".mp4",bot_path+file_identifier+".mp4")
      bot.send_chat_action(message.chat.id, 'upload_video')
      try:
-      bot.send_video(message.chat.id,open(bot_path+"/"+file_identifier+".mp4","rb"))
-      os.remove(bot_path+"/"+file_identifier+".mp4")
+      bot.send_video(message.chat.id,open(bot_path+file_identifier+".mp4","rb"))
      except requests.exceptions.ChunkedEncodingError:
         print("ChunkedEncodingError in pornvid")
-        risposta(message,"Si Ã¨ verificato un errore, contatta @Kaykin se vuoi/puoi, oppure riprova")
-        os.remove(bot_path+"/"+file_identifier+".mp4")
+        risposta(message,"Si è verificato un errore, riprova")
      except telebot.apihelper.ApiException:
         print("ApiException in download_motherless")
-        risposta(message,"Si Ã¨ verificato un errore, contatta @kaykin se vuoi/puoi, oppure riprova")
-        os.remove(bot_path+"/"+file_identifier+".mp4")
+        risposta(message,"Si è verificato un errore, riprova")
  except Exception as e:
-   risposta(message,"Si è verificato un errore, contatta @kaykin se vuoi/puoi, oppure riprova")
-   os.remove(bot_path+"/"+file_identifier+".mp4")
+   risposta(message,"Si è verificato un errore, riprova")
+   os.remove(bot_path+file_identifier+".mp4")
    print(str(e)+" in download motherless")
+ finally:
+     os.remove(bot_path+file_identifier+".mp4")
 @bot.message_handler(commands=["download"])
 def download(message):
- try:
-    print("download")
-    if " " not in message.text:
-        risposta(message,"Il tuo messaggio è vuoto, devi fornire un link da scaricare")
-    else:
-     messaggio=message.text.split(" ")[1]
-     if (urllib.parse.urlparse(messaggio)==True):
-      estensione=messaggio.split(".")[-1]
-      file_identifier=str(message.chat.id)+str(int(time.time()))
-      file_size = (urllib.request.urlopen(messaggio)).headers["Content-Length"]
-      if (int(file_size)<1500000000 and file_size!=None):
-       urllib.request.urlretrieve(messaggio,bot_path+file_identifier+"."+estensione)
-       bot.send_chat_action(message.chat.id, 'upload_document')
-       try:
-        bot.send_document(message.chat.id,open(bot_path+"/"+file_identifier+"."+estensione,"rb"))
-        os.remove(bot_path+file_identifier+"."+estensione)
-       except requests.exceptions.ChunkedEncodingError:
-        print("ChunkedEncodingError in download")
-        risposta(message,"Si Ã¨ verificato un errore, contatta @Kaykin se vuoi/puoi, oppure riprova")
-        os.remove(bot_path+file_identifier+"."+estensione)
-       except telebot.apihelper.ApiException:
-        print("ApiException in download")
-        risposta(message,"Si Ã¨ verificato un errore, contatta @kaykin se vuoi/puoi, oppure riprova")
-        os.remove(bot_path+file_identifier+"."+estensione)
-      else:
-        risposta(message,"Il file che hai cercato di scaricare è più pesante del limite massimo concesso da Telegram o l'url inviato non permette di stabilire in anticipo le dimensioni del file")
-     else:
-         risposta(message,"Url non valido")
- except Exception as e:
-   risposta(message,"Si è verificato un errore, contatta @kaykin se vuoi/puoi, oppure riprova")
-   print(str(e)+" in download")
+    try:
+        print("download")
+        if " " not in message.text:
+            risposta(
+                message, "Il tuo messaggio è vuoto, devi fornire un link da scaricare")
+        else:
+            messaggio = message.text.split(" ")[1]
+            if (urllib.parse.urlparse(messaggio) == True):
+                estensione = messaggio.split(".")[-1]
+                file_identifier = str(message.chat.id) + str(int(time.time()))
+                file_size = (urllib.request.urlopen(
+                    messaggio)).headers["Content-Length"]
+                if (int(file_size) < 1500000000 and file_size != None):
+                    urllib.request.urlretrieve(
+                        messaggio, bot_path + file_identifier + "." + estensione)
+                    bot.send_chat_action(message.chat.id, 'upload_document')
+                    try:
+                        bot.send_document(message.chat.id, open(bot_path + file_identifier + "." + estensione, "rb"))
+                    except requests.exceptions.ChunkedEncodingError:
+                        print("ChunkedEncodingError in download")
+                        risposta(message, "Si è verificato un errore, riprova")
+                    except telebot.apihelper.ApiException:
+                        print("ApiException in download")
+                        risposta(message, "Si è verificato un errore, riprova")
+                else:
+                    risposta(message, "Il file che hai cercato di scaricare è più pesante del limite massimo concesso da Telegram o l'url inviato non permette di stabilire in anticipo le dimensioni del file")
+            else:
+                risposta(message, "Url non valido")
+    except Exception as e:
+        risposta(message, "Si è verificato un errore, riprova")
+        print(str(e) + " in download")
+    finally:
+        os.remove(bot_path + "/" + file_identifier + ".mp4")
 @bot.message_handler(commands=["pornsrc"])
 def cerca_porno(message,y=0):
   try:
@@ -378,7 +413,7 @@ def invia_cibo(message):
     try:
      bot.send_photo(message.chat.id, open(bot_path+"/cibo/"+random.choice(lista_cibo),'rb'))
     except Exception as e:
-      risposta(message,"Si è verificato un errore, contatta @kaykin se vuoi/puoi, oppure riprova")
+      risposta(message,"Si è verificato un errore, riprova")
       print(str(e)+" in cibo")
 @bot.message_handler(commands=["striscia"])
 def invia_striscia(message):
@@ -387,7 +422,7 @@ def invia_striscia(message):
     try:
      bot.send_photo(message.chat.id, open(bot_path+"/strisce/"+random.choice(lista_strisce),'rb'))
     except Exception as e:
-      risposta(message,"Si è verificato un errore, contatta @kaykin se vuoi/puoi, oppure riprova")
+      risposta(message,"Si è verificato un errore, riprova")
       print(str(e)+" in striscia")
 @bot.message_handler(commands=["xkcd"])
 def invia_xkcd(message):
@@ -396,7 +431,7 @@ def invia_xkcd(message):
     try:
      bot.send_photo(message.chat.id, open(bot_path+"/xkcd/"+random.choice(lista_xkcd),'rb'))
     except Exception as e:
-      risposta(message,"Si è verificato un errore, contatta @kaykin se vuoi/puoi, oppure riprova")
+      risposta(message,"Si è verificato un errore, riprova")
       print(str(e)+" in xkcd")
 @bot.message_handler(commands=["insulta"])
 def insulta(message):
