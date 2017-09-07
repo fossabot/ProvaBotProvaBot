@@ -1,0 +1,6 @@
+pyTelegramBotApi
+beautifulsoup4
+requests
+google-api-python-client
+cryptography
+instalooter
