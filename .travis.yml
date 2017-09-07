@@ -14,4 +14,4 @@ install:
   - pip install -r requirements.txt
 # command to run tests
 script:
-  - ProvaBotProvaBot
+  - python3 ProvaBotProvaBot.py
