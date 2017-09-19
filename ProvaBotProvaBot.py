@@ -2,16 +2,12 @@
 import telebot
 import random
 import requests
-import base64
 import os
-import logging
 import time
 import urllib.request
 import mmap
 import os.path
 import shutil
-import sys
-import json
 import argparse
 import shlex
 #import instaLooter as instalooter
@@ -243,7 +239,6 @@ def invia_video_porno(message):
 def download_insta(message):
     try:
         print("download_insta")
-        http = False
         post = False
         file_identifier = str(message.chat.id) + str(int(time.time()))
         if ((" " not in message.text)):
@@ -269,7 +264,6 @@ def download_insta(message):
         print(e)
         risposta(message, "Si è verificato un errore, riprova")
     finally:
-        pass
         os.system("rm -r " + bot_path + "*"+file_identifier+"*")
 @bot.message_handler(commands=["download_motherless"])
 def download_motherless(message):
