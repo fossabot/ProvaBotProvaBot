@@ -9,7 +9,7 @@ import os.path
 import shutil
 import argparse
 import shlex
-#import instaLooter as instalooter
+from instaLooter import InstaLooter
 from cryptography.fernet import Fernet
 from telebot import types
 from telebot import util
@@ -250,11 +250,13 @@ def download_insta(message):
             os.system("mkdir " + bot_path + file_identifier)
             username = shlex.split(messaggio)
             if post == True:
-                os.system('instaLooter ' + 'post ' + str(username[0]) + " " + bot_path + file_identifier + " " + "-T " + file_identifier)
+                #os.system('instaLooter ' + 'post ' + str(username[0]) + " " + bot_path + file_identifier + " " + "-T " + file_identifier)
+                print(bot_path + file_identifier+ "/")
+                InstaLooter(directory=bot_path + file_identifier).download_post(re.match('[A-Z][^/]+', str(username[0])))
                 bot.send_chat_action(message.chat.id, 'upload_photo')
                 bot.send_photo(message.chat.id, open(bot_path + file_identifier + "/" + file_identifier + ".jpg", "rb"))
             else:
-                os.system('instaLooter ' +username[0] + " " + bot_path + file_identifier)
+                InstaLooter(directory=bot_path + file_identifier, profile=str(username[0])).download()
                 shutil.make_archive(bot_path + file_identifier, 'zip', bot_path + file_identifier)
                 bot.send_chat_action(message.chat.id, 'upload_document')
                 bot.send_document(message.chat.id, open(bot_path + file_identifier + ".zip", "rb"))

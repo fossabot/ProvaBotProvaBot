@@ -78,8 +78,4 @@ target/
 *.3gp
 *.wmv
 *.pdf
-3.txt
-scarpe.py
-3.py
 !modules/
-ChaturbateBot.py
