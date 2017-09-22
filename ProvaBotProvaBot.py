@@ -251,9 +251,8 @@ def download_insta(message):
             os.system("mkdir " + bot_path + file_identifier)
             username = shlex.split(messaggio)
             if post == True:
-                #os.system('instaLooter ' + 'post ' + str(username[0]) + " " + bot_path + file_identifier + " " + "-T " + file_identifier)
-                print(bot_path + file_identifier+ "/")
-                InstaLooter(directory=bot_path + file_identifier).download_post(re.match('[A-Z][^/]+', str(username[0])))
+                InstaLooter(directory=bot_path + file_identifier).download_post(re.search('[A-Z][^/]+',str(username[0])).group())
+                os.system("mv "+bot_path + file_identifier + "/*.jpg "+bot_path + file_identifier + "/"+file_identifier+".jpg")
                 bot.send_chat_action(message.chat.id, 'upload_photo')
                 bot.send_photo(message.chat.id, open(bot_path + file_identifier + "/" + file_identifier + ".jpg", "rb"))
             else:
