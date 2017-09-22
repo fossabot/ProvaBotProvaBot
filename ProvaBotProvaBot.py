@@ -5,13 +5,11 @@ import requests
 import os
 import time
 import urllib.request
-import mmap
 import os.path
 import shutil
 import argparse
 import shlex
 #import instaLooter as instalooter
-from apiclient.discovery import build
 from cryptography.fernet import Fernet
 from telebot import types
 from telebot import util
