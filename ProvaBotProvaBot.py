@@ -9,6 +9,7 @@ import os.path
 import shutil
 import argparse
 import shlex
+import re
 from instaLooter import InstaLooter
 from cryptography.fernet import Fernet
 from telebot import types
