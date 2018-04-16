@@ -79,3 +79,4 @@ target/
 *.wmv
 *.pdf
 !modules/
+*.json
